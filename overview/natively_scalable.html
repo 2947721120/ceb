@@ -9,7 +9,7 @@
             <span class=hljs-keyword>if</span> (!tooltipFeature(el).$tooltip) {
                 tooltipFeature(el).$tooltip = $(el).tooltip({
                     title: content,
-                    trigger: <span class=hljs-string>'hover'</span>,
+                    trigger: <span class=hljs-string>'hover focus'</span>,
                     placement: <span class=hljs-string>'auto bottom'</span>
                 });
             } <span class=hljs-keyword>else</span> {
@@ -47,7 +47,7 @@
     }).feature(g.cebFeatureTemplate, {
         template: <span class=hljs-string>'&lt;input type="text"&gt;'</span>
     });</pre></div></div> </div> </div> <div class=row id=section-10> <div class=col-md-6> <p>We add our freshly top mega fun tooltip feature to the structure.</p> </div> <div class=col-md-6> <div class="hljs javascript"><div class=highlight><pre>    builder.feature(tooltipFeature);</pre></div></div> </div> </div> <div class=row id=section-11> <div class=col-md-6> <p>We let the control to ceb and …</p> </div> <div class=col-md-6> <div class="hljs javascript"><div class=highlight><pre>    builder.register();</pre></div></div> </div> </div> <div class=row id=section-12> <div class=col-md-12> <hr> <p> … mouve your mouse over the input.</p> <pre><code>&lt;tooltiped-input tooltip=<span class=hljs-string>"I am a tooltip"</span>&gt;<span class=xml><span class=hljs-tag>&lt;/<span class=hljs-title>tooltiped-input</span>&gt;</span></span>
-</code></pre><p><tooltiped-input tooltip="I am a tooltip"></tooltiped-input></p> </div> </div> </section> </main> <footer class="container text-center"> <hr class="col-xs-offset-3 col-xs-6"> <p class="col-md-12 text-muted"> <code>&ltceb/&gt;</code> is freely distributable under the terms of the MIT license. </p> </footer> <script src=../scripts/37fdf89f.vendor.js></script> <script src=../scripts/a6ae7015.main.js></script> <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+</code></pre><p><tooltiped-input tooltip="I am a tooltip"></tooltiped-input></p> </div> </div> </section> </main> <footer class="container text-center"> <hr class="col-xs-offset-3 col-xs-6"> <p class="col-xs-12 text-muted"> <code>&ltceb/&gt;</code> is freely distributable under the terms of the MIT license. </p> </footer> <script src=../scripts/c1b0b6b3.vendor.js></script> <script src=../scripts/1d3f4c8a.main.js></script> <script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
