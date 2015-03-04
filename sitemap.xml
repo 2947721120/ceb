@@ -2,97 +2,97 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/buildingblocks/1.template.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/buildingblocks/2.frp.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/buildingblocks/3.cqrs.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/buildingblocks/</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/guide/2.inheritance.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/guide/3.properties.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/guide/4.interceptors.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/guide/5.methods.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/guide/6.wrappers.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/guide/7.listeners.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/guide/8.features.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/guide/</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/install.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/overview/just_a_builder.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://tmorin.github.io/custom-elements-builder/overview/natively_scalable.html</loc>
-    <lastmod>2015-03-04T19:36:10.000Z</lastmod>
+    <lastmod>2015-03-04T20:01:20.000Z</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.5</priority>
   </url>
