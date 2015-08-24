@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/builder/CustomElementBuilder.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="git://github.com/tmorin/custom-elements-builder.git">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/Builder.js~Builder.html">Builder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html">CustomElementBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/OnBuilder.js~OnBuilder.html">OnBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/TemplateBuilder.js~TemplateBuilder.html">TemplateBuilder</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-assign">assign</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-attribute">attribute</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bind">bind</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-camelCase">camelCase</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-ceb">ceb</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-delegate">delegate</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-find">find</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-flatten">flatten</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-invoke">invoke</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isArray">isArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isNull">isNull</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isString">isString</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-method">method</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-noop">noop</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-on">on</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-partial">partial</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-property">property</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-result">result</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-template">template</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-toArray">toArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-wrap">wrap</a></span></li>
+</ul>
+</div>
+
+<div data-ice="variableWrap">
+  <h2><a href="variable/">Variable</a></h2>
+  <ul>
+    
+  <li data-ice="variableDoc"><span><a href="variable/index.html#static-variable-Builder">Builder</a></span></li>
+</ul>
+</div>
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/builder/CustomElementBuilder.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {isString, isFunction, toArray, flatten, invoke, partial, bind} from &apos;../utils.js&apos;;
+
+const LIFECYCLE_CALLBACKS = [
+    &apos;createdCallback&apos;,
+    &apos;attachedCallback&apos;,
+    &apos;detachedCallback&apos;,
+    &apos;attributeChangedCallback&apos;
+];
+
+const LIFECYCLE_EVENTS = flatten(LIFECYCLE_CALLBACKS.map(name =&gt; [`before:${name}`, `after:${name}`]));
+
+/**
+ * The custom element builder.
+ * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).
+ */
+export class CustomElementBuilder {
+
+    /**
+     */
+    constructor() {
+        let proto = Object.create(HTMLElement.prototype),
+            builders = [],
+            events = LIFECYCLE_EVENTS.reduce((a, b) =&gt; {
+                a[b] = [];
+                return a;
+            }, {
+                &apos;before:builders&apos;: [],
+                &apos;after:builders&apos;: [],
+                &apos;before:registerElement&apos;: [],
+                &apos;after:registerElement&apos;: []
+            });
+        /**
+         * @type {Object}
+         * @property {!Object} proto - the prototype
+         * @property {!string} extends - the name of a native element
+         * @desc the context of the builder
+         */
+        this.context = {proto, builders, events};
+    }
+
+    /**
+     * To extend a native element.
+     * @param {!string} value the name of the element
+     * @returns {CustomElementBuilder} the builder
+     */
+    extends(value) {
+        this.context.extends = value;
+        return this;
+    }
+
+    /**
+     * To override the default prototype.
+     * @param {!Object} value the prototype
+     * @returns {CustomElementBuilder} the builder
+     */
+    proto(value) {
+        this.context.proto = value;
+        return this;
+    }
+
+    /**
+     * To apply the given builders during the build process.
+     * @param {...Builder} builders the builders
+     * @returns {CustomElementBuilder} the builder
+     */
+    augment(...builders) {
+        builders.forEach(builder =&gt; this.context.builders.push(builder));
+        return this;
+    }
+
+    /**
+     * To register call back on events.
+     * @param {!string} event the event name
+     * @returns {Object} the on builder.
+     * @property {function(callback: function)} invoke - to register the callback
+     */
+    on(event) {
+        let invoke = cb =&gt; {
+            this.context.events[event].push(cb);
+            return this;
+        };
+        return {invoke};
+    }
+
+    /**
+     * To register the custom element.
+     * @param {!string} name the name of the cutsom element
+     * @returns {Element} the custom element Type
+     */
+    register(name) {
+        this.context.events[&apos;before:builders&apos;].forEach(fn =&gt; fn(this.context));
+
+        invoke(this.context.builders, &apos;build&apos;, this.context.proto, bind(this.on, this));
+
+        this.context.events[&apos;after:builders&apos;].forEach(fn =&gt; fn(this.context));
+
+        LIFECYCLE_CALLBACKS.forEach(partial(applyLifecycle, this.context));
+
+        let options = {prototype: this.context.proto};
+
+        if (isString(this.context.extends)) {
+            options.extends = this.context.extends;
+        }
+
+        this.context.events[&apos;before:registerElement&apos;].forEach(fn =&gt; fn(this.context));
+
+        let CustomElement = document.registerElement(name, options);
+
+        this.context.events[&apos;after:registerElement&apos;].forEach(fn =&gt; fn(CustomElement));
+
+        return CustomElement;
+    }
+}
+
+function applyLifecycle(context, name) {
+    let proto = context.proto,
+        original = proto[name],
+        beforeFns = context.events[&apos;before:&apos; + name],
+        afterFns = context.events[&apos;after:&apos; + name];
+
+    proto[name] = function () {
+        let args = [this].concat(toArray(arguments));
+
+        beforeFns.forEach(fn =&gt; fn.apply(this, args));
+
+        if (isFunction(original)) {
+            original.apply(this, args);
+        }
+
+        afterFns.forEach(fn =&gt; fn.apply(this, args));
+    };
+}
+</code></pre>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.2)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

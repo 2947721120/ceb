@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/utils.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="git://github.com/tmorin/custom-elements-builder.git">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/Builder.js~Builder.html">Builder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html">CustomElementBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/OnBuilder.js~OnBuilder.html">OnBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/TemplateBuilder.js~TemplateBuilder.html">TemplateBuilder</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-assign">assign</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-attribute">attribute</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bind">bind</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-camelCase">camelCase</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-ceb">ceb</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-delegate">delegate</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-find">find</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-flatten">flatten</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-invoke">invoke</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isArray">isArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isNull">isNull</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isString">isString</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-method">method</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-noop">noop</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-on">on</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-partial">partial</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-property">property</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-result">result</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-template">template</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-toArray">toArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-wrap">wrap</a></span></li>
+</ul>
+</div>
+
+<div data-ice="variableWrap">
+  <h2><a href="variable/">Variable</a></h2>
+  <ul>
+    
+  <li data-ice="variableDoc"><span><a href="variable/index.html#static-variable-Builder">Builder</a></span></li>
+</ul>
+</div>
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/utils.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">export function camelCase(value) {
+    return value.split(/(?=[A-Z])/).map(part =&gt; part.charAt(0).toLowerCase() + part.slice(1)).join(&apos;-&apos;);
+}
+
+export function isFunction(i) {
+    return Object.prototype.toString.call(i) === &apos;[object Function]&apos;;
+}
+
+export function isUndefined(i) {
+    return i === undefined;
+}
+
+export function isNull(i) {
+    return i === null;
+}
+
+export function isString(i) {
+    return Object.prototype.toString.call(i) === &apos;[object String]&apos;;
+}
+
+export function isArray(i) {
+    return Object.prototype.toString.call(i) === &apos;[object Array]&apos;;
+}
+
+export function result(obj, prop) {
+    let value = obj[prop];
+    return isFunction(value) ? value() : value;
+}
+export function assign() {
+    return Array.prototype.reduce.call(arguments, function (target, source) {
+        return Object.keys(Object(source)).reduce((target, key) =&gt; {
+            target[key] = source[key];
+            return target;
+        }, target);
+    });
+}
+export function toArray(i) {
+    return Array.prototype.slice.call(i);
+}
+
+export function flatten(array) {
+    return array.reduce((a, b) =&gt; isArray(b) ? a.concat(flatten(b)) : a.concat(b), []);
+}
+
+export function invoke() {
+    let args = toArray(arguments),
+        objects = args.shift(),
+        meth = args.shift();
+    if (isArray(objects)) {
+        objects.filter(obj =&gt; isFunction(obj[meth])).forEach(obj =&gt; obj[meth].apply(obj, args));
+    }
+}
+
+export function partial() {
+    let args = toArray(arguments),
+        fn = args.shift();
+    return function () {
+        return fn.apply(this, args.concat(toArray(arguments)));
+    };
+}
+
+export function bind(fn, ctx) {
+    return function () {
+        return fn.apply(ctx, toArray(arguments));
+    };
+}
+
+export function noop() {
+    return function () {
+    };
+}
+
+export function wrap(fn, wrapper) {
+    return function () {
+        let args = toArray(arguments),
+            next = isFunction(fn) ? fn : noop();
+        return wrapper.apply(this, [bind(next, this)].concat(args));
+    };
+}
+
+export function find(array, cb) {
+    return array.filter(cb)[0];
+}
+</code></pre>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.2)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

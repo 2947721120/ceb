@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/builder/DelegateBuilder.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="git://github.com/tmorin/custom-elements-builder.git">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/Builder.js~Builder.html">Builder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html">CustomElementBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/OnBuilder.js~OnBuilder.html">OnBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/TemplateBuilder.js~TemplateBuilder.html">TemplateBuilder</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-assign">assign</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-attribute">attribute</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bind">bind</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-camelCase">camelCase</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-ceb">ceb</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-delegate">delegate</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-find">find</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-flatten">flatten</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-invoke">invoke</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isArray">isArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isNull">isNull</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isString">isString</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-method">method</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-noop">noop</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-on">on</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-partial">partial</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-property">property</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-result">result</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-template">template</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-toArray">toArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-wrap">wrap</a></span></li>
+</ul>
+</div>
+
+<div data-ice="variableWrap">
+  <h2><a href="variable/">Variable</a></h2>
+  <ul>
+    
+  <li data-ice="variableDoc"><span><a href="variable/index.html#static-variable-Builder">Builder</a></span></li>
+</ul>
+</div>
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/builder/DelegateBuilder.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {isUndefined, isFunction} from &apos;../utils.js&apos;;
+import {getAttValue, setAttValue} from &apos;./AttributeBuilder.js&apos;;
+import {Builder} from &apos;./Builder.js&apos;;
+
+/**
+ * The delegate builder.
+ * Its goal is to provide a way to delegate properties and attributes.
+ * @extends {Builder}
+ */
+export class DelegateBuilder extends Builder {
+
+    /**
+     * @param {!PropertyBuilder|AttributeBuilder} fieldBuilder the field builder
+     */
+    constructor(fieldBuilder) {
+        super();
+        /**
+         * @ignore
+         */
+        this.fieldBuilder = fieldBuilder;
+        /**
+         * @ignore
+         */
+        this.data = {};
+        if (fieldBuilder.data.attrName) {
+            this.data.attrName = fieldBuilder.data.attrName;
+        } else if (this.fieldBuilder.data.propName) {
+            this.data.propName = fieldBuilder.data.propName;
+        }
+    }
+
+    /**
+     * The target of the delegate.
+     * @param {!string} selector a valid css query
+     * @returns {DelegateBuilder} the builder
+     */
+    to(selector) {
+        this.data.selector = selector;
+        return this;
+    }
+
+    /**
+     * To force a delegate to a property.
+     * @param {string} [propName] the name of the property
+     * @returns {DelegateBuilder} the builder
+     */
+    property(propName) {
+        this.data.attrName = null;
+        if (!isUndefined(propName)) {
+            this.data.propName = propName;
+        } else {
+            this.data.propName = this.fieldBuilder.data.propName;
+        }
+        return this;
+    }
+
+    /**
+     * To force the delegate to an attribute.
+     * @param {string} [attrName] the name of the attribute
+     * @returns {DelegateBuilder} the builder
+     */
+    attribute(attrName) {
+        this.data.propName = null;
+        if (!isUndefined(attrName)) {
+            this.data.attrName = attrName;
+        } else {
+            this.data.attrName = this.fieldBuilder.data.attrName || this.fieldBuilder.data.propName;
+        }
+        return this;
+    }
+
+    /**
+     * @override
+     */
+    build(proto, on) {
+        let data = this.data,
+            fieldBuilderData = this.fieldBuilder.data,
+            targetedPropName = this.data.propName,
+            targetedAttrName = this.data.attrName,
+            fieldGetter = fieldBuilderData.getter,
+            fieldSetter = fieldBuilderData.setter;
+
+        if (fieldBuilderData.attrName) {
+            fieldBuilderData.getterFactory = (attrName, isBoolean) =&gt; {
+                return (el) =&gt; {
+                    let target = el.querySelector(data.selector);
+                    if (target) {
+                        return targetedAttrName ? getAttValue(target, targetedAttrName, isBoolean) : target[targetedPropName];
+                    }
+                };
+            };
+            fieldBuilderData.setterFactory = (attrName, isBoolean, attSetter) =&gt; {
+                return (el, value) =&gt; {
+                    let target = el.querySelector(data.selector),
+                        attrValue = isFunction(attSetter) ? attSetter.call(el, el, value) : value;
+                    if (target) {
+                        if (targetedAttrName) {
+                            setAttValue(target, targetedAttrName, isBoolean, attrValue);
+                        } else {
+                            target[targetedPropName] = attrValue;
+                        }
+                        setAttValue(el, attrName, isBoolean, attrValue);
+                    }
+                };
+            };
+        } else if (fieldBuilderData.propName) {
+            fieldBuilderData.descriptorValue = false;
+            fieldBuilderData.getter = (el) =&gt; {
+                let target = el.querySelector(data.selector),
+                    targetValue;
+                if (target) {
+                    if (targetedAttrName) {
+                        targetValue = target.getAttribute(targetedAttrName);
+                    } else {
+                        targetValue = target[targetedPropName];
+                    }
+                }
+                return isFunction(fieldGetter) ? fieldGetter.call(this, this, targetValue) : targetValue;
+            };
+            fieldBuilderData.setter = (el, value) =&gt; {
+                let target = el.querySelector(data.selector),
+                    targetValue = isFunction(fieldSetter) ? fieldSetter.call(this, this, value) : value;
+                if (target) {
+                    if (targetedAttrName) {
+                        target.setAttribute(targetedAttrName, targetValue);
+                    } else {
+                        target[targetedPropName] = targetValue;
+                    }
+                }
+            };
+        }
+
+        this.fieldBuilder.build(proto, on);
+    }
+
+}
+</code></pre>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.2)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

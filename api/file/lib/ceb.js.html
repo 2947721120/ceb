@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../">
+  <title data-ice="title">lib/ceb.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="git://github.com/tmorin/custom-elements-builder.git">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/Builder.js~Builder.html">Builder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html">CustomElementBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/OnBuilder.js~OnBuilder.html">OnBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/TemplateBuilder.js~TemplateBuilder.html">TemplateBuilder</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-assign">assign</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-attribute">attribute</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bind">bind</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-camelCase">camelCase</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-ceb">ceb</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-delegate">delegate</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-find">find</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-flatten">flatten</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-invoke">invoke</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isArray">isArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isNull">isNull</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isString">isString</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-method">method</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-noop">noop</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-on">on</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-partial">partial</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-property">property</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-result">result</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-template">template</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-toArray">toArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-wrap">wrap</a></span></li>
+</ul>
+</div>
+
+<div data-ice="variableWrap">
+  <h2><a href="variable/">Variable</a></h2>
+  <ul>
+    
+  <li data-ice="variableDoc"><span><a href="variable/index.html#static-variable-Builder">Builder</a></span></li>
+</ul>
+</div>
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/ceb.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {CustomElementBuilder} from &apos;./builder/CustomElementBuilder.js&apos;;
+import {PropertyBuilder} from &apos;./builder/PropertyBuilder.js&apos;;
+import {AttributeBuilder} from &apos;./builder/AttributeBuilder.js&apos;;
+import {DelegateBuilder} from &apos;./builder/DelegateBuilder.js&apos;;
+import {MethodBuilder} from &apos;./builder/MethodBuilder.js&apos;;
+import {TemplateBuilder} from &apos;./builder/TemplateBuilder.js&apos;;
+import {OnBuilder} from &apos;./builder/OnBuilder.js&apos;;
+import {Builder as BuilderType} from &apos;./builder/Builder.js&apos;;
+
+/**
+ * The base builder type
+ * @type {Builder} the builder
+ */
+export var Builder = BuilderType;
+
+/**
+ * Get a new custom element builder.
+ * @returns {CustomElementBuilder} the custom element builder
+ */
+export function ceb() {
+    return new CustomElementBuilder();
+}
+
+/**
+ * Get a new property builder.
+ * @param {!string} propName the name of the property
+ * @returns {PropertyBuilder} the property builder
+ */
+export function property(propName) {
+    return new PropertyBuilder(propName);
+}
+
+/**
+ * Get a new attribute builder.
+ * @param {!string} attrName the name of the attribute
+ * @returns {AttributeBuilder} the attribute builder
+ */
+export function attribute(attrName) {
+    return new AttributeBuilder(attrName);
+}
+
+/**
+ * Get a new method builder.
+ * @param {!string} methName the name of the method
+ * @returns {MethodBuilder} the method builder
+ */
+export function method(methName) {
+    return new MethodBuilder(methName);
+}
+
+/**
+ * Get a new delegate builder.
+ * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder
+ * @returns {DelegateBuilder} the delegate builder
+ */
+export function delegate(builder) {
+    return new DelegateBuilder(builder);
+}
+
+/**
+ * Get a new template builder.
+ * @param {!string|Function} tpl the string or function template
+ * @returns {TemplateBuilder} the template builder
+ */
+export function template(tpl) {
+    return new TemplateBuilder(tpl);
+}
+
+/**
+ * Get a new on builder.
+ * @param {!string} events a list of tuple &apos;event target&apos; separated by comas, the target is optional
+ * @returns {OnBuilder} the on builder
+ */
+export function on(events) {
+    return new OnBuilder(events);
+}
+</code></pre>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.2)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

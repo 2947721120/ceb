@@ -1,0 +1,3556 @@
+[
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/builder/AttributeBuilder.js",
+    "memberof": null,
+    "longname": "lib/builder/AttributeBuilder.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {camelCase, isFunction, isUndefined, result, isNull, assign} from '../utils.js';\nimport {PropertyBuilder} from './PropertyBuilder.js';\n\n\n/**\n * Get the value from an attribute.\n * @param {!HTMLElement} el an HTML element\n * @param {!string} attrName the name of the attribute\n * @param {!boolean} isBoolean true is the returned value should be a boolean\n * @returns {string|boolean}\n */\nexport function getAttValue(el, attrName, isBoolean) {\n    if (isBoolean) {\n        //let value = el.getAttribute(attrName);\n        return el.hasAttribute(attrName);\n    }\n    return el.getAttribute(attrName);\n}\n\n/**\n * Set the value of an attribute.\n * @param {!HTMLElement} el an HTML element\n * @param {!string} attrName the name of the attribute\n * @param {!boolean} isBoolean true is the value should be a boolean\n * @param {string|boolean} value the value to set\n */\nexport function setAttValue(el, attrName, isBoolean, value) {\n    if (isBoolean) {\n        // Handle boolean value\n        if (value && !el.hasAttribute(attrName)) {\n            el.setAttribute(attrName, '');\n        } else if (!value && el.hasAttribute(attrName)) {\n            el.removeAttribute(attrName);\n        }\n    } else {\n        // Handle none boolean value\n        if ((isUndefined(value) || isNull(value)) && el.hasAttribute(attrName)) {\n            // There is no value, so the attribute must be removed\n            el.removeAttribute(attrName);\n        } else if (!isUndefined(value) && !isNull(value) && el.getAttribute(attrName) !== value) {\n            // Sync the attribute value with value\n            el.setAttribute(attrName, value);\n        }\n    }\n}\n\nfunction getterFactory(attrName, isBoolean) {\n    return (el) => {\n        return getAttValue(el, attrName, isBoolean);\n    };\n}\n\nfunction setterFactory(attrName, isBoolean, attSetter) {\n    return (el, value) => {\n        var attValue = isFunction(attSetter) ? attSetter.call(el, el, value) : value;\n        return setAttValue(el, attrName, isBoolean, attValue);\n    };\n}\n\n/**\n * The attribute builder.\n * Its goal is to provide a way to define an attribute.\n * @extends {PropertyBuilder}\n */\nexport class AttributeBuilder extends PropertyBuilder {\n\n    /**\n     * @param {!string} attrName the name of the attribute\n     */\n    constructor(attrName) {\n        super(camelCase(attrName));\n        /**\n         * @ignore\n         */\n        assign(this.data, {\n            attrName,\n            getterFactory,\n            setterFactory,\n            descriptorValue: false,\n            getAttValue: getAttValue,\n            setAttValue: setAttValue\n        });\n    }\n\n    /**\n     * To handle the attribute/property value as a boolean:\n     * Attribute is present when true and missing when false.\n     * @returns {AttributeBuilder} the builder\n     */\n    boolean() {\n        this.data.boolean = true;\n        return this;\n    }\n\n    /**\n     * To override the property name.\n     * @param {!string} propName the property name\n     * @returns {AttributeBuilder}\n     */\n    property(propName) {\n        this.data.propName = propName;\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let attGetter = this.data.getter,\n            attSetter = this.data.setter,\n            defaultValue = result(this.data, 'value');\n\n        this.data.value = undefined;\n\n        this.data.getter = this.data.getterFactory(this.data.attrName, this.data.boolean, attGetter);\n        this.data.setter = this.data.setterFactory(this.data.attrName, this.data.boolean, attSetter);\n\n        super.build(proto, on);\n\n        on('after:createdCallback').invoke(el => {\n            let attrValue = getAttValue(el, this.data.attrName, this.data.boolean);\n            if (this.data.boolean) {\n                el[this.data.propName] = !!defaultValue ? defaultValue : attrValue;\n            } else if (!isNull(attrValue) && !isUndefined(attrValue)) {\n                el[this.data.propName] = attrValue;\n            } else if (!isUndefined(defaultValue)) {\n                el[this.data.propName] = defaultValue;\n            }\n        });\n\n        on('before:attributeChangedCallback').invoke((el, attName, oldVal, newVal) => {\n            // Synchronize the attribute value with its properties\n            if (attName === this.data.attrName) {\n                let value = this.data.boolean ? newVal === '' : newVal;\n                if (el[this.data.propName] !== value) {\n                    el[this.data.propName] = value;\n                }\n            }\n        });\n    }\n\n}\n"
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "getAttValue",
+    "memberof": "lib/builder/AttributeBuilder.js",
+    "longname": "lib/builder/AttributeBuilder.js~getAttValue",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/AttributeBuilder.js",
+    "importStyle": "{getAttValue}",
+    "description": "Get the value from an attribute.",
+    "lineNumber": 12,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{string|boolean}"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "HTMLElement"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "el",
+        "description": "an HTML element"
+      },
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "attrName",
+        "description": "the name of the attribute"
+      },
+      {
+        "nullable": false,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "isBoolean",
+        "description": "true is the returned value should be a boolean"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string",
+        "boolean"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "setAttValue",
+    "memberof": "lib/builder/AttributeBuilder.js",
+    "longname": "lib/builder/AttributeBuilder.js~setAttValue",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/AttributeBuilder.js",
+    "importStyle": "{setAttValue}",
+    "description": "Set the value of an attribute.",
+    "lineNumber": 27,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "HTMLElement"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "el",
+        "description": "an HTML element"
+      },
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "attrName",
+        "description": "the name of the attribute"
+      },
+      {
+        "nullable": false,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "isBoolean",
+        "description": "true is the value should be a boolean"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string",
+          "boolean"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "the value to set"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "getterFactory",
+    "memberof": "lib/builder/AttributeBuilder.js",
+    "longname": "lib/builder/AttributeBuilder.js~getterFactory",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/AttributeBuilder.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 47,
+    "undocument": true,
+    "params": [
+      {
+        "name": "attrName",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "isBoolean",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "setterFactory",
+    "memberof": "lib/builder/AttributeBuilder.js",
+    "longname": "lib/builder/AttributeBuilder.js~setterFactory",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/AttributeBuilder.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 53,
+    "undocument": true,
+    "params": [
+      {
+        "name": "attrName",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "isBoolean",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "attSetter",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "AttributeBuilder",
+    "memberof": "lib/builder/AttributeBuilder.js",
+    "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/AttributeBuilder.js",
+    "importStyle": "{AttributeBuilder}",
+    "description": "The attribute builder.\nIts goal is to provide a way to define an attribute.",
+    "lineNumber": 65,
+    "interface": false,
+    "extends": [
+      "PropertyBuilder"
+    ]
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/builder/AttributeBuilder.js~AttributeBuilder",
+    "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 70,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "attrName",
+        "description": "the name of the attribute"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "boolean",
+    "memberof": "lib/builder/AttributeBuilder.js~AttributeBuilder",
+    "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#boolean",
+    "access": null,
+    "description": "To handle the attribute/property value as a boolean:\nAttribute is present when true and missing when false.",
+    "lineNumber": 90,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{AttributeBuilder} the builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "AttributeBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "property",
+    "memberof": "lib/builder/AttributeBuilder.js~AttributeBuilder",
+    "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#property",
+    "access": null,
+    "description": "To override the property name.",
+    "lineNumber": 100,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{AttributeBuilder}"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "propName",
+        "description": "the property name"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "AttributeBuilder"
+      ],
+      "spread": false,
+      "description": ""
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "build",
+    "memberof": "lib/builder/AttributeBuilder.js~AttributeBuilder",
+    "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#build",
+    "access": null,
+    "description": null,
+    "lineNumber": 108,
+    "params": [
+      {
+        "name": "proto",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "on",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "override": true,
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/builder/Builder.js",
+    "memberof": null,
+    "longname": "lib/builder/Builder.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 5,
+    "content": "/**\n * A builder is defined by a build method.\n * @abstract\n */\nexport class Builder {\n    /**\n     * To specify the logic of the builder.\n     * @param {!CustomElementBuilder.context.proto} proto the prototype\n     * @param {!CustomElementBuilder.on} on the method on\n     */\n    build() {\n        throw new Error('not implemented');\n    }\n\n}\n"
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "Builder",
+    "memberof": "lib/builder/Builder.js",
+    "longname": "lib/builder/Builder.js~Builder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/Builder.js",
+    "importStyle": "{Builder}",
+    "description": "A builder is defined by a build method.",
+    "lineNumber": 5,
+    "abstract": true,
+    "interface": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "build",
+    "memberof": "lib/builder/Builder.js~Builder",
+    "longname": "lib/builder/Builder.js~Builder#build",
+    "access": null,
+    "description": "To specify the logic of the builder.",
+    "lineNumber": 11,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "CustomElementBuilder.context.proto"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "proto",
+        "description": "the prototype"
+      },
+      {
+        "nullable": false,
+        "types": [
+          "CustomElementBuilder.on"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "on",
+        "description": "the method on"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/builder/CustomElementBuilder.js",
+    "memberof": null,
+    "longname": "lib/builder/CustomElementBuilder.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {isString, isFunction, toArray, flatten, invoke, partial, bind} from '../utils.js';\n\nconst LIFECYCLE_CALLBACKS = [\n    'createdCallback',\n    'attachedCallback',\n    'detachedCallback',\n    'attributeChangedCallback'\n];\n\nconst LIFECYCLE_EVENTS = flatten(LIFECYCLE_CALLBACKS.map(name => [`before:${name}`, `after:${name}`]));\n\n/**\n * The custom element builder.\n * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).\n */\nexport class CustomElementBuilder {\n\n    /**\n     */\n    constructor() {\n        let proto = Object.create(HTMLElement.prototype),\n            builders = [],\n            events = LIFECYCLE_EVENTS.reduce((a, b) => {\n                a[b] = [];\n                return a;\n            }, {\n                'before:builders': [],\n                'after:builders': [],\n                'before:registerElement': [],\n                'after:registerElement': []\n            });\n        /**\n         * @type {Object}\n         * @property {!Object} proto - the prototype\n         * @property {!string} extends - the name of a native element\n         * @desc the context of the builder\n         */\n        this.context = {proto, builders, events};\n    }\n\n    /**\n     * To extend a native element.\n     * @param {!string} value the name of the element\n     * @returns {CustomElementBuilder} the builder\n     */\n    extends(value) {\n        this.context.extends = value;\n        return this;\n    }\n\n    /**\n     * To override the default prototype.\n     * @param {!Object} value the prototype\n     * @returns {CustomElementBuilder} the builder\n     */\n    proto(value) {\n        this.context.proto = value;\n        return this;\n    }\n\n    /**\n     * To apply the given builders during the build process.\n     * @param {...Builder} builders the builders\n     * @returns {CustomElementBuilder} the builder\n     */\n    augment(...builders) {\n        builders.forEach(builder => this.context.builders.push(builder));\n        return this;\n    }\n\n    /**\n     * To register call back on events.\n     * @param {!string} event the event name\n     * @returns {Object} the on builder.\n     * @property {function(callback: function)} invoke - to register the callback\n     */\n    on(event) {\n        let invoke = cb => {\n            this.context.events[event].push(cb);\n            return this;\n        };\n        return {invoke};\n    }\n\n    /**\n     * To register the custom element.\n     * @param {!string} name the name of the cutsom element\n     * @returns {Element} the custom element Type\n     */\n    register(name) {\n        this.context.events['before:builders'].forEach(fn => fn(this.context));\n\n        invoke(this.context.builders, 'build', this.context.proto, bind(this.on, this));\n\n        this.context.events['after:builders'].forEach(fn => fn(this.context));\n\n        LIFECYCLE_CALLBACKS.forEach(partial(applyLifecycle, this.context));\n\n        let options = {prototype: this.context.proto};\n\n        if (isString(this.context.extends)) {\n            options.extends = this.context.extends;\n        }\n\n        this.context.events['before:registerElement'].forEach(fn => fn(this.context));\n\n        let CustomElement = document.registerElement(name, options);\n\n        this.context.events['after:registerElement'].forEach(fn => fn(CustomElement));\n\n        return CustomElement;\n    }\n}\n\nfunction applyLifecycle(context, name) {\n    let proto = context.proto,\n        original = proto[name],\n        beforeFns = context.events['before:' + name],\n        afterFns = context.events['after:' + name];\n\n    proto[name] = function () {\n        let args = [this].concat(toArray(arguments));\n\n        beforeFns.forEach(fn => fn.apply(this, args));\n\n        if (isFunction(original)) {\n            original.apply(this, args);\n        }\n\n        afterFns.forEach(fn => fn.apply(this, args));\n    };\n}\n"
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "LIFECYCLE_CALLBACKS",
+    "memberof": "lib/builder/CustomElementBuilder.js",
+    "longname": "lib/builder/CustomElementBuilder.js~LIFECYCLE_CALLBACKS",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/CustomElementBuilder.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "LIFECYCLE_EVENTS",
+    "memberof": "lib/builder/CustomElementBuilder.js",
+    "longname": "lib/builder/CustomElementBuilder.js~LIFECYCLE_EVENTS",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/CustomElementBuilder.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 10,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "CustomElementBuilder",
+    "memberof": "lib/builder/CustomElementBuilder.js",
+    "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/CustomElementBuilder.js",
+    "importStyle": "{CustomElementBuilder}",
+    "description": "The custom element builder.\nIts goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).",
+    "lineNumber": 16,
+    "interface": false
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/builder/CustomElementBuilder.js~CustomElementBuilder",
+    "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#constructor",
+    "access": null,
+    "description": "",
+    "lineNumber": 20,
+    "params": [],
+    "generator": false
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "context",
+    "memberof": "lib/builder/CustomElementBuilder.js~CustomElementBuilder",
+    "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#context",
+    "access": null,
+    "description": "the context of the builder",
+    "lineNumber": 38,
+    "properties": [
+      {
+        "nullable": false,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "proto",
+        "description": "the prototype"
+      },
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "extends",
+        "description": "the name of a native element"
+      }
+    ],
+    "type": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "extends",
+    "memberof": "lib/builder/CustomElementBuilder.js~CustomElementBuilder",
+    "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#extends",
+    "access": null,
+    "description": "To extend a native element.",
+    "lineNumber": 46,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{CustomElementBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "the name of the element"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "CustomElementBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "proto",
+    "memberof": "lib/builder/CustomElementBuilder.js~CustomElementBuilder",
+    "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#proto",
+    "access": null,
+    "description": "To override the default prototype.",
+    "lineNumber": 56,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{CustomElementBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "the prototype"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "CustomElementBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "augment",
+    "memberof": "lib/builder/CustomElementBuilder.js~CustomElementBuilder",
+    "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#augment",
+    "access": null,
+    "description": "To apply the given builders during the build process.",
+    "lineNumber": 66,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{CustomElementBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "...Builder"
+        ],
+        "spread": true,
+        "optional": false,
+        "name": "builders",
+        "description": "the builders"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "CustomElementBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "on",
+    "memberof": "lib/builder/CustomElementBuilder.js~CustomElementBuilder",
+    "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#on",
+    "access": null,
+    "description": "To register call back on events.",
+    "lineNumber": 77,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Object} the on builder."
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "event",
+        "description": "the event name"
+      }
+    ],
+    "properties": [
+      {
+        "nullable": null,
+        "types": [
+          "function(callback: function)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "invoke",
+        "description": "to register the callback"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Object"
+      ],
+      "spread": false,
+      "description": "the on builder."
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "register",
+    "memberof": "lib/builder/CustomElementBuilder.js~CustomElementBuilder",
+    "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#register",
+    "access": null,
+    "description": "To register the custom element.",
+    "lineNumber": 90,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Element} the custom element Type"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "name",
+        "description": "the name of the cutsom element"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Element"
+      ],
+      "spread": false,
+      "description": "the custom element Type"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "applyLifecycle",
+    "memberof": "lib/builder/CustomElementBuilder.js",
+    "longname": "lib/builder/CustomElementBuilder.js~applyLifecycle",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/CustomElementBuilder.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 115,
+    "undocument": true,
+    "params": [
+      {
+        "name": "context",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "name",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/builder/DelegateBuilder.js",
+    "memberof": null,
+    "longname": "lib/builder/DelegateBuilder.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {isUndefined, isFunction} from '../utils.js';\nimport {getAttValue, setAttValue} from './AttributeBuilder.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The delegate builder.\n * Its goal is to provide a way to delegate properties and attributes.\n * @extends {Builder}\n */\nexport class DelegateBuilder extends Builder {\n\n    /**\n     * @param {!PropertyBuilder|AttributeBuilder} fieldBuilder the field builder\n     */\n    constructor(fieldBuilder) {\n        super();\n        /**\n         * @ignore\n         */\n        this.fieldBuilder = fieldBuilder;\n        /**\n         * @ignore\n         */\n        this.data = {};\n        if (fieldBuilder.data.attrName) {\n            this.data.attrName = fieldBuilder.data.attrName;\n        } else if (this.fieldBuilder.data.propName) {\n            this.data.propName = fieldBuilder.data.propName;\n        }\n    }\n\n    /**\n     * The target of the delegate.\n     * @param {!string} selector a valid css query\n     * @returns {DelegateBuilder} the builder\n     */\n    to(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To force a delegate to a property.\n     * @param {string} [propName] the name of the property\n     * @returns {DelegateBuilder} the builder\n     */\n    property(propName) {\n        this.data.attrName = null;\n        if (!isUndefined(propName)) {\n            this.data.propName = propName;\n        } else {\n            this.data.propName = this.fieldBuilder.data.propName;\n        }\n        return this;\n    }\n\n    /**\n     * To force the delegate to an attribute.\n     * @param {string} [attrName] the name of the attribute\n     * @returns {DelegateBuilder} the builder\n     */\n    attribute(attrName) {\n        this.data.propName = null;\n        if (!isUndefined(attrName)) {\n            this.data.attrName = attrName;\n        } else {\n            this.data.attrName = this.fieldBuilder.data.attrName || this.fieldBuilder.data.propName;\n        }\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let data = this.data,\n            fieldBuilderData = this.fieldBuilder.data,\n            targetedPropName = this.data.propName,\n            targetedAttrName = this.data.attrName,\n            fieldGetter = fieldBuilderData.getter,\n            fieldSetter = fieldBuilderData.setter;\n\n        if (fieldBuilderData.attrName) {\n            fieldBuilderData.getterFactory = (attrName, isBoolean) => {\n                return (el) => {\n                    let target = el.querySelector(data.selector);\n                    if (target) {\n                        return targetedAttrName ? getAttValue(target, targetedAttrName, isBoolean) : target[targetedPropName];\n                    }\n                };\n            };\n            fieldBuilderData.setterFactory = (attrName, isBoolean, attSetter) => {\n                return (el, value) => {\n                    let target = el.querySelector(data.selector),\n                        attrValue = isFunction(attSetter) ? attSetter.call(el, el, value) : value;\n                    if (target) {\n                        if (targetedAttrName) {\n                            setAttValue(target, targetedAttrName, isBoolean, attrValue);\n                        } else {\n                            target[targetedPropName] = attrValue;\n                        }\n                        setAttValue(el, attrName, isBoolean, attrValue);\n                    }\n                };\n            };\n        } else if (fieldBuilderData.propName) {\n            fieldBuilderData.descriptorValue = false;\n            fieldBuilderData.getter = (el) => {\n                let target = el.querySelector(data.selector),\n                    targetValue;\n                if (target) {\n                    if (targetedAttrName) {\n                        targetValue = target.getAttribute(targetedAttrName);\n                    } else {\n                        targetValue = target[targetedPropName];\n                    }\n                }\n                return isFunction(fieldGetter) ? fieldGetter.call(this, this, targetValue) : targetValue;\n            };\n            fieldBuilderData.setter = (el, value) => {\n                let target = el.querySelector(data.selector),\n                    targetValue = isFunction(fieldSetter) ? fieldSetter.call(this, this, value) : value;\n                if (target) {\n                    if (targetedAttrName) {\n                        target.setAttribute(targetedAttrName, targetValue);\n                    } else {\n                        target[targetedPropName] = targetValue;\n                    }\n                }\n            };\n        }\n\n        this.fieldBuilder.build(proto, on);\n    }\n\n}\n"
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "DelegateBuilder",
+    "memberof": "lib/builder/DelegateBuilder.js",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/DelegateBuilder.js",
+    "importStyle": "{DelegateBuilder}",
+    "description": "The delegate builder.\nIts goal is to provide a way to delegate properties and attributes.",
+    "lineNumber": 10,
+    "interface": false,
+    "extends": [
+      "Builder"
+    ]
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 15,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "PropertyBuilder",
+          "AttributeBuilder"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "fieldBuilder",
+        "description": "the field builder"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "fieldBuilder",
+    "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#fieldBuilder",
+    "access": null,
+    "description": null,
+    "lineNumber": 20,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "data",
+    "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#data",
+    "access": null,
+    "description": null,
+    "lineNumber": 24,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "to",
+    "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#to",
+    "access": null,
+    "description": "The target of the delegate.",
+    "lineNumber": 37,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{DelegateBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "selector",
+        "description": "a valid css query"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "DelegateBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "property",
+    "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#property",
+    "access": null,
+    "description": "To force a delegate to a property.",
+    "lineNumber": 47,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{DelegateBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "propName",
+        "description": "the name of the property"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "DelegateBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "attribute",
+    "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#attribute",
+    "access": null,
+    "description": "To force the delegate to an attribute.",
+    "lineNumber": 62,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{DelegateBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "attrName",
+        "description": "the name of the attribute"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "DelegateBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "build",
+    "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#build",
+    "access": null,
+    "description": null,
+    "lineNumber": 75,
+    "params": [
+      {
+        "name": "proto",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "on",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "override": true,
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/builder/MethodBuilder.js",
+    "memberof": null,
+    "longname": "lib/builder/MethodBuilder.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {isFunction, toArray, noop, wrap} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The method builder.\n * Its goal is to provide a way to define a method.\n * @extends {Builder}\n */\nexport class MethodBuilder extends Builder {\n\n    /**\n     * @param {!string} methName the name of the method\n     */\n    constructor(methName) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {methName, invoke: noop, wrappers: []};\n    }\n\n    /**\n     * To do something when invoked.\n     * @param {!function(el: HTMLElement, args: ...*)} fn the method's logic\n     * @returns {MethodBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To do something around the invocation.\n     * @param {...function(el: HTMLElement, args: ...*)} wrappers a set of wrappers\n     * @returns {MethodBuilder} the builder\n     */\n    wrap(...wrappers) {\n        this.data.wrappers = this.data.wrappers.concat(wrappers);\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let data = this.data;\n\n        proto[data.methName] = function () {\n            return data.invoke.apply(this, [this].concat(toArray(arguments)));\n        };\n\n        on('after:builders').invoke(() => {\n            data.wrappers.forEach(wrapper => data.invoke = wrap(data.invoke, wrapper));\n        });\n    }\n}\n"
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "MethodBuilder",
+    "memberof": "lib/builder/MethodBuilder.js",
+    "longname": "lib/builder/MethodBuilder.js~MethodBuilder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/MethodBuilder.js",
+    "importStyle": "{MethodBuilder}",
+    "description": "The method builder.\nIts goal is to provide a way to define a method.",
+    "lineNumber": 9,
+    "interface": false,
+    "extends": [
+      "Builder"
+    ]
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/builder/MethodBuilder.js~MethodBuilder",
+    "longname": "lib/builder/MethodBuilder.js~MethodBuilder#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 14,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "methName",
+        "description": "the name of the method"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "data",
+    "memberof": "lib/builder/MethodBuilder.js~MethodBuilder",
+    "longname": "lib/builder/MethodBuilder.js~MethodBuilder#data",
+    "access": null,
+    "description": null,
+    "lineNumber": 19,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "invoke",
+    "memberof": "lib/builder/MethodBuilder.js~MethodBuilder",
+    "longname": "lib/builder/MethodBuilder.js~MethodBuilder#invoke",
+    "access": null,
+    "description": "To do something when invoked.",
+    "lineNumber": 27,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{MethodBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "function(el: HTMLElement, args: ...*)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "fn",
+        "description": "the method's logic"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "MethodBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "wrap",
+    "memberof": "lib/builder/MethodBuilder.js~MethodBuilder",
+    "longname": "lib/builder/MethodBuilder.js~MethodBuilder#wrap",
+    "access": null,
+    "description": "To do something around the invocation.",
+    "lineNumber": 39,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{MethodBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "...function(el: HTMLElement, args: ...*)"
+        ],
+        "spread": true,
+        "optional": false,
+        "name": "wrappers",
+        "description": "a set of wrappers"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "MethodBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "build",
+    "memberof": "lib/builder/MethodBuilder.js~MethodBuilder",
+    "longname": "lib/builder/MethodBuilder.js~MethodBuilder#build",
+    "access": null,
+    "description": null,
+    "lineNumber": 47,
+    "params": [
+      {
+        "name": "proto",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "on",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "override": true,
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/builder/OnBuilder.js",
+    "memberof": null,
+    "longname": "lib/builder/OnBuilder.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {isFunction, toArray, find, noop} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The on builder.\n * Its goal is to provide a way to listen events coming from the custom element.\n * @extends {Builder}\n */\nexport class OnBuilder extends Builder {\n\n    /**\n     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n     */\n    constructor(events) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {events, invoke: noop};\n    }\n\n    /**\n     * To do something when events occurred.\n     * The target arugment is by default the custom element.\n     * When the delegate feature is used, target is the matched element.\n     * @param {!function(el: HTMLElement, evt: DOMEvent, target: HTMLElement)} fn the event's logic\n     * @returns {OnBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To attach the event on the capture phase instread of on the bubble phase.\n     * @returns {OnBuilder} the builder\n     */\n    capture() {\n        this.data.capture = true;\n        return this;\n    }\n\n    /**\n     * To delegate the event.\n     * @param {!string} selector the selector\n     * @returns {OnBuilder} the builder\n     */\n    delegate(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior.\n     * @returns {OnBuilder} the builder\n     */\n    prevent() {\n        this.data.preventDefault = true;\n        return this;\n    }\n\n    /**\n     * To stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    stop() {\n        this.data.stopPropagation = true;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior and to stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    skip() {\n        return this.prevent().stop();\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let events = this.data.events.split(',').map(event => event.trim().split(' ')),\n            capture = !!this.data.capture,\n            invoke = this.data.invoke,\n            selector = this.data.selector,\n            stopPropagation = this.data.stopPropagation,\n            preventDefault = this.data.preventDefault;\n\n        on('before:createdCallback').invoke((el) => {\n            el._cebOnHandlers = [];\n        });\n\n        on('before:attachedCallback').invoke((el) => {\n            let listener = evt => {\n                if (stopPropagation) {\n                    evt.stopPropagation();\n                }\n                if (preventDefault) {\n                    evt.preventDefault();\n                }\n\n                if (selector) {\n                    let target = find(\n                        toArray(el.querySelectorAll(selector)),\n                            el => el === evt.target || el.contains(evt.target)\n                    );\n                    if (target) {\n                        invoke(el, evt, target);\n                    }\n                } else {\n                    invoke(el, evt, el);\n                }\n            };\n\n            el._cebOnHandlers = events\n                .map(([name, target]) => [name, target ? el.querySelector(target) : el])\n                .filter(([name, target]) => !!target)\n                .map(([name, target]) => {\n                    target.addEventListener(name, listener, capture);\n                    return [target, name, listener, capture];\n                });\n\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.addEventListener(name, listener, capture));\n\n        });\n\n        on('before:detachedCallback').invoke((el) => {\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.removeEventListener(name, listener, capture));\n        });\n    }\n\n}\n"
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "OnBuilder",
+    "memberof": "lib/builder/OnBuilder.js",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/OnBuilder.js",
+    "importStyle": "{OnBuilder}",
+    "description": "The on builder.\nIts goal is to provide a way to listen events coming from the custom element.",
+    "lineNumber": 9,
+    "interface": false,
+    "extends": [
+      "Builder"
+    ]
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 14,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "events",
+        "description": "a list of tuple 'event target' separated by comas, the target is optional"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "data",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#data",
+    "access": null,
+    "description": null,
+    "lineNumber": 19,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "invoke",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#invoke",
+    "access": null,
+    "description": "To do something when events occurred.\nThe target arugment is by default the custom element.\nWhen the delegate feature is used, target is the matched element.",
+    "lineNumber": 29,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{OnBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "function(el: HTMLElement, evt: DOMEvent, target: HTMLElement)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "fn",
+        "description": "the event's logic"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OnBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "capture",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#capture",
+    "access": null,
+    "description": "To attach the event on the capture phase instread of on the bubble phase.",
+    "lineNumber": 40,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{OnBuilder} the builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OnBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "delegate",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#delegate",
+    "access": null,
+    "description": "To delegate the event.",
+    "lineNumber": 50,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{OnBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "selector",
+        "description": "the selector"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OnBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "prevent",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#prevent",
+    "access": null,
+    "description": "To prevent the default behavior.",
+    "lineNumber": 59,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{OnBuilder} the builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OnBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "stop",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#stop",
+    "access": null,
+    "description": "To stop the event propagation.",
+    "lineNumber": 68,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{OnBuilder} the builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OnBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "skip",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#skip",
+    "access": null,
+    "description": "To prevent the default behavior and to stop the event propagation.",
+    "lineNumber": 77,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{OnBuilder} the builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OnBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "build",
+    "memberof": "lib/builder/OnBuilder.js~OnBuilder",
+    "longname": "lib/builder/OnBuilder.js~OnBuilder#build",
+    "access": null,
+    "description": null,
+    "lineNumber": 84,
+    "ignore": true,
+    "params": [
+      {
+        "name": "proto",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "on",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/builder/PropertyBuilder.js",
+    "memberof": null,
+    "longname": "lib/builder/PropertyBuilder.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {Builder} from './Builder.js';\nimport {isFunction, isUndefined, result, assign} from '../utils.js';\n\nconst DEFAULT_DATA = {\n    enumerable: true,\n    immutable: false,\n    descriptorValue: true\n};\n\n/**\n * The property builder.\n * Its goal is to provide a way to define a property.\n * @extends {Builder}\n */\nexport class PropertyBuilder extends Builder {\n\n    /**\n     * @param {!string} propName the name of the property\n     */\n    constructor(propName) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = assign({propName}, DEFAULT_DATA);\n    }\n\n    /**\n     * To make an immutable property.\n     * @returns {PropertyBuilder} the builder\n     */\n    immutable() {\n        this.data.immutable = true;\n        return this;\n    }\n\n    /**\n     * To hide the property name when using <code>Object.keys()</code>.\n     * @returns {PropertyBuilder} the builder\n     */\n    hidden() {\n        this.data.enumerable = false;\n        return this;\n    }\n\n    /**\n     * To set a default value.\n     * @param {*} value the default value\n     * @returns {PropertyBuilder} the builder\n     */\n    value(value) {\n        this.data.value = value;\n        return this;\n    }\n\n    /**\n     * To set a getter function.\n     * @param {function(el: HTMLElement): *} fn the getter function\n     * @returns {PropertyBuilder} the builder\n     */\n    getter(fn) {\n        this.data.descriptorValue = false;\n        this.data.getter = fn;\n        return this;\n    }\n\n    /**\n     * To set a setter function.\n     * @param {function(el: HTMLElement, value: *)} fn the setter function\n     * @returns {PropertyBuilder} the builder\n     */\n    setter(fn) {\n        this.data.descriptorValue = false;\n        this.data.setter = fn;\n        return this;\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let data = this.data,\n            defaultValue = result(this.data, 'value'),\n            descriptor = {\n            enumerable: this.data.enumerable\n        };\n\n        if (this.data.immutable) {\n            descriptor.configurable = false;\n            descriptor.writable = false;\n        } else if (isFunction(this.data.getter) || isFunction(this.data.setter)) {\n            descriptor.configurable = false;\n            descriptor.get = function () {\n                return data.getter.call(this, this);\n            };\n            descriptor.set = function (value) {\n                return data.setter.call(this, this, value);\n            };\n        } else {\n            descriptor.configurable = true;\n            descriptor.writable = true;\n        }\n\n        if (this.data.descriptorValue) {\n            descriptor.value = defaultValue;\n        }\n\n        Object.defineProperty(proto, this.data.propName, descriptor);\n\n        on('after:createdCallback').invoke(el => {\n            if (!this.data.descriptorValue && !isUndefined(defaultValue)) {\n                el[data.propName] = defaultValue;\n            }\n        });\n    }\n\n}\n"
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "DEFAULT_DATA",
+    "memberof": "lib/builder/PropertyBuilder.js",
+    "longname": "lib/builder/PropertyBuilder.js~DEFAULT_DATA",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/PropertyBuilder.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 4,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "PropertyBuilder",
+    "memberof": "lib/builder/PropertyBuilder.js",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/PropertyBuilder.js",
+    "importStyle": "{PropertyBuilder}",
+    "description": "The property builder.\nIts goal is to provide a way to define a property.",
+    "lineNumber": 15,
+    "interface": false,
+    "extends": [
+      "Builder"
+    ]
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 20,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "propName",
+        "description": "the name of the property"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "data",
+    "memberof": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder#data",
+    "access": null,
+    "description": null,
+    "lineNumber": 25,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "immutable",
+    "memberof": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder#immutable",
+    "access": null,
+    "description": "To make an immutable property.",
+    "lineNumber": 32,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{PropertyBuilder} the builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "PropertyBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "hidden",
+    "memberof": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder#hidden",
+    "access": null,
+    "description": "To hide the property name when using <code>Object.keys()</code>.",
+    "lineNumber": 41,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{PropertyBuilder} the builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "PropertyBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "value",
+    "memberof": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder#value",
+    "access": null,
+    "description": "To set a default value.",
+    "lineNumber": 51,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{PropertyBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "the default value"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "PropertyBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "getter",
+    "memberof": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder#getter",
+    "access": null,
+    "description": "To set a getter function.",
+    "lineNumber": 61,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{PropertyBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "function(el: HTMLElement): *"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "fn",
+        "description": "the getter function"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "PropertyBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "setter",
+    "memberof": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder#setter",
+    "access": null,
+    "description": "To set a setter function.",
+    "lineNumber": 72,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{PropertyBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "function(el: HTMLElement, value: *)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "fn",
+        "description": "the setter function"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "PropertyBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "build",
+    "memberof": "lib/builder/PropertyBuilder.js~PropertyBuilder",
+    "longname": "lib/builder/PropertyBuilder.js~PropertyBuilder#build",
+    "access": null,
+    "description": null,
+    "lineNumber": 81,
+    "ignore": true,
+    "params": [
+      {
+        "name": "proto",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "on",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/builder/TemplateBuilder.js",
+    "memberof": null,
+    "longname": "lib/builder/TemplateBuilder.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {isFunction, isString} from '../utils.js';\nimport {Builder} from './Builder.js';\nimport {PropertyBuilder} from './PropertyBuilder.js';\n\n/**\n * The counter is used to generate unique DOM's id.\n * @type {number}\n */\nvar counter = 0;\n\n/**\n * The attribute name hosting the old light node id.\n * @type {string}\n */\nconst OLD_CONTENT_ID_ATTR_NAME = 'ceb-old-content-id';\n\n/**\n * Regex to detect the *ceb-content* attributes.\n * @type {RegExp}\n */\nconst CONTENT_ATTR_REG_EX = /ceb\\-content/im;\n\n/**\n * Regex to detect the *content* element.\n * @type {RegExp}\n */\nconst CONTENT_NODE_REG_EX = /<content><\\/content>/im;\n\n/**\n * @param {!string} html the HTML template\n * @returns {boolean} true if the HTML template handle a light DOM node\n */\nfunction hasContent(html) {\n    return html.search(CONTENT_ATTR_REG_EX) !== -1 || html.search(CONTENT_NODE_REG_EX) !== -1;\n}\n\n/**\n * Update or replace an eventual content flag according to the given id.\n * @param {!string} html the HTML template\n * @param {!string} newCebContentId the new content node id\n * @returns {string} the updated HTML template\n */\nfunction replaceContent(html, newCebContentId) {\n    return html\n        .replace('<content></content>', '<span ceb-content></span>')\n        .replace('ceb-content', newCebContentId);\n}\n\n/**\n * Try to find a light DOM node\n * @param {!HTMLElement} el the custom element\n * @returns {HTMLElement} the light DOM node if found otherwise it's the given HTML Element\n */\nfunction findContentNode(el) {\n    if (!el) {\n        return;\n    }\n    let oldCebContentId = el.getAttribute(OLD_CONTENT_ID_ATTR_NAME);\n    if (oldCebContentId) {\n        return findContentNode(el.querySelector('[' + oldCebContentId + ']')) || el;\n    }\n    return el;\n}\n\n/**\n * Remove and return the children of the light DOM node.\n * @param {!HTMLElement} el the custom element\n * @returns {Array<Node>} the children DOM nodes\n */\nfunction cleanOldContentNode(el) {\n    let oldContentNode = el.lightDomNode,\n        lightChildren = [];\n    while (oldContentNode.childNodes.length > 0) {\n        lightChildren.push(oldContentNode.removeChild(oldContentNode.childNodes[0]));\n    }\n    return lightChildren;\n}\n\n/**\n * Add the given DOM nodes list to the given element.\n * @param {!HTMLElement} el the custom element\n * @param {Array<Node>} children the children DOM nodes\n */\nfunction fillNewContentNode(el, children) {\n    let newContentNode = el.lightDomNode;\n    children.forEach(function (child) {\n        newContentNode.appendChild(child);\n    });\n}\n\n/**\n * The template builder.\n * Its goal is to provide a way to fill the content of a custom element.\n * @extends {Builder}\n */\nexport class TemplateBuilder extends Builder {\n\n    /**\n     * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function\n     */\n    constructor(tpl) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {tpl};\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let data = this.data,\n            html = isString(data.tpl) ? data.tpl : null;\n\n        (new PropertyBuilder('lightDomNode')).getter(el => {\n            return findContentNode(el);\n        }).build(proto, on);\n\n        on('before:createdCallback').invoke(el => {\n            let tpl = html;\n            if (isFunction(data.tpl)) {\n                tpl = data.tpl(el);\n            }\n\n            let lightChildren = [],\n                handleContentNode = hasContent(tpl);\n\n            if (handleContentNode) {\n                let newCebContentId = 'ceb-content-' + counter++;\n                lightChildren = cleanOldContentNode(el);\n\n                tpl = replaceContent(tpl, newCebContentId);\n\n                el.setAttribute(OLD_CONTENT_ID_ATTR_NAME, newCebContentId);\n            }\n\n            el.innerHTML = tpl;\n\n            if (handleContentNode) {\n                fillNewContentNode(el, lightChildren);\n            }\n\n        });\n    }\n\n}\n"
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "counter",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~counter",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": "The counter is used to generate unique DOM's id.",
+    "lineNumber": 9,
+    "type": {
+      "nullable": null,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "OLD_CONTENT_ID_ATTR_NAME",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~OLD_CONTENT_ID_ATTR_NAME",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": "The attribute name hosting the old light node id.",
+    "lineNumber": 15,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "CONTENT_ATTR_REG_EX",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~CONTENT_ATTR_REG_EX",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": "Regex to detect the *ceb-content* attributes.",
+    "lineNumber": 21,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RegExp"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "CONTENT_NODE_REG_EX",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~CONTENT_NODE_REG_EX",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": "Regex to detect the *content* element.",
+    "lineNumber": 27,
+    "type": {
+      "nullable": null,
+      "types": [
+        "RegExp"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "hasContent",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~hasContent",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 33,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{boolean} true if the HTML template handle a light DOM node"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "html",
+        "description": "the HTML template"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": "true if the HTML template handle a light DOM node"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "replaceContent",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~replaceContent",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": "Update or replace an eventual content flag according to the given id.",
+    "lineNumber": 43,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{string} the updated HTML template"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "html",
+        "description": "the HTML template"
+      },
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "newCebContentId",
+        "description": "the new content node id"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "the updated HTML template"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "findContentNode",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~findContentNode",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": "Try to find a light DOM node",
+    "lineNumber": 54,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{HTMLElement} the light DOM node if found otherwise it's the given HTML Element"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "HTMLElement"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "el",
+        "description": "the custom element"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "HTMLElement"
+      ],
+      "spread": false,
+      "description": "the light DOM node if found otherwise it's the given HTML Element"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "cleanOldContentNode",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~cleanOldContentNode",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": "Remove and return the children of the light DOM node.",
+    "lineNumber": 70,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Array<Node>} the children DOM nodes"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "HTMLElement"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "el",
+        "description": "the custom element"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Array<Node>"
+      ],
+      "spread": false,
+      "description": "the children DOM nodes"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "fillNewContentNode",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~fillNewContentNode",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": null,
+    "description": "Add the given DOM nodes list to the given element.",
+    "lineNumber": 84,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "HTMLElement"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "el",
+        "description": "the custom element"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Array<Node>"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "children",
+        "description": "the children DOM nodes"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "class",
+    "static": true,
+    "variation": null,
+    "name": "TemplateBuilder",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~TemplateBuilder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": "{TemplateBuilder}",
+    "description": "The template builder.\nIts goal is to provide a way to fill the content of a custom element.",
+    "lineNumber": 96,
+    "interface": false,
+    "extends": [
+      "Builder"
+    ]
+  },
+  {
+    "kind": "constructor",
+    "static": false,
+    "variation": null,
+    "name": "constructor",
+    "memberof": "lib/builder/TemplateBuilder.js~TemplateBuilder",
+    "longname": "lib/builder/TemplateBuilder.js~TemplateBuilder#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 101,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string",
+          "function(el: HTMLElement)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tpl",
+        "description": "the template as a string or a function"
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "member",
+    "static": false,
+    "variation": null,
+    "name": "data",
+    "memberof": "lib/builder/TemplateBuilder.js~TemplateBuilder",
+    "longname": "lib/builder/TemplateBuilder.js~TemplateBuilder#data",
+    "access": null,
+    "description": null,
+    "lineNumber": 106,
+    "ignore": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
+    "name": "build",
+    "memberof": "lib/builder/TemplateBuilder.js~TemplateBuilder",
+    "longname": "lib/builder/TemplateBuilder.js~TemplateBuilder#build",
+    "access": null,
+    "description": null,
+    "lineNumber": 112,
+    "ignore": true,
+    "params": [
+      {
+        "name": "proto",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "on",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/ceb.js",
+    "memberof": null,
+    "longname": "lib/ceb.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {CustomElementBuilder} from './builder/CustomElementBuilder.js';\nimport {PropertyBuilder} from './builder/PropertyBuilder.js';\nimport {AttributeBuilder} from './builder/AttributeBuilder.js';\nimport {DelegateBuilder} from './builder/DelegateBuilder.js';\nimport {MethodBuilder} from './builder/MethodBuilder.js';\nimport {TemplateBuilder} from './builder/TemplateBuilder.js';\nimport {OnBuilder} from './builder/OnBuilder.js';\nimport {Builder as BuilderType} from './builder/Builder.js';\n\n/**\n * The base builder type\n * @type {Builder} the builder\n */\nexport var Builder = BuilderType;\n\n/**\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n */\nexport function ceb() {\n    return new CustomElementBuilder();\n}\n\n/**\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n */\nexport function property(propName) {\n    return new PropertyBuilder(propName);\n}\n\n/**\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n */\nexport function attribute(attrName) {\n    return new AttributeBuilder(attrName);\n}\n\n/**\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n */\nexport function method(methName) {\n    return new MethodBuilder(methName);\n}\n\n/**\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n */\nexport function delegate(builder) {\n    return new DelegateBuilder(builder);\n}\n\n/**\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n */\nexport function template(tpl) {\n    return new TemplateBuilder(tpl);\n}\n\n/**\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n */\nexport function on(events) {\n    return new OnBuilder(events);\n}\n"
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "Builder",
+    "memberof": "lib/ceb.js",
+    "longname": "lib/ceb.js~Builder",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder",
+    "importStyle": "{Builder}",
+    "description": "The base builder type",
+    "lineNumber": 14,
+    "type": {
+      "nullable": null,
+      "types": [
+        "Builder"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "ceb",
+    "memberof": "lib/ceb.js",
+    "longname": "lib/ceb.js~ceb",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder",
+    "importStyle": "{ceb}",
+    "description": "Get a new custom element builder.",
+    "lineNumber": 20,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{CustomElementBuilder} the custom element builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "CustomElementBuilder"
+      ],
+      "spread": false,
+      "description": "the custom element builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "property",
+    "memberof": "lib/ceb.js",
+    "longname": "lib/ceb.js~property",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder",
+    "importStyle": "{property}",
+    "description": "Get a new property builder.",
+    "lineNumber": 29,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{PropertyBuilder} the property builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "propName",
+        "description": "the name of the property"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "PropertyBuilder"
+      ],
+      "spread": false,
+      "description": "the property builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "attribute",
+    "memberof": "lib/ceb.js",
+    "longname": "lib/ceb.js~attribute",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder",
+    "importStyle": "{attribute}",
+    "description": "Get a new attribute builder.",
+    "lineNumber": 38,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{AttributeBuilder} the attribute builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "attrName",
+        "description": "the name of the attribute"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "AttributeBuilder"
+      ],
+      "spread": false,
+      "description": "the attribute builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "method",
+    "memberof": "lib/ceb.js",
+    "longname": "lib/ceb.js~method",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder",
+    "importStyle": "{method}",
+    "description": "Get a new method builder.",
+    "lineNumber": 47,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{MethodBuilder} the method builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "methName",
+        "description": "the name of the method"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "MethodBuilder"
+      ],
+      "spread": false,
+      "description": "the method builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "delegate",
+    "memberof": "lib/ceb.js",
+    "longname": "lib/ceb.js~delegate",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder",
+    "importStyle": "{delegate}",
+    "description": "Get a new delegate builder.",
+    "lineNumber": 56,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{DelegateBuilder} the delegate builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "PropertyBuilder",
+          "AttributeBuilder"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "builder",
+        "description": "the property or attribute builder"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "DelegateBuilder"
+      ],
+      "spread": false,
+      "description": "the delegate builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "template",
+    "memberof": "lib/ceb.js",
+    "longname": "lib/ceb.js~template",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder",
+    "importStyle": "{template}",
+    "description": "Get a new template builder.",
+    "lineNumber": 65,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{TemplateBuilder} the template builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string",
+          "Function"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tpl",
+        "description": "the string or function template"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "TemplateBuilder"
+      ],
+      "spread": false,
+      "description": "the template builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "on",
+    "memberof": "lib/ceb.js",
+    "longname": "lib/ceb.js~on",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder",
+    "importStyle": "{on}",
+    "description": "Get a new on builder.",
+    "lineNumber": 74,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{OnBuilder} the on builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "events",
+        "description": "a list of tuple 'event target' separated by comas, the target is optional"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "OnBuilder"
+      ],
+      "spread": false,
+      "description": "the on builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/utils.js",
+    "memberof": null,
+    "longname": "lib/utils.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "export function camelCase(value) {\n    return value.split(/(?=[A-Z])/).map(part => part.charAt(0).toLowerCase() + part.slice(1)).join('-');\n}\n\nexport function isFunction(i) {\n    return Object.prototype.toString.call(i) === '[object Function]';\n}\n\nexport function isUndefined(i) {\n    return i === undefined;\n}\n\nexport function isNull(i) {\n    return i === null;\n}\n\nexport function isString(i) {\n    return Object.prototype.toString.call(i) === '[object String]';\n}\n\nexport function isArray(i) {\n    return Object.prototype.toString.call(i) === '[object Array]';\n}\n\nexport function result(obj, prop) {\n    let value = obj[prop];\n    return isFunction(value) ? value() : value;\n}\nexport function assign() {\n    return Array.prototype.reduce.call(arguments, function (target, source) {\n        return Object.keys(Object(source)).reduce((target, key) => {\n            target[key] = source[key];\n            return target;\n        }, target);\n    });\n}\nexport function toArray(i) {\n    return Array.prototype.slice.call(i);\n}\n\nexport function flatten(array) {\n    return array.reduce((a, b) => isArray(b) ? a.concat(flatten(b)) : a.concat(b), []);\n}\n\nexport function invoke() {\n    let args = toArray(arguments),\n        objects = args.shift(),\n        meth = args.shift();\n    if (isArray(objects)) {\n        objects.filter(obj => isFunction(obj[meth])).forEach(obj => obj[meth].apply(obj, args));\n    }\n}\n\nexport function partial() {\n    let args = toArray(arguments),\n        fn = args.shift();\n    return function () {\n        return fn.apply(this, args.concat(toArray(arguments)));\n    };\n}\n\nexport function bind(fn, ctx) {\n    return function () {\n        return fn.apply(ctx, toArray(arguments));\n    };\n}\n\nexport function noop() {\n    return function () {\n    };\n}\n\nexport function wrap(fn, wrapper) {\n    return function () {\n        let args = toArray(arguments),\n            next = isFunction(fn) ? fn : noop();\n        return wrapper.apply(this, [bind(next, this)].concat(args));\n    };\n}\n\nexport function find(array, cb) {\n    return array.filter(cb)[0];\n}\n"
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "camelCase",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~camelCase",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{camelCase}",
+    "description": null,
+    "lineNumber": 1,
+    "undocument": true,
+    "params": [
+      {
+        "name": "value",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "isFunction",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~isFunction",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{isFunction}",
+    "description": null,
+    "lineNumber": 5,
+    "undocument": true,
+    "params": [
+      {
+        "name": "i",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "isUndefined",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~isUndefined",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{isUndefined}",
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "params": [
+      {
+        "name": "i",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "isNull",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~isNull",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{isNull}",
+    "description": null,
+    "lineNumber": 13,
+    "undocument": true,
+    "params": [
+      {
+        "name": "i",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "isString",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~isString",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{isString}",
+    "description": null,
+    "lineNumber": 17,
+    "undocument": true,
+    "params": [
+      {
+        "name": "i",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "isArray",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~isArray",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{isArray}",
+    "description": null,
+    "lineNumber": 21,
+    "undocument": true,
+    "params": [
+      {
+        "name": "i",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "result",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~result",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{result}",
+    "description": null,
+    "lineNumber": 25,
+    "undocument": true,
+    "params": [
+      {
+        "name": "obj",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "prop",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "assign",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~assign",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{assign}",
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "toArray",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~toArray",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{toArray}",
+    "description": null,
+    "lineNumber": 37,
+    "undocument": true,
+    "params": [
+      {
+        "name": "i",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "flatten",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~flatten",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{flatten}",
+    "description": null,
+    "lineNumber": 41,
+    "undocument": true,
+    "params": [
+      {
+        "name": "array",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "invoke",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~invoke",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{invoke}",
+    "description": null,
+    "lineNumber": 45,
+    "undocument": true,
+    "params": [],
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "partial",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~partial",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{partial}",
+    "description": null,
+    "lineNumber": 54,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "bind",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~bind",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{bind}",
+    "description": null,
+    "lineNumber": 62,
+    "undocument": true,
+    "params": [
+      {
+        "name": "fn",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "ctx",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "noop",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~noop",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{noop}",
+    "description": null,
+    "lineNumber": 68,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "wrap",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~wrap",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{wrap}",
+    "description": null,
+    "lineNumber": 73,
+    "undocument": true,
+    "params": [
+      {
+        "name": "fn",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "wrapper",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "find",
+    "memberof": "lib/utils.js",
+    "longname": "lib/utils.js~find",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/utils.js",
+    "importStyle": "{find}",
+    "description": null,
+    "lineNumber": 81,
+    "undocument": true,
+    "params": [
+      {
+        "name": "array",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "cb",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  },
+  {
+    "kind": "external",
+    "static": true,
+    "variation": null,
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": null,
+    "builtinExternal": true
+  }
+]

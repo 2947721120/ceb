@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/builder/TemplateBuilder.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="git://github.com/tmorin/custom-elements-builder.git">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div data-ice="classWrap">
+  <h2>Class</h2>
+  <ul>
+    
+  <li data-ice="classDoc"><span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/Builder.js~Builder.html">Builder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html">CustomElementBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/OnBuilder.js~OnBuilder.html">OnBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span></li>
+<li data-ice="classDoc"><span><a href="class/lib/builder/TemplateBuilder.js~TemplateBuilder.html">TemplateBuilder</a></span></li>
+</ul>
+</div>
+
+
+
+<div data-ice="functionWrap">
+  <h2><a href="function/">Function</a></h2>
+  <ul>
+    
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-assign">assign</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-attribute">attribute</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bind">bind</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-camelCase">camelCase</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-ceb">ceb</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-delegate">delegate</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-find">find</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-flatten">flatten</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-invoke">invoke</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isArray">isArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isNull">isNull</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isString">isString</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-method">method</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-noop">noop</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-on">on</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-partial">partial</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-property">property</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-result">result</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-template">template</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-toArray">toArray</a></span></li>
+<li data-ice="functionDoc"><span><a href="function/index.html#static-function-wrap">wrap</a></span></li>
+</ul>
+</div>
+
+<div data-ice="variableWrap">
+  <h2><a href="variable/">Variable</a></h2>
+  <ul>
+    
+  <li data-ice="variableDoc"><span><a href="variable/index.html#static-variable-Builder">Builder</a></span></li>
+</ul>
+</div>
+
+
+
+
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/builder/TemplateBuilder.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {isFunction, isString} from &apos;../utils.js&apos;;
+import {Builder} from &apos;./Builder.js&apos;;
+import {PropertyBuilder} from &apos;./PropertyBuilder.js&apos;;
+
+/**
+ * The counter is used to generate unique DOM&apos;s id.
+ * @type {number}
+ */
+var counter = 0;
+
+/**
+ * The attribute name hosting the old light node id.
+ * @type {string}
+ */
+const OLD_CONTENT_ID_ATTR_NAME = &apos;ceb-old-content-id&apos;;
+
+/**
+ * Regex to detect the *ceb-content* attributes.
+ * @type {RegExp}
+ */
+const CONTENT_ATTR_REG_EX = /ceb\-content/im;
+
+/**
+ * Regex to detect the *content* element.
+ * @type {RegExp}
+ */
+const CONTENT_NODE_REG_EX = /&lt;content&gt;&lt;\/content&gt;/im;
+
+/**
+ * @param {!string} html the HTML template
+ * @returns {boolean} true if the HTML template handle a light DOM node
+ */
+function hasContent(html) {
+    return html.search(CONTENT_ATTR_REG_EX) !== -1 || html.search(CONTENT_NODE_REG_EX) !== -1;
+}
+
+/**
+ * Update or replace an eventual content flag according to the given id.
+ * @param {!string} html the HTML template
+ * @param {!string} newCebContentId the new content node id
+ * @returns {string} the updated HTML template
+ */
+function replaceContent(html, newCebContentId) {
+    return html
+        .replace(&apos;&lt;content&gt;&lt;/content&gt;&apos;, &apos;&lt;span ceb-content&gt;&lt;/span&gt;&apos;)
+        .replace(&apos;ceb-content&apos;, newCebContentId);
+}
+
+/**
+ * Try to find a light DOM node
+ * @param {!HTMLElement} el the custom element
+ * @returns {HTMLElement} the light DOM node if found otherwise it&apos;s the given HTML Element
+ */
+function findContentNode(el) {
+    if (!el) {
+        return;
+    }
+    let oldCebContentId = el.getAttribute(OLD_CONTENT_ID_ATTR_NAME);
+    if (oldCebContentId) {
+        return findContentNode(el.querySelector(&apos;[&apos; + oldCebContentId + &apos;]&apos;)) || el;
+    }
+    return el;
+}
+
+/**
+ * Remove and return the children of the light DOM node.
+ * @param {!HTMLElement} el the custom element
+ * @returns {Array&lt;Node&gt;} the children DOM nodes
+ */
+function cleanOldContentNode(el) {
+    let oldContentNode = el.lightDomNode,
+        lightChildren = [];
+    while (oldContentNode.childNodes.length &gt; 0) {
+        lightChildren.push(oldContentNode.removeChild(oldContentNode.childNodes[0]));
+    }
+    return lightChildren;
+}
+
+/**
+ * Add the given DOM nodes list to the given element.
+ * @param {!HTMLElement} el the custom element
+ * @param {Array&lt;Node&gt;} children the children DOM nodes
+ */
+function fillNewContentNode(el, children) {
+    let newContentNode = el.lightDomNode;
+    children.forEach(function (child) {
+        newContentNode.appendChild(child);
+    });
+}
+
+/**
+ * The template builder.
+ * Its goal is to provide a way to fill the content of a custom element.
+ * @extends {Builder}
+ */
+export class TemplateBuilder extends Builder {
+
+    /**
+     * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function
+     */
+    constructor(tpl) {
+        super();
+        /**
+         * @ignore
+         */
+        this.data = {tpl};
+    }
+
+    /**
+     * @ignore
+     */
+    build(proto, on) {
+        let data = this.data,
+            html = isString(data.tpl) ? data.tpl : null;
+
+        (new PropertyBuilder(&apos;lightDomNode&apos;)).getter(el =&gt; {
+            return findContentNode(el);
+        }).build(proto, on);
+
+        on(&apos;before:createdCallback&apos;).invoke(el =&gt; {
+            let tpl = html;
+            if (isFunction(data.tpl)) {
+                tpl = data.tpl(el);
+            }
+
+            let lightChildren = [],
+                handleContentNode = hasContent(tpl);
+
+            if (handleContentNode) {
+                let newCebContentId = &apos;ceb-content-&apos; + counter++;
+                lightChildren = cleanOldContentNode(el);
+
+                tpl = replaceContent(tpl, newCebContentId);
+
+                el.setAttribute(OLD_CONTENT_ID_ATTR_NAME, newCebContentId);
+            }
+
+            el.innerHTML = tpl;
+
+            if (handleContentNode) {
+                fillNewContentNode(el, lightChildren);
+            }
+
+        });
+    }
+
+}
+</code></pre>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.2)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

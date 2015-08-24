@@ -1,0 +1,47 @@
+{
+  "coverage": "76.81%",
+  "expectCount": 69,
+  "actualCount": 53,
+  "files": {
+    "lib/builder/AttributeBuilder.js": {
+      "expectCount": 7,
+      "actualCount": 7
+    },
+    "lib/ceb.js": {
+      "expectCount": 8,
+      "actualCount": 8
+    },
+    "lib/builder/Builder.js": {
+      "expectCount": 2,
+      "actualCount": 2
+    },
+    "lib/builder/CustomElementBuilder.js": {
+      "expectCount": 8,
+      "actualCount": 8
+    },
+    "lib/builder/DelegateBuilder.js": {
+      "expectCount": 6,
+      "actualCount": 6
+    },
+    "lib/builder/MethodBuilder.js": {
+      "expectCount": 5,
+      "actualCount": 5
+    },
+    "lib/builder/OnBuilder.js": {
+      "expectCount": 8,
+      "actualCount": 8
+    },
+    "lib/builder/PropertyBuilder.js": {
+      "expectCount": 7,
+      "actualCount": 7
+    },
+    "lib/builder/TemplateBuilder.js": {
+      "expectCount": 2,
+      "actualCount": 2
+    },
+    "lib/utils.js": {
+      "expectCount": 16,
+      "actualCount": 0
+    }
+  }
+}
