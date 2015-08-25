@@ -48,31 +48,16 @@
   <h2><a href="function/">Function</a></h2>
   <ul>
     
-  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-assign">assign</a></span></li>
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-applyTemplate">applyTemplate</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-attribute">attribute</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bind">bind</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-camelCase">camelCase</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-ceb">ceb</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-delegate">delegate</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-find">find</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-flatten">flatten</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-invoke">invoke</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isArray">isArray</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isNull">isNull</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isString">isString</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-method">method</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-noop">noop</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-on">on</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-partial">partial</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-property">property</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-result">result</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-template">template</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-toArray">toArray</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-wrap">wrap</a></span></li>
 </ul>
 </div>
 
@@ -92,10 +77,10 @@
 <div class="content" data-ice="content"><h1 data-ice="title">lib/ceb.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {CustomElementBuilder} from &apos;./builder/CustomElementBuilder.js&apos;;
 import {PropertyBuilder} from &apos;./builder/PropertyBuilder.js&apos;;
-import {AttributeBuilder} from &apos;./builder/AttributeBuilder.js&apos;;
+import {AttributeBuilder, getAttValue, setAttValue} from &apos;./builder/AttributeBuilder.js&apos;;
 import {DelegateBuilder} from &apos;./builder/DelegateBuilder.js&apos;;
 import {MethodBuilder} from &apos;./builder/MethodBuilder.js&apos;;
-import {TemplateBuilder} from &apos;./builder/TemplateBuilder.js&apos;;
+import {TemplateBuilder, applyTemplate} from &apos;./builder/TemplateBuilder.js&apos;;
 import {OnBuilder} from &apos;./builder/OnBuilder.js&apos;;
 import {Builder as BuilderType} from &apos;./builder/Builder.js&apos;;
 
@@ -103,7 +88,7 @@ import {Builder as BuilderType} from &apos;./builder/Builder.js&apos;;
  * The base builder type
  * @type {Builder} the builder
  */
-export var Builder = BuilderType;
+export const Builder = BuilderType;
 
 /**
  * Get a new custom element builder.
@@ -130,6 +115,8 @@ export function property(propName) {
 export function attribute(attrName) {
     return new AttributeBuilder(attrName);
 }
+attribute.getAttValue = getAttValue;
+attribute.setAttValue = setAttValue;
 
 /**
  * Get a new method builder.
@@ -157,6 +144,7 @@ export function delegate(builder) {
 export function template(tpl) {
     return new TemplateBuilder(tpl);
 }
+template.applyTemplate = applyTemplate;
 
 /**
  * Get a new on builder.

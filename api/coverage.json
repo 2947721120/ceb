@@ -1,7 +1,7 @@
 {
-  "coverage": "76.81%",
-  "expectCount": 69,
-  "actualCount": 53,
+  "coverage": "100%",
+  "expectCount": 54,
+  "actualCount": 54,
   "files": {
     "lib/builder/AttributeBuilder.js": {
       "expectCount": 7,
@@ -36,12 +36,8 @@
       "actualCount": 7
     },
     "lib/builder/TemplateBuilder.js": {
-      "expectCount": 2,
-      "actualCount": 2
-    },
-    "lib/utils.js": {
-      "expectCount": 16,
-      "actualCount": 0
+      "expectCount": 3,
+      "actualCount": 3
     }
   }
 }

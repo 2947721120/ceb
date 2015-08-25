@@ -1170,7 +1170,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {isFunction, toArray, find, noop} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The on builder.\n * Its goal is to provide a way to listen events coming from the custom element.\n * @extends {Builder}\n */\nexport class OnBuilder extends Builder {\n\n    /**\n     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n     */\n    constructor(events) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {events, invoke: noop};\n    }\n\n    /**\n     * To do something when events occurred.\n     * The target arugment is by default the custom element.\n     * When the delegate feature is used, target is the matched element.\n     * @param {!function(el: HTMLElement, evt: DOMEvent, target: HTMLElement)} fn the event's logic\n     * @returns {OnBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To attach the event on the capture phase instread of on the bubble phase.\n     * @returns {OnBuilder} the builder\n     */\n    capture() {\n        this.data.capture = true;\n        return this;\n    }\n\n    /**\n     * To delegate the event.\n     * @param {!string} selector the selector\n     * @returns {OnBuilder} the builder\n     */\n    delegate(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior.\n     * @returns {OnBuilder} the builder\n     */\n    prevent() {\n        this.data.preventDefault = true;\n        return this;\n    }\n\n    /**\n     * To stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    stop() {\n        this.data.stopPropagation = true;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior and to stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    skip() {\n        return this.prevent().stop();\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let events = this.data.events.split(',').map(event => event.trim().split(' ')),\n            capture = !!this.data.capture,\n            invoke = this.data.invoke,\n            selector = this.data.selector,\n            stopPropagation = this.data.stopPropagation,\n            preventDefault = this.data.preventDefault;\n\n        on('before:createdCallback').invoke((el) => {\n            el._cebOnHandlers = [];\n        });\n\n        on('before:attachedCallback').invoke((el) => {\n            let listener = evt => {\n                if (stopPropagation) {\n                    evt.stopPropagation();\n                }\n                if (preventDefault) {\n                    evt.preventDefault();\n                }\n\n                if (selector) {\n                    let target = find(\n                        toArray(el.querySelectorAll(selector)),\n                            el => el === evt.target || el.contains(evt.target)\n                    );\n                    if (target) {\n                        invoke(el, evt, target);\n                    }\n                } else {\n                    invoke(el, evt, el);\n                }\n            };\n\n            el._cebOnHandlers = events\n                .map(([name, target]) => [name, target ? el.querySelector(target) : el])\n                .filter(([name, target]) => !!target)\n                .map(([name, target]) => {\n                    target.addEventListener(name, listener, capture);\n                    return [target, name, listener, capture];\n                });\n\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.addEventListener(name, listener, capture));\n\n        });\n\n        on('before:detachedCallback').invoke((el) => {\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.removeEventListener(name, listener, capture));\n        });\n    }\n\n}\n"
+    "content": "import {isFunction, toArray, find, noop} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The on builder.\n * Its goal is to provide a way to listen events coming from the custom element.\n * @extends {Builder}\n */\nexport class OnBuilder extends Builder {\n\n    /**\n     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n     */\n    constructor(events) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {events, invoke: noop};\n    }\n\n    /**\n     * To do something when events occurred.\n     * The target arugment is by default the custom element.\n     * When the delegate feature is used, target is the matched element.\n     * @param {!function(el: HTMLElement, evt: DOMEvent, target: HTMLElement)} fn the event's logic\n     * @returns {OnBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To attach the event on the capture phase instread of on the bubble phase.\n     * @returns {OnBuilder} the builder\n     */\n    capture() {\n        this.data.capture = true;\n        return this;\n    }\n\n    /**\n     * To delegate the event.\n     * @param {!string} selector the selector\n     * @returns {OnBuilder} the builder\n     */\n    delegate(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior.\n     * @returns {OnBuilder} the builder\n     */\n    prevent() {\n        this.data.preventDefault = true;\n        return this;\n    }\n\n    /**\n     * To stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    stop() {\n        this.data.stopPropagation = true;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior and to stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    skip() {\n        return this.prevent().stop();\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let events = this.data.events.split(',').map(event => event.trim().split(' ')),\n            capture = !!this.data.capture,\n            invoke = this.data.invoke,\n            selector = this.data.selector,\n            stopPropagation = this.data.stopPropagation,\n            preventDefault = this.data.preventDefault;\n\n        on('before:createdCallback').invoke((el) => {\n            el._cebOnHandlers = [];\n        });\n\n        on('before:attachedCallback').invoke((el) => {\n            let listener = evt => {\n                if (selector) {\n                    let target = find(\n                        toArray(el.querySelectorAll(selector)),\n                            el => el === evt.target || el.contains(evt.target)\n                    );\n                    if (target) {\n                        if (stopPropagation) {\n                            evt.stopPropagation();\n                        }\n                        if (preventDefault) {\n                            evt.preventDefault();\n                        }\n                        invoke(el, evt, target);\n                    }\n                } else {\n                    if (stopPropagation) {\n                        evt.stopPropagation();\n                    }\n                    if (preventDefault) {\n                        evt.preventDefault();\n                    }\n                    invoke(el, evt, el);\n                }\n            };\n\n            el._cebOnHandlers = events\n                .map(([name, target]) => [name, target ? el.querySelector(target) : el])\n                .filter(([name, target]) => !!target)\n                .map(([name, target]) => {\n                    target.addEventListener(name, listener, capture);\n                    return [target, name, listener, capture];\n                });\n\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.addEventListener(name, listener, capture));\n\n        });\n\n        on('before:detachedCallback').invoke((el) => {\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.removeEventListener(name, listener, capture));\n        });\n    }\n\n}\n"
   },
   {
     "kind": "class",
@@ -1738,7 +1738,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {isFunction, isString} from '../utils.js';\nimport {Builder} from './Builder.js';\nimport {PropertyBuilder} from './PropertyBuilder.js';\n\n/**\n * The counter is used to generate unique DOM's id.\n * @type {number}\n */\nvar counter = 0;\n\n/**\n * The attribute name hosting the old light node id.\n * @type {string}\n */\nconst OLD_CONTENT_ID_ATTR_NAME = 'ceb-old-content-id';\n\n/**\n * Regex to detect the *ceb-content* attributes.\n * @type {RegExp}\n */\nconst CONTENT_ATTR_REG_EX = /ceb\\-content/im;\n\n/**\n * Regex to detect the *content* element.\n * @type {RegExp}\n */\nconst CONTENT_NODE_REG_EX = /<content><\\/content>/im;\n\n/**\n * @param {!string} html the HTML template\n * @returns {boolean} true if the HTML template handle a light DOM node\n */\nfunction hasContent(html) {\n    return html.search(CONTENT_ATTR_REG_EX) !== -1 || html.search(CONTENT_NODE_REG_EX) !== -1;\n}\n\n/**\n * Update or replace an eventual content flag according to the given id.\n * @param {!string} html the HTML template\n * @param {!string} newCebContentId the new content node id\n * @returns {string} the updated HTML template\n */\nfunction replaceContent(html, newCebContentId) {\n    return html\n        .replace('<content></content>', '<span ceb-content></span>')\n        .replace('ceb-content', newCebContentId);\n}\n\n/**\n * Try to find a light DOM node\n * @param {!HTMLElement} el the custom element\n * @returns {HTMLElement} the light DOM node if found otherwise it's the given HTML Element\n */\nfunction findContentNode(el) {\n    if (!el) {\n        return;\n    }\n    let oldCebContentId = el.getAttribute(OLD_CONTENT_ID_ATTR_NAME);\n    if (oldCebContentId) {\n        return findContentNode(el.querySelector('[' + oldCebContentId + ']')) || el;\n    }\n    return el;\n}\n\n/**\n * Remove and return the children of the light DOM node.\n * @param {!HTMLElement} el the custom element\n * @returns {Array<Node>} the children DOM nodes\n */\nfunction cleanOldContentNode(el) {\n    let oldContentNode = el.lightDomNode,\n        lightChildren = [];\n    while (oldContentNode.childNodes.length > 0) {\n        lightChildren.push(oldContentNode.removeChild(oldContentNode.childNodes[0]));\n    }\n    return lightChildren;\n}\n\n/**\n * Add the given DOM nodes list to the given element.\n * @param {!HTMLElement} el the custom element\n * @param {Array<Node>} children the children DOM nodes\n */\nfunction fillNewContentNode(el, children) {\n    let newContentNode = el.lightDomNode;\n    children.forEach(function (child) {\n        newContentNode.appendChild(child);\n    });\n}\n\n/**\n * The template builder.\n * Its goal is to provide a way to fill the content of a custom element.\n * @extends {Builder}\n */\nexport class TemplateBuilder extends Builder {\n\n    /**\n     * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function\n     */\n    constructor(tpl) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {tpl};\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let data = this.data,\n            html = isString(data.tpl) ? data.tpl : null;\n\n        (new PropertyBuilder('lightDomNode')).getter(el => {\n            return findContentNode(el);\n        }).build(proto, on);\n\n        on('before:createdCallback').invoke(el => {\n            let tpl = html;\n            if (isFunction(data.tpl)) {\n                tpl = data.tpl(el);\n            }\n\n            let lightChildren = [],\n                handleContentNode = hasContent(tpl);\n\n            if (handleContentNode) {\n                let newCebContentId = 'ceb-content-' + counter++;\n                lightChildren = cleanOldContentNode(el);\n\n                tpl = replaceContent(tpl, newCebContentId);\n\n                el.setAttribute(OLD_CONTENT_ID_ATTR_NAME, newCebContentId);\n            }\n\n            el.innerHTML = tpl;\n\n            if (handleContentNode) {\n                fillNewContentNode(el, lightChildren);\n            }\n\n        });\n    }\n\n}\n"
+    "content": "import {isFunction} from '../utils.js';\nimport {Builder} from './Builder.js';\nimport {PropertyBuilder} from './PropertyBuilder.js';\n\n/**\n * The counter is used to generate unique DOM's id.\n * @type {number}\n */\nvar counter = 0;\n\n/**\n * The attribute name hosting the old light node id.\n * @type {string}\n */\nconst OLD_CONTENT_ID_ATTR_NAME = 'ceb-old-content-id';\n\n/**\n * Regex to detect the *ceb-content* attributes.\n * @type {RegExp}\n */\nconst CONTENT_ATTR_REG_EX = /ceb\\-content/im;\n\n/**\n * Regex to detect the *content* element.\n * @type {RegExp}\n */\nconst CONTENT_NODE_REG_EX = /<content><\\/content>/im;\n\n/**\n * @param {!string} html the HTML template\n * @returns {boolean} true if the HTML template handle a light DOM node\n */\nfunction hasContent(html) {\n    return html.search(CONTENT_ATTR_REG_EX) !== -1 || html.search(CONTENT_NODE_REG_EX) !== -1;\n}\n\n/**\n * Update or replace an eventual content flag according to the given id.\n * @param {!string} html the HTML template\n * @param {!string} newCebContentId the new content node id\n * @returns {string} the updated HTML template\n */\nfunction replaceContent(html, newCebContentId) {\n    return html\n        .replace('<content></content>', '<span ceb-content></span>')\n        .replace('ceb-content', newCebContentId);\n}\n\n/**\n * Try to find a light DOM node\n * @param {!HTMLElement} el the custom element\n * @returns {HTMLElement} the light DOM node if found otherwise it's the given HTML Element\n */\nfunction findContentNode(el) {\n    if (!el) {\n        return;\n    }\n    let oldCebContentId = el.getAttribute(OLD_CONTENT_ID_ATTR_NAME);\n    if (oldCebContentId) {\n        return findContentNode(el.querySelector('[' + oldCebContentId + ']')) || el;\n    }\n    return el;\n}\n\n/**\n * Remove and return the children of the light DOM node.\n * @param {!HTMLElement} el the custom element\n * @returns {Array<Node>} the children DOM nodes\n */\nfunction cleanOldContentNode(el) {\n    let oldContentNode = el.lightDomNode,\n        lightChildren = [];\n    while (oldContentNode.childNodes.length > 0) {\n        lightChildren.push(oldContentNode.removeChild(oldContentNode.childNodes[0]));\n    }\n    return lightChildren;\n}\n\n/**\n * Add the given DOM nodes list to the given element.\n * @param {!HTMLElement} el the custom element\n * @param {Array<Node>} children the children DOM nodes\n */\nfunction fillNewContentNode(el, children) {\n    let newContentNode = el.lightDomNode;\n    children.forEach(function (child) {\n        newContentNode.appendChild(child);\n    });\n}\n\n/**\n * Apply the template given by the property cebTemplate.\n * @param {!HTMLElement} el the custom element\n * @param {!string} tpl the template\n */\nexport function applyTemplate(el, tpl) {\n    let lightChildren = [],\n        handleContentNode = hasContent(tpl);\n\n    if (handleContentNode) {\n        let newCebContentId = 'ceb-content-' + counter++;\n        lightChildren = cleanOldContentNode(el);\n\n        tpl = replaceContent(tpl, newCebContentId);\n\n        el.setAttribute(OLD_CONTENT_ID_ATTR_NAME, newCebContentId);\n    }\n\n    el.innerHTML = tpl;\n\n    if (handleContentNode) {\n        fillNewContentNode(el, lightChildren);\n    }\n}\n/**\n * The template builder.\n * Its goal is to provide a way to fill the content of a custom element.\n * @extends {Builder}\n */\nexport class TemplateBuilder extends Builder {\n\n    /**\n     * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function\n     */\n    constructor(tpl) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {tpl};\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let data = this.data;\n\n        (new PropertyBuilder('lightDomNode')).getter(el => findContentNode(el)).build(proto, on);\n\n        on('before:createdCallback').invoke(el => {\n            applyTemplate(el, isFunction(data.tpl) ? data.tpl(el) : data.tpl);\n        });\n    }\n\n}\n"
   },
   {
     "kind": "variable",
@@ -2040,6 +2040,43 @@
     "generator": false
   },
   {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "applyTemplate",
+    "memberof": "lib/builder/TemplateBuilder.js",
+    "longname": "lib/builder/TemplateBuilder.js~applyTemplate",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
+    "importStyle": "{applyTemplate}",
+    "description": "Apply the template given by the property cebTemplate.",
+    "lineNumber": 96,
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "HTMLElement"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "el",
+        "description": "the custom element"
+      },
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "tpl",
+        "description": "the template"
+      }
+    ],
+    "generator": false
+  },
+  {
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2051,7 +2088,7 @@
     "importPath": "custom-elements-builder/lib/builder/TemplateBuilder.js",
     "importStyle": "{TemplateBuilder}",
     "description": "The template builder.\nIts goal is to provide a way to fill the content of a custom element.",
-    "lineNumber": 96,
+    "lineNumber": 120,
     "interface": false,
     "extends": [
       "Builder"
@@ -2066,7 +2103,7 @@
     "longname": "lib/builder/TemplateBuilder.js~TemplateBuilder#constructor",
     "access": null,
     "description": null,
-    "lineNumber": 101,
+    "lineNumber": 125,
     "params": [
       {
         "nullable": false,
@@ -2091,7 +2128,7 @@
     "longname": "lib/builder/TemplateBuilder.js~TemplateBuilder#data",
     "access": null,
     "description": null,
-    "lineNumber": 106,
+    "lineNumber": 130,
     "ignore": true,
     "type": {
       "types": [
@@ -2108,7 +2145,7 @@
     "longname": "lib/builder/TemplateBuilder.js~TemplateBuilder#build",
     "access": null,
     "description": null,
-    "lineNumber": 112,
+    "lineNumber": 136,
     "ignore": true,
     "params": [
       {
@@ -2136,7 +2173,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {CustomElementBuilder} from './builder/CustomElementBuilder.js';\nimport {PropertyBuilder} from './builder/PropertyBuilder.js';\nimport {AttributeBuilder} from './builder/AttributeBuilder.js';\nimport {DelegateBuilder} from './builder/DelegateBuilder.js';\nimport {MethodBuilder} from './builder/MethodBuilder.js';\nimport {TemplateBuilder} from './builder/TemplateBuilder.js';\nimport {OnBuilder} from './builder/OnBuilder.js';\nimport {Builder as BuilderType} from './builder/Builder.js';\n\n/**\n * The base builder type\n * @type {Builder} the builder\n */\nexport var Builder = BuilderType;\n\n/**\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n */\nexport function ceb() {\n    return new CustomElementBuilder();\n}\n\n/**\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n */\nexport function property(propName) {\n    return new PropertyBuilder(propName);\n}\n\n/**\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n */\nexport function attribute(attrName) {\n    return new AttributeBuilder(attrName);\n}\n\n/**\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n */\nexport function method(methName) {\n    return new MethodBuilder(methName);\n}\n\n/**\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n */\nexport function delegate(builder) {\n    return new DelegateBuilder(builder);\n}\n\n/**\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n */\nexport function template(tpl) {\n    return new TemplateBuilder(tpl);\n}\n\n/**\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n */\nexport function on(events) {\n    return new OnBuilder(events);\n}\n"
+    "content": "import {CustomElementBuilder} from './builder/CustomElementBuilder.js';\nimport {PropertyBuilder} from './builder/PropertyBuilder.js';\nimport {AttributeBuilder, getAttValue, setAttValue} from './builder/AttributeBuilder.js';\nimport {DelegateBuilder} from './builder/DelegateBuilder.js';\nimport {MethodBuilder} from './builder/MethodBuilder.js';\nimport {TemplateBuilder, applyTemplate} from './builder/TemplateBuilder.js';\nimport {OnBuilder} from './builder/OnBuilder.js';\nimport {Builder as BuilderType} from './builder/Builder.js';\n\n/**\n * The base builder type\n * @type {Builder} the builder\n */\nexport const Builder = BuilderType;\n\n/**\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n */\nexport function ceb() {\n    return new CustomElementBuilder();\n}\n\n/**\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n */\nexport function property(propName) {\n    return new PropertyBuilder(propName);\n}\n\n/**\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n */\nexport function attribute(attrName) {\n    return new AttributeBuilder(attrName);\n}\nattribute.getAttValue = getAttValue;\nattribute.setAttValue = setAttValue;\n\n/**\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n */\nexport function method(methName) {\n    return new MethodBuilder(methName);\n}\n\n/**\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n */\nexport function delegate(builder) {\n    return new DelegateBuilder(builder);\n}\n\n/**\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n */\nexport function template(tpl) {\n    return new TemplateBuilder(tpl);\n}\ntemplate.applyTemplate = applyTemplate;\n\n/**\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n */\nexport function on(events) {\n    return new OnBuilder(events);\n}\n"
   },
   {
     "kind": "variable",
@@ -2284,7 +2321,7 @@
     "importPath": "custom-elements-builder",
     "importStyle": "{method}",
     "description": "Get a new method builder.",
-    "lineNumber": 47,
+    "lineNumber": 49,
     "unknown": [
       {
         "tagName": "@returns",
@@ -2325,7 +2362,7 @@
     "importPath": "custom-elements-builder",
     "importStyle": "{delegate}",
     "description": "Get a new delegate builder.",
-    "lineNumber": 56,
+    "lineNumber": 58,
     "unknown": [
       {
         "tagName": "@returns",
@@ -2367,7 +2404,7 @@
     "importPath": "custom-elements-builder",
     "importStyle": "{template}",
     "description": "Get a new template builder.",
-    "lineNumber": 65,
+    "lineNumber": 67,
     "unknown": [
       {
         "tagName": "@returns",
@@ -2409,7 +2446,7 @@
     "importPath": "custom-elements-builder",
     "importStyle": "{on}",
     "description": "Get a new on builder.",
-    "lineNumber": 74,
+    "lineNumber": 77,
     "unknown": [
       {
         "tagName": "@returns",
@@ -2447,8 +2484,8 @@
     "longname": "lib/utils.js",
     "access": null,
     "description": null,
-    "lineNumber": 1,
-    "content": "export function camelCase(value) {\n    return value.split(/(?=[A-Z])/).map(part => part.charAt(0).toLowerCase() + part.slice(1)).join('-');\n}\n\nexport function isFunction(i) {\n    return Object.prototype.toString.call(i) === '[object Function]';\n}\n\nexport function isUndefined(i) {\n    return i === undefined;\n}\n\nexport function isNull(i) {\n    return i === null;\n}\n\nexport function isString(i) {\n    return Object.prototype.toString.call(i) === '[object String]';\n}\n\nexport function isArray(i) {\n    return Object.prototype.toString.call(i) === '[object Array]';\n}\n\nexport function result(obj, prop) {\n    let value = obj[prop];\n    return isFunction(value) ? value() : value;\n}\nexport function assign() {\n    return Array.prototype.reduce.call(arguments, function (target, source) {\n        return Object.keys(Object(source)).reduce((target, key) => {\n            target[key] = source[key];\n            return target;\n        }, target);\n    });\n}\nexport function toArray(i) {\n    return Array.prototype.slice.call(i);\n}\n\nexport function flatten(array) {\n    return array.reduce((a, b) => isArray(b) ? a.concat(flatten(b)) : a.concat(b), []);\n}\n\nexport function invoke() {\n    let args = toArray(arguments),\n        objects = args.shift(),\n        meth = args.shift();\n    if (isArray(objects)) {\n        objects.filter(obj => isFunction(obj[meth])).forEach(obj => obj[meth].apply(obj, args));\n    }\n}\n\nexport function partial() {\n    let args = toArray(arguments),\n        fn = args.shift();\n    return function () {\n        return fn.apply(this, args.concat(toArray(arguments)));\n    };\n}\n\nexport function bind(fn, ctx) {\n    return function () {\n        return fn.apply(ctx, toArray(arguments));\n    };\n}\n\nexport function noop() {\n    return function () {\n    };\n}\n\nexport function wrap(fn, wrapper) {\n    return function () {\n        let args = toArray(arguments),\n            next = isFunction(fn) ? fn : noop();\n        return wrapper.apply(this, [bind(next, this)].concat(args));\n    };\n}\n\nexport function find(array, cb) {\n    return array.filter(cb)[0];\n}\n"
+    "lineNumber": 4,
+    "content": "/**\n * @ignore\n */\nexport function camelCase(value) {\n    return value.split(/(?=[A-Z])/).map(part => part.charAt(0).toLowerCase() + part.slice(1)).join('-');\n}\n\n/**\n * @ignore\n */\nexport function isFunction(i) {\n    return Object.prototype.toString.call(i) === '[object Function]';\n}\n\n/**\n * @ignore\n */\nexport function isUndefined(i) {\n    return i === undefined;\n}\n\n/**\n * @ignore\n */\nexport function isNull(i) {\n    return i === null;\n}\n\n/**\n * @ignore\n */\nexport function isString(i) {\n    return Object.prototype.toString.call(i) === '[object String]';\n}\n\n/**\n * @ignore\n */\nexport function isArray(i) {\n    return Object.prototype.toString.call(i) === '[object Array]';\n}\n\n/**\n * @ignore\n */\nexport function result(obj, prop) {\n    let value = obj[prop];\n    return isFunction(value) ? value() : value;\n}\n\n/**\n * @ignore\n */\nexport function assign() {\n    return Array.prototype.reduce.call(arguments, function (target, source) {\n        return Object.keys(Object(source)).reduce((target, key) => {\n            target[key] = source[key];\n            return target;\n        }, target);\n    });\n}\n\n/**\n * @ignore\n */\nexport function toArray(i) {\n    return Array.prototype.slice.call(i);\n}\n\n/**\n * @ignore\n */\nexport function flatten(array) {\n    return array.reduce((a, b) => isArray(b) ? a.concat(flatten(b)) : a.concat(b), []);\n}\n\n/**\n * @ignore\n */\nexport function invoke() {\n    let args = toArray(arguments),\n        objects = args.shift(),\n        meth = args.shift();\n    if (isArray(objects)) {\n        objects.filter(obj => isFunction(obj[meth])).forEach(obj => obj[meth].apply(obj, args));\n    }\n}\n\n/**\n * @ignore\n */\nexport function partial() {\n    let args = toArray(arguments),\n        fn = args.shift();\n    return function () {\n        return fn.apply(this, args.concat(toArray(arguments)));\n    };\n}\n\n/**\n * @ignore\n */\nexport function bind(fn, ctx) {\n    return function () {\n        return fn.apply(ctx, toArray(arguments));\n    };\n}\n\n/**\n * @ignore\n */\nexport function noop() {\n    return function () {\n    };\n}\n\n/**\n * @ignore\n */\nexport function wrap(fn, wrapper) {\n    return partial(wrapper, fn);\n}\n\n/**\n * @ignore\n */\nexport function find(array, cb) {\n    return array.filter(cb)[0];\n}\n"
   },
   {
     "kind": "function",
@@ -2462,8 +2499,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{camelCase}",
     "description": null,
-    "lineNumber": 1,
-    "undocument": true,
+    "lineNumber": 4,
+    "ignore": true,
     "params": [
       {
         "name": "value",
@@ -2491,8 +2528,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{isFunction}",
     "description": null,
-    "lineNumber": 5,
-    "undocument": true,
+    "lineNumber": 11,
+    "ignore": true,
     "params": [
       {
         "name": "i",
@@ -2520,8 +2557,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{isUndefined}",
     "description": null,
-    "lineNumber": 9,
-    "undocument": true,
+    "lineNumber": 18,
+    "ignore": true,
     "params": [
       {
         "name": "i",
@@ -2549,8 +2586,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{isNull}",
     "description": null,
-    "lineNumber": 13,
-    "undocument": true,
+    "lineNumber": 25,
+    "ignore": true,
     "params": [
       {
         "name": "i",
@@ -2578,8 +2615,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{isString}",
     "description": null,
-    "lineNumber": 17,
-    "undocument": true,
+    "lineNumber": 32,
+    "ignore": true,
     "params": [
       {
         "name": "i",
@@ -2607,8 +2644,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{isArray}",
     "description": null,
-    "lineNumber": 21,
-    "undocument": true,
+    "lineNumber": 39,
+    "ignore": true,
     "params": [
       {
         "name": "i",
@@ -2636,8 +2673,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{result}",
     "description": null,
-    "lineNumber": 25,
-    "undocument": true,
+    "lineNumber": 46,
+    "ignore": true,
     "params": [
       {
         "name": "obj",
@@ -2671,8 +2708,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{assign}",
     "description": null,
-    "lineNumber": 29,
-    "undocument": true,
+    "lineNumber": 54,
+    "ignore": true,
     "params": [],
     "return": {
       "types": [
@@ -2693,8 +2730,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{toArray}",
     "description": null,
-    "lineNumber": 37,
-    "undocument": true,
+    "lineNumber": 66,
+    "ignore": true,
     "params": [
       {
         "name": "i",
@@ -2722,8 +2759,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{flatten}",
     "description": null,
-    "lineNumber": 41,
-    "undocument": true,
+    "lineNumber": 73,
+    "ignore": true,
     "params": [
       {
         "name": "array",
@@ -2751,8 +2788,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{invoke}",
     "description": null,
-    "lineNumber": 45,
-    "undocument": true,
+    "lineNumber": 80,
+    "ignore": true,
     "params": [],
     "generator": false
   },
@@ -2768,8 +2805,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{partial}",
     "description": null,
-    "lineNumber": 54,
-    "undocument": true,
+    "lineNumber": 92,
+    "ignore": true,
     "params": [],
     "return": {
       "types": [
@@ -2790,8 +2827,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{bind}",
     "description": null,
-    "lineNumber": 62,
-    "undocument": true,
+    "lineNumber": 103,
+    "ignore": true,
     "params": [
       {
         "name": "fn",
@@ -2825,8 +2862,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{noop}",
     "description": null,
-    "lineNumber": 68,
-    "undocument": true,
+    "lineNumber": 112,
+    "ignore": true,
     "params": [],
     "return": {
       "types": [
@@ -2847,8 +2884,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{wrap}",
     "description": null,
-    "lineNumber": 73,
-    "undocument": true,
+    "lineNumber": 120,
+    "ignore": true,
     "params": [
       {
         "name": "fn",
@@ -2882,8 +2919,8 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{find}",
     "description": null,
-    "lineNumber": 81,
-    "undocument": true,
+    "lineNumber": 127,
+    "ignore": true,
     "params": [
       {
         "name": "array",

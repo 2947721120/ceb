@@ -48,31 +48,16 @@
   <h2><a href="function/">Function</a></h2>
   <ul>
     
-  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-assign">assign</a></span></li>
+  <li data-ice="functionDoc"><span><a href="function/index.html#static-function-applyTemplate">applyTemplate</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-attribute">attribute</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-bind">bind</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-camelCase">camelCase</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-ceb">ceb</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-delegate">delegate</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-find">find</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-flatten">flatten</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-invoke">invoke</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isArray">isArray</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isNull">isNull</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isString">isString</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-method">method</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-noop">noop</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-on">on</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-partial">partial</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-property">property</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-result">result</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></li>
 <li data-ice="functionDoc"><span><a href="function/index.html#static-function-template">template</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-toArray">toArray</a></span></li>
-<li data-ice="functionDoc"><span><a href="function/index.html#static-function-wrap">wrap</a></span></li>
 </ul>
 </div>
 
@@ -90,7 +75,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">lib/builder/TemplateBuilder.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {isFunction, isString} from &apos;../utils.js&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {isFunction} from &apos;../utils.js&apos;;
 import {Builder} from &apos;./Builder.js&apos;;
 import {PropertyBuilder} from &apos;./PropertyBuilder.js&apos;;
 
@@ -181,6 +166,30 @@ function fillNewContentNode(el, children) {
 }
 
 /**
+ * Apply the template given by the property cebTemplate.
+ * @param {!HTMLElement} el the custom element
+ * @param {!string} tpl the template
+ */
+export function applyTemplate(el, tpl) {
+    let lightChildren = [],
+        handleContentNode = hasContent(tpl);
+
+    if (handleContentNode) {
+        let newCebContentId = &apos;ceb-content-&apos; + counter++;
+        lightChildren = cleanOldContentNode(el);
+
+        tpl = replaceContent(tpl, newCebContentId);
+
+        el.setAttribute(OLD_CONTENT_ID_ATTR_NAME, newCebContentId);
+    }
+
+    el.innerHTML = tpl;
+
+    if (handleContentNode) {
+        fillNewContentNode(el, lightChildren);
+    }
+}
+/**
  * The template builder.
  * Its goal is to provide a way to fill the content of a custom element.
  * @extends {Builder}
@@ -202,37 +211,12 @@ export class TemplateBuilder extends Builder {
      * @ignore
      */
     build(proto, on) {
-        let data = this.data,
-            html = isString(data.tpl) ? data.tpl : null;
+        let data = this.data;
 
-        (new PropertyBuilder(&apos;lightDomNode&apos;)).getter(el =&gt; {
-            return findContentNode(el);
-        }).build(proto, on);
+        (new PropertyBuilder(&apos;lightDomNode&apos;)).getter(el =&gt; findContentNode(el)).build(proto, on);
 
         on(&apos;before:createdCallback&apos;).invoke(el =&gt; {
-            let tpl = html;
-            if (isFunction(data.tpl)) {
-                tpl = data.tpl(el);
-            }
-
-            let lightChildren = [],
-                handleContentNode = hasContent(tpl);
-
-            if (handleContentNode) {
-                let newCebContentId = &apos;ceb-content-&apos; + counter++;
-                lightChildren = cleanOldContentNode(el);
-
-                tpl = replaceContent(tpl, newCebContentId);
-
-                el.setAttribute(OLD_CONTENT_ID_ATTR_NAME, newCebContentId);
-            }
-
-            el.innerHTML = tpl;
-
-            if (handleContentNode) {
-                fillNewContentNode(el, lightChildren);
-            }
-
+            applyTemplate(el, isFunction(data.tpl) ? data.tpl(el) : data.tpl);
         });
     }
 

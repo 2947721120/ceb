@@ -54,27 +54,15 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
-    "custom-elements-builder/lib/utils.js~assign",
-    "function/index.html#static-function-assign",
-    "<span>assign</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
+    "custom-elements-builder/lib/builder/templatebuilder.js~applytemplate",
+    "function/index.html#static-function-applyTemplate",
+    "<span>applyTemplate</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/builder/TemplateBuilder.js</span>",
     "function"
   ],
   [
     "custom-elements-builder~attribute",
     "function/index.html#static-function-attribute",
     "<span>attribute</span> <span class=\"search-result-import-path\">custom-elements-builder</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~bind",
-    "function/index.html#static-function-bind",
-    "<span>bind</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~camelcase",
-    "function/index.html#static-function-camelCase",
-    "<span>camelCase</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
     "function"
   ],
   [
@@ -90,57 +78,9 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "custom-elements-builder/lib/utils.js~find",
-    "function/index.html#static-function-find",
-    "<span>find</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~flatten",
-    "function/index.html#static-function-flatten",
-    "<span>flatten</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
     "custom-elements-builder/lib/builder/attributebuilder.js~getattvalue",
     "function/index.html#static-function-getAttValue",
     "<span>getAttValue</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/builder/AttributeBuilder.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~invoke",
-    "function/index.html#static-function-invoke",
-    "<span>invoke</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~isarray",
-    "function/index.html#static-function-isArray",
-    "<span>isArray</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~isfunction",
-    "function/index.html#static-function-isFunction",
-    "<span>isFunction</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~isnull",
-    "function/index.html#static-function-isNull",
-    "<span>isNull</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~isstring",
-    "function/index.html#static-function-isString",
-    "<span>isString</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~isundefined",
-    "function/index.html#static-function-isUndefined",
-    "<span>isUndefined</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
     "function"
   ],
   [
@@ -150,33 +90,15 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
-    "custom-elements-builder/lib/utils.js~noop",
-    "function/index.html#static-function-noop",
-    "<span>noop</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
     "custom-elements-builder~on",
     "function/index.html#static-function-on",
     "<span>on</span> <span class=\"search-result-import-path\">custom-elements-builder</span>",
     "function"
   ],
   [
-    "custom-elements-builder/lib/utils.js~partial",
-    "function/index.html#static-function-partial",
-    "<span>partial</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
     "custom-elements-builder~property",
     "function/index.html#static-function-property",
     "<span>property</span> <span class=\"search-result-import-path\">custom-elements-builder</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~result",
-    "function/index.html#static-function-result",
-    "<span>result</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
     "function"
   ],
   [
@@ -189,18 +111,6 @@ window.esdocSearchIndex = [
     "custom-elements-builder~template",
     "function/index.html#static-function-template",
     "<span>template</span> <span class=\"search-result-import-path\">custom-elements-builder</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~toarray",
-    "function/index.html#static-function-toArray",
-    "<span>toArray</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
-    "function"
-  ],
-  [
-    "custom-elements-builder/lib/utils.js~wrap",
-    "function/index.html#static-function-wrap",
-    "<span>wrap</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/utils.js</span>",
     "function"
   ],
   [

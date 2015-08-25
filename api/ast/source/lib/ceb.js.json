@@ -238,6 +238,112 @@
               "column": 24
             }
           }
+        },
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "getAttValue",
+            "range": [
+              160,
+              171
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 26
+              },
+              "end": {
+                "line": 3,
+                "column": 37
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "getAttValue",
+            "range": [
+              160,
+              171
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 26
+              },
+              "end": {
+                "line": 3,
+                "column": 37
+              }
+            }
+          },
+          "range": [
+            160,
+            171
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 26
+            },
+            "end": {
+              "line": 3,
+              "column": 37
+            }
+          }
+        },
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "setAttValue",
+            "range": [
+              173,
+              184
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 39
+              },
+              "end": {
+                "line": 3,
+                "column": 50
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "setAttValue",
+            "range": [
+              173,
+              184
+            ],
+            "loc": {
+              "start": {
+                "line": 3,
+                "column": 39
+              },
+              "end": {
+                "line": 3,
+                "column": 50
+              }
+            }
+          },
+          "range": [
+            173,
+            184
+          ],
+          "loc": {
+            "start": {
+              "line": 3,
+              "column": 39
+            },
+            "end": {
+              "line": 3,
+              "column": 50
+            }
+          }
         }
       ],
       "source": {
@@ -245,23 +351,23 @@
         "value": "./builder/AttributeBuilder.js",
         "raw": "'./builder/AttributeBuilder.js'",
         "range": [
-          165,
-          196
+          191,
+          222
         ],
         "loc": {
           "start": {
             "line": 3,
-            "column": 31
+            "column": 57
           },
           "end": {
             "line": 3,
-            "column": 62
+            "column": 88
           }
         }
       },
       "range": [
         134,
-        197
+        223
       ],
       "loc": {
         "start": {
@@ -270,7 +376,7 @@
         },
         "end": {
           "line": 3,
-          "column": 63
+          "column": 89
         }
       }
     },
@@ -283,8 +389,8 @@
             "type": "Identifier",
             "name": "DelegateBuilder",
             "range": [
-              206,
-              221
+              232,
+              247
             ],
             "loc": {
               "start": {
@@ -301,8 +407,8 @@
             "type": "Identifier",
             "name": "DelegateBuilder",
             "range": [
-              206,
-              221
+              232,
+              247
             ],
             "loc": {
               "start": {
@@ -316,8 +422,8 @@
             }
           },
           "range": [
-            206,
-            221
+            232,
+            247
           ],
           "loc": {
             "start": {
@@ -336,8 +442,8 @@
         "value": "./builder/DelegateBuilder.js",
         "raw": "'./builder/DelegateBuilder.js'",
         "range": [
-          228,
-          258
+          254,
+          284
         ],
         "loc": {
           "start": {
@@ -351,8 +457,8 @@
         }
       },
       "range": [
-        198,
-        259
+        224,
+        285
       ],
       "loc": {
         "start": {
@@ -374,8 +480,8 @@
             "type": "Identifier",
             "name": "MethodBuilder",
             "range": [
-              268,
-              281
+              294,
+              307
             ],
             "loc": {
               "start": {
@@ -392,8 +498,8 @@
             "type": "Identifier",
             "name": "MethodBuilder",
             "range": [
-              268,
-              281
+              294,
+              307
             ],
             "loc": {
               "start": {
@@ -407,8 +513,8 @@
             }
           },
           "range": [
-            268,
-            281
+            294,
+            307
           ],
           "loc": {
             "start": {
@@ -427,8 +533,8 @@
         "value": "./builder/MethodBuilder.js",
         "raw": "'./builder/MethodBuilder.js'",
         "range": [
-          288,
-          316
+          314,
+          342
         ],
         "loc": {
           "start": {
@@ -442,8 +548,8 @@
         }
       },
       "range": [
-        260,
-        317
+        286,
+        343
       ],
       "loc": {
         "start": {
@@ -465,8 +571,8 @@
             "type": "Identifier",
             "name": "TemplateBuilder",
             "range": [
-              326,
-              341
+              352,
+              367
             ],
             "loc": {
               "start": {
@@ -483,8 +589,8 @@
             "type": "Identifier",
             "name": "TemplateBuilder",
             "range": [
-              326,
-              341
+              352,
+              367
             ],
             "loc": {
               "start": {
@@ -498,8 +604,8 @@
             }
           },
           "range": [
-            326,
-            341
+            352,
+            367
           ],
           "loc": {
             "start": {
@@ -511,6 +617,59 @@
               "column": 23
             }
           }
+        },
+        {
+          "type": "ImportSpecifier",
+          "local": {
+            "type": "Identifier",
+            "name": "applyTemplate",
+            "range": [
+              369,
+              382
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 25
+              },
+              "end": {
+                "line": 6,
+                "column": 38
+              }
+            }
+          },
+          "imported": {
+            "type": "Identifier",
+            "name": "applyTemplate",
+            "range": [
+              369,
+              382
+            ],
+            "loc": {
+              "start": {
+                "line": 6,
+                "column": 25
+              },
+              "end": {
+                "line": 6,
+                "column": 38
+              }
+            }
+          },
+          "range": [
+            369,
+            382
+          ],
+          "loc": {
+            "start": {
+              "line": 6,
+              "column": 25
+            },
+            "end": {
+              "line": 6,
+              "column": 38
+            }
+          }
         }
       ],
       "source": {
@@ -518,23 +677,23 @@
         "value": "./builder/TemplateBuilder.js",
         "raw": "'./builder/TemplateBuilder.js'",
         "range": [
-          348,
-          378
+          389,
+          419
         ],
         "loc": {
           "start": {
             "line": 6,
-            "column": 30
+            "column": 45
           },
           "end": {
             "line": 6,
-            "column": 60
+            "column": 75
           }
         }
       },
       "range": [
-        318,
-        379
+        344,
+        420
       ],
       "loc": {
         "start": {
@@ -543,7 +702,7 @@
         },
         "end": {
           "line": 6,
-          "column": 61
+          "column": 76
         }
       }
     },
@@ -556,8 +715,8 @@
             "type": "Identifier",
             "name": "OnBuilder",
             "range": [
-              388,
-              397
+              429,
+              438
             ],
             "loc": {
               "start": {
@@ -574,8 +733,8 @@
             "type": "Identifier",
             "name": "OnBuilder",
             "range": [
-              388,
-              397
+              429,
+              438
             ],
             "loc": {
               "start": {
@@ -589,8 +748,8 @@
             }
           },
           "range": [
-            388,
-            397
+            429,
+            438
           ],
           "loc": {
             "start": {
@@ -609,8 +768,8 @@
         "value": "./builder/OnBuilder.js",
         "raw": "'./builder/OnBuilder.js'",
         "range": [
-          404,
-          428
+          445,
+          469
         ],
         "loc": {
           "start": {
@@ -624,8 +783,8 @@
         }
       },
       "range": [
-        380,
-        429
+        421,
+        470
       ],
       "loc": {
         "start": {
@@ -647,8 +806,8 @@
             "type": "Identifier",
             "name": "BuilderType",
             "range": [
-              449,
-              460
+              490,
+              501
             ],
             "loc": {
               "start": {
@@ -665,8 +824,8 @@
             "type": "Identifier",
             "name": "Builder",
             "range": [
-              438,
-              445
+              479,
+              486
             ],
             "loc": {
               "start": {
@@ -680,8 +839,8 @@
             }
           },
           "range": [
-            438,
-            460
+            479,
+            501
           ],
           "loc": {
             "start": {
@@ -700,8 +859,8 @@
         "value": "./builder/Builder.js",
         "raw": "'./builder/Builder.js'",
         "range": [
-          467,
-          489
+          508,
+          530
         ],
         "loc": {
           "start": {
@@ -715,8 +874,8 @@
         }
       },
       "range": [
-        430,
-        490
+        471,
+        531
       ],
       "loc": {
         "start": {
@@ -733,8 +892,8 @@
           "type": "Block",
           "value": "*\n * The base builder type\n * @type {Builder} the builder\n ",
           "range": [
-            492,
-            555
+            533,
+            596
           ],
           "loc": {
             "start": {
@@ -760,17 +919,17 @@
               "type": "Identifier",
               "name": "Builder",
               "range": [
-                567,
-                574
+                610,
+                617
               ],
               "loc": {
                 "start": {
                   "line": 14,
-                  "column": 11
+                  "column": 13
                 },
                 "end": {
                   "line": 14,
-                  "column": 18
+                  "column": 20
                 }
               }
             },
@@ -778,40 +937,40 @@
               "type": "Identifier",
               "name": "BuilderType",
               "range": [
-                577,
-                588
+                620,
+                631
               ],
               "loc": {
                 "start": {
                   "line": 14,
-                  "column": 21
+                  "column": 23
                 },
                 "end": {
                   "line": 14,
-                  "column": 32
+                  "column": 34
                 }
               }
             },
             "range": [
-              567,
-              588
+              610,
+              631
             ],
             "loc": {
               "start": {
                 "line": 14,
-                "column": 11
+                "column": 13
               },
               "end": {
                 "line": 14,
-                "column": 32
+                "column": 34
               }
             }
           }
         ],
-        "kind": "var",
+        "kind": "const",
         "range": [
-          563,
-          589
+          604,
+          632
         ],
         "loc": {
           "start": {
@@ -820,7 +979,7 @@
           },
           "end": {
             "line": 14,
-            "column": 33
+            "column": 35
           }
         },
         "leadingComments": [
@@ -828,8 +987,8 @@
             "type": "Block",
             "value": "*\n * The base builder type\n * @type {Builder} the builder\n ",
             "range": [
-              492,
-              555
+              533,
+              596
             ],
             "loc": {
               "start": {
@@ -848,8 +1007,8 @@
             "type": "Block",
             "value": "*\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n ",
             "range": [
-              591,
-              697
+              634,
+              740
             ],
             "loc": {
               "start": {
@@ -867,8 +1026,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        556,
-        589
+        597,
+        632
       ],
       "loc": {
         "start": {
@@ -877,7 +1036,7 @@
         },
         "end": {
           "line": 14,
-          "column": 33
+          "column": 35
         }
       },
       "leadingComments": [
@@ -885,8 +1044,8 @@
           "type": "Block",
           "value": "*\n * The base builder type\n * @type {Builder} the builder\n ",
           "range": [
-            492,
-            555
+            533,
+            596
           ],
           "loc": {
             "start": {
@@ -905,8 +1064,8 @@
           "type": "Block",
           "value": "*\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n ",
           "range": [
-            591,
-            697
+            634,
+            740
           ],
           "loc": {
             "start": {
@@ -929,8 +1088,8 @@
           "type": "Identifier",
           "name": "ceb",
           "range": [
-            714,
-            717
+            757,
+            760
           ],
           "loc": {
             "start": {
@@ -955,8 +1114,8 @@
                   "type": "Identifier",
                   "name": "CustomElementBuilder",
                   "range": [
-                    737,
-                    757
+                    780,
+                    800
                   ],
                   "loc": {
                     "start": {
@@ -971,8 +1130,8 @@
                 },
                 "arguments": [],
                 "range": [
-                  733,
-                  759
+                  776,
+                  802
                 ],
                 "loc": {
                   "start": {
@@ -986,8 +1145,8 @@
                 }
               },
               "range": [
-                726,
-                760
+                769,
+                803
               ],
               "loc": {
                 "start": {
@@ -1002,8 +1161,8 @@
             }
           ],
           "range": [
-            720,
-            762
+            763,
+            805
           ],
           "loc": {
             "start": {
@@ -1019,8 +1178,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          705,
-          762
+          748,
+          805
         ],
         "loc": {
           "start": {
@@ -1037,8 +1196,8 @@
             "type": "Block",
             "value": "*\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n ",
             "range": [
-              591,
-              697
+              634,
+              740
             ],
             "loc": {
               "start": {
@@ -1057,8 +1216,8 @@
             "type": "Block",
             "value": "*\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n ",
             "range": [
-              764,
-              907
+              807,
+              950
             ],
             "loc": {
               "start": {
@@ -1076,8 +1235,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        698,
-        762
+        741,
+        805
       ],
       "loc": {
         "start": {
@@ -1094,8 +1253,8 @@
           "type": "Block",
           "value": "*\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n ",
           "range": [
-            591,
-            697
+            634,
+            740
           ],
           "loc": {
             "start": {
@@ -1114,8 +1273,8 @@
           "type": "Block",
           "value": "*\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n ",
           "range": [
-            764,
-            907
+            807,
+            950
           ],
           "loc": {
             "start": {
@@ -1138,8 +1297,8 @@
           "type": "Identifier",
           "name": "property",
           "range": [
-            924,
-            932
+            967,
+            975
           ],
           "loc": {
             "start": {
@@ -1157,8 +1316,8 @@
             "type": "Identifier",
             "name": "propName",
             "range": [
-              933,
-              941
+              976,
+              984
             ],
             "loc": {
               "start": {
@@ -1183,8 +1342,8 @@
                   "type": "Identifier",
                   "name": "PropertyBuilder",
                   "range": [
-                    960,
-                    975
+                    1003,
+                    1018
                   ],
                   "loc": {
                     "start": {
@@ -1202,8 +1361,8 @@
                     "type": "Identifier",
                     "name": "propName",
                     "range": [
-                      976,
-                      984
+                      1019,
+                      1027
                     ],
                     "loc": {
                       "start": {
@@ -1218,8 +1377,8 @@
                   }
                 ],
                 "range": [
-                  956,
-                  985
+                  999,
+                  1028
                 ],
                 "loc": {
                   "start": {
@@ -1233,8 +1392,8 @@
                 }
               },
               "range": [
-                949,
-                986
+                992,
+                1029
               ],
               "loc": {
                 "start": {
@@ -1249,8 +1408,8 @@
             }
           ],
           "range": [
-            943,
-            988
+            986,
+            1031
           ],
           "loc": {
             "start": {
@@ -1266,8 +1425,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          915,
-          988
+          958,
+          1031
         ],
         "loc": {
           "start": {
@@ -1284,8 +1443,8 @@
             "type": "Block",
             "value": "*\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n ",
             "range": [
-              764,
-              907
+              807,
+              950
             ],
             "loc": {
               "start": {
@@ -1304,8 +1463,8 @@
             "type": "Block",
             "value": "*\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n ",
             "range": [
-              990,
-              1137
+              1033,
+              1180
             ],
             "loc": {
               "start": {
@@ -1323,8 +1482,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        908,
-        988
+        951,
+        1031
       ],
       "loc": {
         "start": {
@@ -1341,8 +1500,8 @@
           "type": "Block",
           "value": "*\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n ",
           "range": [
-            764,
-            907
+            807,
+            950
           ],
           "loc": {
             "start": {
@@ -1361,8 +1520,8 @@
           "type": "Block",
           "value": "*\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n ",
           "range": [
-            990,
-            1137
+            1033,
+            1180
           ],
           "loc": {
             "start": {
@@ -1385,8 +1544,8 @@
           "type": "Identifier",
           "name": "attribute",
           "range": [
-            1154,
-            1163
+            1197,
+            1206
           ],
           "loc": {
             "start": {
@@ -1404,8 +1563,8 @@
             "type": "Identifier",
             "name": "attrName",
             "range": [
-              1164,
-              1172
+              1207,
+              1215
             ],
             "loc": {
               "start": {
@@ -1430,8 +1589,8 @@
                   "type": "Identifier",
                   "name": "AttributeBuilder",
                   "range": [
-                    1191,
-                    1207
+                    1234,
+                    1250
                   ],
                   "loc": {
                     "start": {
@@ -1449,8 +1608,8 @@
                     "type": "Identifier",
                     "name": "attrName",
                     "range": [
-                      1208,
-                      1216
+                      1251,
+                      1259
                     ],
                     "loc": {
                       "start": {
@@ -1465,8 +1624,8 @@
                   }
                 ],
                 "range": [
-                  1187,
-                  1217
+                  1230,
+                  1260
                 ],
                 "loc": {
                   "start": {
@@ -1480,8 +1639,8 @@
                 }
               },
               "range": [
-                1180,
-                1218
+                1223,
+                1261
               ],
               "loc": {
                 "start": {
@@ -1496,8 +1655,8 @@
             }
           ],
           "range": [
-            1174,
-            1220
+            1217,
+            1263
           ],
           "loc": {
             "start": {
@@ -1513,8 +1672,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          1145,
-          1220
+          1188,
+          1263
         ],
         "loc": {
           "start": {
@@ -1531,8 +1690,8 @@
             "type": "Block",
             "value": "*\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n ",
             "range": [
-              990,
-              1137
+              1033,
+              1180
             ],
             "loc": {
               "start": {
@@ -1546,32 +1705,13 @@
             }
           }
         ],
-        "trailingComments": [
-          {
-            "type": "Block",
-            "value": "*\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n ",
-            "range": [
-              1222,
-              1357
-            ],
-            "loc": {
-              "start": {
-                "line": 42,
-                "column": 0
-              },
-              "end": {
-                "line": 46,
-                "column": 3
-              }
-            }
-          }
-        ]
+        "trailingComments": []
       },
       "specifiers": [],
       "source": null,
       "range": [
-        1138,
-        1220
+        1181,
+        1263
       ],
       "loc": {
         "start": {
@@ -1588,8 +1728,8 @@
           "type": "Block",
           "value": "*\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n ",
           "range": [
-            990,
-            1137
+            1033,
+            1180
           ],
           "loc": {
             "start": {
@@ -1602,14 +1742,162 @@
             }
           }
         }
-      ],
-      "trailingComments": [
-        {
-          "type": "Block",
-          "value": "*\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n ",
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "AssignmentExpression",
+        "operator": "=",
+        "left": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "attribute",
+            "range": [
+              1264,
+              1273
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 0
+              },
+              "end": {
+                "line": 41,
+                "column": 9
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "getAttValue",
+            "range": [
+              1274,
+              1285
+            ],
+            "loc": {
+              "start": {
+                "line": 41,
+                "column": 10
+              },
+              "end": {
+                "line": 41,
+                "column": 21
+              }
+            }
+          },
           "range": [
-            1222,
-            1357
+            1264,
+            1285
+          ],
+          "loc": {
+            "start": {
+              "line": 41,
+              "column": 0
+            },
+            "end": {
+              "line": 41,
+              "column": 21
+            }
+          }
+        },
+        "right": {
+          "type": "Identifier",
+          "name": "getAttValue",
+          "range": [
+            1288,
+            1299
+          ],
+          "loc": {
+            "start": {
+              "line": 41,
+              "column": 24
+            },
+            "end": {
+              "line": 41,
+              "column": 35
+            }
+          }
+        },
+        "range": [
+          1264,
+          1299
+        ],
+        "loc": {
+          "start": {
+            "line": 41,
+            "column": 0
+          },
+          "end": {
+            "line": 41,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        1264,
+        1300
+      ],
+      "loc": {
+        "start": {
+          "line": 41,
+          "column": 0
+        },
+        "end": {
+          "line": 41,
+          "column": 36
+        }
+      }
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "AssignmentExpression",
+        "operator": "=",
+        "left": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "attribute",
+            "range": [
+              1301,
+              1310
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 0
+              },
+              "end": {
+                "line": 42,
+                "column": 9
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "setAttValue",
+            "range": [
+              1311,
+              1322
+            ],
+            "loc": {
+              "start": {
+                "line": 42,
+                "column": 10
+              },
+              "end": {
+                "line": 42,
+                "column": 21
+              }
+            }
+          },
+          "range": [
+            1301,
+            1322
           ],
           "loc": {
             "start": {
@@ -1617,7 +1905,73 @@
               "column": 0
             },
             "end": {
-              "line": 46,
+              "line": 42,
+              "column": 21
+            }
+          }
+        },
+        "right": {
+          "type": "Identifier",
+          "name": "setAttValue",
+          "range": [
+            1325,
+            1336
+          ],
+          "loc": {
+            "start": {
+              "line": 42,
+              "column": 24
+            },
+            "end": {
+              "line": 42,
+              "column": 35
+            }
+          }
+        },
+        "range": [
+          1301,
+          1336
+        ],
+        "loc": {
+          "start": {
+            "line": 42,
+            "column": 0
+          },
+          "end": {
+            "line": 42,
+            "column": 35
+          }
+        }
+      },
+      "range": [
+        1301,
+        1337
+      ],
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 0
+        },
+        "end": {
+          "line": 42,
+          "column": 36
+        }
+      },
+      "trailingComments": [
+        {
+          "type": "Block",
+          "value": "*\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n ",
+          "range": [
+            1339,
+            1474
+          ],
+          "loc": {
+            "start": {
+              "line": 44,
+              "column": 0
+            },
+            "end": {
+              "line": 48,
               "column": 3
             }
           }
@@ -1632,16 +1986,16 @@
           "type": "Identifier",
           "name": "method",
           "range": [
-            1374,
-            1380
+            1491,
+            1497
           ],
           "loc": {
             "start": {
-              "line": 47,
+              "line": 49,
               "column": 16
             },
             "end": {
-              "line": 47,
+              "line": 49,
               "column": 22
             }
           }
@@ -1651,16 +2005,16 @@
             "type": "Identifier",
             "name": "methName",
             "range": [
-              1381,
-              1389
+              1498,
+              1506
             ],
             "loc": {
               "start": {
-                "line": 47,
+                "line": 49,
                 "column": 23
               },
               "end": {
-                "line": 47,
+                "line": 49,
                 "column": 31
               }
             }
@@ -1677,16 +2031,16 @@
                   "type": "Identifier",
                   "name": "MethodBuilder",
                   "range": [
-                    1408,
-                    1421
+                    1525,
+                    1538
                   ],
                   "loc": {
                     "start": {
-                      "line": 48,
+                      "line": 50,
                       "column": 15
                     },
                     "end": {
-                      "line": 48,
+                      "line": 50,
                       "column": 28
                     }
                   }
@@ -1696,63 +2050,63 @@
                     "type": "Identifier",
                     "name": "methName",
                     "range": [
-                      1422,
-                      1430
+                      1539,
+                      1547
                     ],
                     "loc": {
                       "start": {
-                        "line": 48,
+                        "line": 50,
                         "column": 29
                       },
                       "end": {
-                        "line": 48,
+                        "line": 50,
                         "column": 37
                       }
                     }
                   }
                 ],
                 "range": [
-                  1404,
-                  1431
+                  1521,
+                  1548
                 ],
                 "loc": {
                   "start": {
-                    "line": 48,
+                    "line": 50,
                     "column": 11
                   },
                   "end": {
-                    "line": 48,
+                    "line": 50,
                     "column": 38
                   }
                 }
               },
               "range": [
-                1397,
-                1432
+                1514,
+                1549
               ],
               "loc": {
                 "start": {
-                  "line": 48,
+                  "line": 50,
                   "column": 4
                 },
                 "end": {
-                  "line": 48,
+                  "line": 50,
                   "column": 39
                 }
               }
             }
           ],
           "range": [
-            1391,
-            1434
+            1508,
+            1551
           ],
           "loc": {
             "start": {
-              "line": 47,
+              "line": 49,
               "column": 33
             },
             "end": {
-              "line": 49,
+              "line": 51,
               "column": 1
             }
           }
@@ -1760,16 +2114,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          1365,
-          1434
+          1482,
+          1551
         ],
         "loc": {
           "start": {
-            "line": 47,
+            "line": 49,
             "column": 7
           },
           "end": {
-            "line": 49,
+            "line": 51,
             "column": 1
           }
         },
@@ -1778,16 +2132,16 @@
             "type": "Block",
             "value": "*\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n ",
             "range": [
-              1222,
-              1357
+              1339,
+              1474
             ],
             "loc": {
               "start": {
-                "line": 42,
+                "line": 44,
                 "column": 0
               },
               "end": {
-                "line": 46,
+                "line": 48,
                 "column": 3
               }
             }
@@ -1798,16 +2152,16 @@
             "type": "Block",
             "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
             "range": [
-              1436,
-              1613
+              1553,
+              1730
             ],
             "loc": {
               "start": {
-                "line": 51,
+                "line": 53,
                 "column": 0
               },
               "end": {
-                "line": 55,
+                "line": 57,
                 "column": 3
               }
             }
@@ -1817,16 +2171,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1358,
-        1434
+        1475,
+        1551
       ],
       "loc": {
         "start": {
-          "line": 47,
+          "line": 49,
           "column": 0
         },
         "end": {
-          "line": 49,
+          "line": 51,
           "column": 1
         }
       },
@@ -1835,16 +2189,16 @@
           "type": "Block",
           "value": "*\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n ",
           "range": [
-            1222,
-            1357
+            1339,
+            1474
           ],
           "loc": {
             "start": {
-              "line": 42,
+              "line": 44,
               "column": 0
             },
             "end": {
-              "line": 46,
+              "line": 48,
               "column": 3
             }
           }
@@ -1855,16 +2209,16 @@
           "type": "Block",
           "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
           "range": [
-            1436,
-            1613
+            1553,
+            1730
           ],
           "loc": {
             "start": {
-              "line": 51,
+              "line": 53,
               "column": 0
             },
             "end": {
-              "line": 55,
+              "line": 57,
               "column": 3
             }
           }
@@ -1879,16 +2233,16 @@
           "type": "Identifier",
           "name": "delegate",
           "range": [
-            1630,
-            1638
+            1747,
+            1755
           ],
           "loc": {
             "start": {
-              "line": 56,
+              "line": 58,
               "column": 16
             },
             "end": {
-              "line": 56,
+              "line": 58,
               "column": 24
             }
           }
@@ -1898,16 +2252,16 @@
             "type": "Identifier",
             "name": "builder",
             "range": [
-              1639,
-              1646
+              1756,
+              1763
             ],
             "loc": {
               "start": {
-                "line": 56,
+                "line": 58,
                 "column": 25
               },
               "end": {
-                "line": 56,
+                "line": 58,
                 "column": 32
               }
             }
@@ -1924,16 +2278,16 @@
                   "type": "Identifier",
                   "name": "DelegateBuilder",
                   "range": [
-                    1665,
-                    1680
+                    1782,
+                    1797
                   ],
                   "loc": {
                     "start": {
-                      "line": 57,
+                      "line": 59,
                       "column": 15
                     },
                     "end": {
-                      "line": 57,
+                      "line": 59,
                       "column": 30
                     }
                   }
@@ -1943,63 +2297,63 @@
                     "type": "Identifier",
                     "name": "builder",
                     "range": [
-                      1681,
-                      1688
+                      1798,
+                      1805
                     ],
                     "loc": {
                       "start": {
-                        "line": 57,
+                        "line": 59,
                         "column": 31
                       },
                       "end": {
-                        "line": 57,
+                        "line": 59,
                         "column": 38
                       }
                     }
                   }
                 ],
                 "range": [
-                  1661,
-                  1689
+                  1778,
+                  1806
                 ],
                 "loc": {
                   "start": {
-                    "line": 57,
+                    "line": 59,
                     "column": 11
                   },
                   "end": {
-                    "line": 57,
+                    "line": 59,
                     "column": 39
                   }
                 }
               },
               "range": [
-                1654,
-                1690
+                1771,
+                1807
               ],
               "loc": {
                 "start": {
-                  "line": 57,
+                  "line": 59,
                   "column": 4
                 },
                 "end": {
-                  "line": 57,
+                  "line": 59,
                   "column": 40
                 }
               }
             }
           ],
           "range": [
-            1648,
-            1692
+            1765,
+            1809
           ],
           "loc": {
             "start": {
-              "line": 56,
+              "line": 58,
               "column": 34
             },
             "end": {
-              "line": 58,
+              "line": 60,
               "column": 1
             }
           }
@@ -2007,16 +2361,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          1621,
-          1692
+          1738,
+          1809
         ],
         "loc": {
           "start": {
-            "line": 56,
+            "line": 58,
             "column": 7
           },
           "end": {
-            "line": 58,
+            "line": 60,
             "column": 1
           }
         },
@@ -2025,16 +2379,16 @@
             "type": "Block",
             "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
             "range": [
-              1436,
-              1613
+              1553,
+              1730
             ],
             "loc": {
               "start": {
-                "line": 51,
+                "line": 53,
                 "column": 0
               },
               "end": {
-                "line": 55,
+                "line": 57,
                 "column": 3
               }
             }
@@ -2045,16 +2399,16 @@
             "type": "Block",
             "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
             "range": [
-              1694,
-              1848
+              1811,
+              1965
             ],
             "loc": {
               "start": {
-                "line": 60,
+                "line": 62,
                 "column": 0
               },
               "end": {
-                "line": 64,
+                "line": 66,
                 "column": 3
               }
             }
@@ -2064,16 +2418,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1614,
-        1692
+        1731,
+        1809
       ],
       "loc": {
         "start": {
-          "line": 56,
+          "line": 58,
           "column": 0
         },
         "end": {
-          "line": 58,
+          "line": 60,
           "column": 1
         }
       },
@@ -2082,16 +2436,16 @@
           "type": "Block",
           "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
           "range": [
-            1436,
-            1613
+            1553,
+            1730
           ],
           "loc": {
             "start": {
-              "line": 51,
+              "line": 53,
               "column": 0
             },
             "end": {
-              "line": 55,
+              "line": 57,
               "column": 3
             }
           }
@@ -2102,16 +2456,16 @@
           "type": "Block",
           "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
           "range": [
-            1694,
-            1848
+            1811,
+            1965
           ],
           "loc": {
             "start": {
-              "line": 60,
+              "line": 62,
               "column": 0
             },
             "end": {
-              "line": 64,
+              "line": 66,
               "column": 3
             }
           }
@@ -2126,16 +2480,16 @@
           "type": "Identifier",
           "name": "template",
           "range": [
-            1865,
-            1873
+            1982,
+            1990
           ],
           "loc": {
             "start": {
-              "line": 65,
+              "line": 67,
               "column": 16
             },
             "end": {
-              "line": 65,
+              "line": 67,
               "column": 24
             }
           }
@@ -2145,16 +2499,16 @@
             "type": "Identifier",
             "name": "tpl",
             "range": [
-              1874,
-              1877
+              1991,
+              1994
             ],
             "loc": {
               "start": {
-                "line": 65,
+                "line": 67,
                 "column": 25
               },
               "end": {
-                "line": 65,
+                "line": 67,
                 "column": 28
               }
             }
@@ -2171,16 +2525,16 @@
                   "type": "Identifier",
                   "name": "TemplateBuilder",
                   "range": [
-                    1896,
-                    1911
+                    2013,
+                    2028
                   ],
                   "loc": {
                     "start": {
-                      "line": 66,
+                      "line": 68,
                       "column": 15
                     },
                     "end": {
-                      "line": 66,
+                      "line": 68,
                       "column": 30
                     }
                   }
@@ -2190,63 +2544,63 @@
                     "type": "Identifier",
                     "name": "tpl",
                     "range": [
-                      1912,
-                      1915
+                      2029,
+                      2032
                     ],
                     "loc": {
                       "start": {
-                        "line": 66,
+                        "line": 68,
                         "column": 31
                       },
                       "end": {
-                        "line": 66,
+                        "line": 68,
                         "column": 34
                       }
                     }
                   }
                 ],
                 "range": [
-                  1892,
-                  1916
+                  2009,
+                  2033
                 ],
                 "loc": {
                   "start": {
-                    "line": 66,
+                    "line": 68,
                     "column": 11
                   },
                   "end": {
-                    "line": 66,
+                    "line": 68,
                     "column": 35
                   }
                 }
               },
               "range": [
-                1885,
-                1917
+                2002,
+                2034
               ],
               "loc": {
                 "start": {
-                  "line": 66,
+                  "line": 68,
                   "column": 4
                 },
                 "end": {
-                  "line": 66,
+                  "line": 68,
                   "column": 36
                 }
               }
             }
           ],
           "range": [
-            1879,
-            1919
+            1996,
+            2036
           ],
           "loc": {
             "start": {
-              "line": 65,
+              "line": 67,
               "column": 30
             },
             "end": {
-              "line": 67,
+              "line": 69,
               "column": 1
             }
           }
@@ -2254,16 +2608,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          1856,
-          1919
+          1973,
+          2036
         ],
         "loc": {
           "start": {
-            "line": 65,
+            "line": 67,
             "column": 7
           },
           "end": {
-            "line": 67,
+            "line": 69,
             "column": 1
           }
         },
@@ -2272,55 +2626,36 @@
             "type": "Block",
             "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
             "range": [
-              1694,
-              1848
+              1811,
+              1965
             ],
             "loc": {
               "start": {
-                "line": 60,
+                "line": 62,
                 "column": 0
               },
               "end": {
-                "line": 64,
+                "line": 66,
                 "column": 3
               }
             }
           }
         ],
-        "trailingComments": [
-          {
-            "type": "Block",
-            "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
-            "range": [
-              1921,
-              2093
-            ],
-            "loc": {
-              "start": {
-                "line": 69,
-                "column": 0
-              },
-              "end": {
-                "line": 73,
-                "column": 3
-              }
-            }
-          }
-        ]
+        "trailingComments": []
       },
       "specifiers": [],
       "source": null,
       "range": [
-        1849,
-        1919
+        1966,
+        2036
       ],
       "loc": {
         "start": {
-          "line": 65,
+          "line": 67,
           "column": 0
         },
         "end": {
-          "line": 67,
+          "line": 69,
           "column": 1
         }
       },
@@ -2329,36 +2664,143 @@
           "type": "Block",
           "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
           "range": [
-            1694,
-            1848
+            1811,
+            1965
           ],
           "loc": {
             "start": {
-              "line": 60,
+              "line": 62,
               "column": 0
             },
             "end": {
-              "line": 64,
+              "line": 66,
               "column": 3
             }
           }
         }
+      ]
+    },
+    {
+      "type": "ExpressionStatement",
+      "expression": {
+        "type": "AssignmentExpression",
+        "operator": "=",
+        "left": {
+          "type": "MemberExpression",
+          "computed": false,
+          "object": {
+            "type": "Identifier",
+            "name": "template",
+            "range": [
+              2037,
+              2045
+            ],
+            "loc": {
+              "start": {
+                "line": 70,
+                "column": 0
+              },
+              "end": {
+                "line": 70,
+                "column": 8
+              }
+            }
+          },
+          "property": {
+            "type": "Identifier",
+            "name": "applyTemplate",
+            "range": [
+              2046,
+              2059
+            ],
+            "loc": {
+              "start": {
+                "line": 70,
+                "column": 9
+              },
+              "end": {
+                "line": 70,
+                "column": 22
+              }
+            }
+          },
+          "range": [
+            2037,
+            2059
+          ],
+          "loc": {
+            "start": {
+              "line": 70,
+              "column": 0
+            },
+            "end": {
+              "line": 70,
+              "column": 22
+            }
+          }
+        },
+        "right": {
+          "type": "Identifier",
+          "name": "applyTemplate",
+          "range": [
+            2062,
+            2075
+          ],
+          "loc": {
+            "start": {
+              "line": 70,
+              "column": 25
+            },
+            "end": {
+              "line": 70,
+              "column": 38
+            }
+          }
+        },
+        "range": [
+          2037,
+          2075
+        ],
+        "loc": {
+          "start": {
+            "line": 70,
+            "column": 0
+          },
+          "end": {
+            "line": 70,
+            "column": 38
+          }
+        }
+      },
+      "range": [
+        2037,
+        2076
       ],
+      "loc": {
+        "start": {
+          "line": 70,
+          "column": 0
+        },
+        "end": {
+          "line": 70,
+          "column": 39
+        }
+      },
       "trailingComments": [
         {
           "type": "Block",
           "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
           "range": [
-            1921,
-            2093
+            2078,
+            2250
           ],
           "loc": {
             "start": {
-              "line": 69,
+              "line": 72,
               "column": 0
             },
             "end": {
-              "line": 73,
+              "line": 76,
               "column": 3
             }
           }
@@ -2373,16 +2815,16 @@
           "type": "Identifier",
           "name": "on",
           "range": [
-            2110,
-            2112
+            2267,
+            2269
           ],
           "loc": {
             "start": {
-              "line": 74,
+              "line": 77,
               "column": 16
             },
             "end": {
-              "line": 74,
+              "line": 77,
               "column": 18
             }
           }
@@ -2392,16 +2834,16 @@
             "type": "Identifier",
             "name": "events",
             "range": [
-              2113,
-              2119
+              2270,
+              2276
             ],
             "loc": {
               "start": {
-                "line": 74,
+                "line": 77,
                 "column": 19
               },
               "end": {
-                "line": 74,
+                "line": 77,
                 "column": 25
               }
             }
@@ -2418,16 +2860,16 @@
                   "type": "Identifier",
                   "name": "OnBuilder",
                   "range": [
-                    2138,
-                    2147
+                    2295,
+                    2304
                   ],
                   "loc": {
                     "start": {
-                      "line": 75,
+                      "line": 78,
                       "column": 15
                     },
                     "end": {
-                      "line": 75,
+                      "line": 78,
                       "column": 24
                     }
                   }
@@ -2437,63 +2879,63 @@
                     "type": "Identifier",
                     "name": "events",
                     "range": [
-                      2148,
-                      2154
+                      2305,
+                      2311
                     ],
                     "loc": {
                       "start": {
-                        "line": 75,
+                        "line": 78,
                         "column": 25
                       },
                       "end": {
-                        "line": 75,
+                        "line": 78,
                         "column": 31
                       }
                     }
                   }
                 ],
                 "range": [
-                  2134,
-                  2155
+                  2291,
+                  2312
                 ],
                 "loc": {
                   "start": {
-                    "line": 75,
+                    "line": 78,
                     "column": 11
                   },
                   "end": {
-                    "line": 75,
+                    "line": 78,
                     "column": 32
                   }
                 }
               },
               "range": [
-                2127,
-                2156
+                2284,
+                2313
               ],
               "loc": {
                 "start": {
-                  "line": 75,
+                  "line": 78,
                   "column": 4
                 },
                 "end": {
-                  "line": 75,
+                  "line": 78,
                   "column": 33
                 }
               }
             }
           ],
           "range": [
-            2121,
-            2158
+            2278,
+            2315
           ],
           "loc": {
             "start": {
-              "line": 74,
+              "line": 77,
               "column": 27
             },
             "end": {
-              "line": 76,
+              "line": 79,
               "column": 1
             }
           }
@@ -2501,16 +2943,16 @@
         "generator": false,
         "expression": false,
         "range": [
-          2101,
-          2158
+          2258,
+          2315
         ],
         "loc": {
           "start": {
-            "line": 74,
+            "line": 77,
             "column": 7
           },
           "end": {
-            "line": 76,
+            "line": 79,
             "column": 1
           }
         },
@@ -2519,16 +2961,16 @@
             "type": "Block",
             "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
             "range": [
-              1921,
-              2093
+              2078,
+              2250
             ],
             "loc": {
               "start": {
-                "line": 69,
+                "line": 72,
                 "column": 0
               },
               "end": {
-                "line": 73,
+                "line": 76,
                 "column": 3
               }
             }
@@ -2539,16 +2981,16 @@
       "specifiers": [],
       "source": null,
       "range": [
-        2094,
-        2158
+        2251,
+        2315
       ],
       "loc": {
         "start": {
-          "line": 74,
+          "line": 77,
           "column": 0
         },
         "end": {
-          "line": 76,
+          "line": 79,
           "column": 1
         }
       },
@@ -2557,16 +2999,16 @@
           "type": "Block",
           "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
           "range": [
-            1921,
-            2093
+            2078,
+            2250
           ],
           "loc": {
             "start": {
-              "line": 69,
+              "line": 72,
               "column": 0
             },
             "end": {
-              "line": 73,
+              "line": 76,
               "column": 3
             }
           }
@@ -2577,7 +3019,7 @@
   "sourceType": "module",
   "range": [
     0,
-    2158
+    2315
   ],
   "loc": {
     "start": {
@@ -2585,7 +3027,7 @@
       "column": 0
     },
     "end": {
-      "line": 76,
+      "line": 79,
       "column": 1
     }
   },
@@ -2594,8 +3036,8 @@
       "type": "Block",
       "value": "*\n * The base builder type\n * @type {Builder} the builder\n ",
       "range": [
-        492,
-        555
+        533,
+        596
       ],
       "loc": {
         "start": {
@@ -2612,8 +3054,8 @@
       "type": "Block",
       "value": "*\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n ",
       "range": [
-        591,
-        697
+        634,
+        740
       ],
       "loc": {
         "start": {
@@ -2630,8 +3072,8 @@
       "type": "Block",
       "value": "*\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n ",
       "range": [
-        764,
-        907
+        807,
+        950
       ],
       "loc": {
         "start": {
@@ -2648,8 +3090,8 @@
       "type": "Block",
       "value": "*\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n ",
       "range": [
-        990,
-        1137
+        1033,
+        1180
       ],
       "loc": {
         "start": {
@@ -2666,16 +3108,16 @@
       "type": "Block",
       "value": "*\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n ",
       "range": [
-        1222,
-        1357
+        1339,
+        1474
       ],
       "loc": {
         "start": {
-          "line": 42,
+          "line": 44,
           "column": 0
         },
         "end": {
-          "line": 46,
+          "line": 48,
           "column": 3
         }
       }
@@ -2684,16 +3126,16 @@
       "type": "Block",
       "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
       "range": [
-        1436,
-        1613
+        1553,
+        1730
       ],
       "loc": {
         "start": {
-          "line": 51,
+          "line": 53,
           "column": 0
         },
         "end": {
-          "line": 55,
+          "line": 57,
           "column": 3
         }
       }
@@ -2702,16 +3144,16 @@
       "type": "Block",
       "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
       "range": [
-        1694,
-        1848
+        1811,
+        1965
       ],
       "loc": {
         "start": {
-          "line": 60,
+          "line": 62,
           "column": 0
         },
         "end": {
-          "line": 64,
+          "line": 66,
           "column": 3
         }
       }
@@ -2720,16 +3162,16 @@
       "type": "Block",
       "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
       "range": [
-        1921,
-        2093
+        2078,
+        2250
       ],
       "loc": {
         "start": {
-          "line": 69,
+          "line": 72,
           "column": 0
         },
         "end": {
-          "line": 73,
+          "line": 76,
           "column": 3
         }
       }
