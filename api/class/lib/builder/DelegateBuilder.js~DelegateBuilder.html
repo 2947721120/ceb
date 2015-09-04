@@ -102,7 +102,7 @@
   
   
   <div class="description" data-ice="description"><p>The delegate builder.
-Its goal is to provide a way to delegate properties and attributes.</p>
+Its goal is to provide a way to delegate methods, properties and attributes.</p>
 </div>
 
   
@@ -131,7 +131,7 @@ Its goal is to provide a way to delegate properties and attributes.</p>
     <td>
       <div>
         <p>
-           <span data-ice="name"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(fieldBuilder: <span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span> | <span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span>)</span>
+           <span data-ice="name"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html#instance-constructor-constructor">constructor</a></span></span><span data-ice="signature">(fieldBuilder: <span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span> | <span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span> | <span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span>)</span>
         </p>
       </div>
       <div>
@@ -170,7 +170,7 @@ Its goal is to provide a way to delegate properties and attributes.</p>
       <div>
         
         
-        <div data-ice="description"><p>To force the delegate to an attribute.</p></div>
+        <div data-ice="description"><p>To force the delegation to an attribute.</p></div>
       </div>
     </td>
     <td>
@@ -214,13 +214,38 @@ Its goal is to provide a way to delegate properties and attributes.</p>
     <td>
       <div>
         <p>
+           <span data-ice="name"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html#instance-method-method">method</a></span></span><span data-ice="signature">(methName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>To force the delegation to a method.</p></div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
            <span data-ice="name"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html#instance-method-property">property</a></span></span><span data-ice="signature">(propName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>To force a delegate to a property.</p></div>
+        <div data-ice="description"><p>To force the delegation to a property.</p></div>
       </div>
     </td>
     <td>
@@ -301,7 +326,7 @@ Its goal is to provide a way to delegate properties and attributes.</p>
     
     
     
-    <span data-ice="name">constructor</span><span data-ice="signature">(fieldBuilder: <span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span> | <span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span>)</span>
+    <span data-ice="name">constructor</span><span data-ice="signature">(fieldBuilder: <span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span> | <span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span> | <span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span>)</span>
     <span class="right-info">
       
       
@@ -326,7 +351,7 @@ Its goal is to provide a way to delegate properties and attributes.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" data-depth="0">fieldBuilder</td>
-      <td data-ice="type"><span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span> | <span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span></td>
+      <td data-ice="type"><span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span> | <span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span> | <span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span></td>
       <td data-ice="appendix"><ul><li>nullable: false</li></ul></td>
       <td data-ice="description"><p>the field builder</p>
 </td>
@@ -366,14 +391,14 @@ Its goal is to provide a way to delegate properties and attributes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber62">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber64">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>To force the delegate to an attribute.</p>
+  <div data-ice="description"><p>To force the delegation to an attribute.</p>
 </div>
 
   
@@ -435,7 +460,7 @@ Its goal is to provide a way to delegate properties and attributes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber75">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber92">source</a></span></span>
     </span>
   </h3>
 
@@ -487,6 +512,75 @@ Its goal is to provide a way to delegate properties and attributes.</p>
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-method">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    <span data-ice="name">method</span><span data-ice="signature">(methName: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber79">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>To force the delegation to a method.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" data-depth="0">methName</td>
+      <td data-ice="type"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>the name of the method</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tr>
+        <td class="return-type" data-ice="returnType"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></td>
+        <td class="return-desc" data-ice="returnDescription"><p>the builder</p>
+</td>
+      </tr>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-property">
     <span class="access" data-ice="access">public</span>
     
@@ -497,14 +591,14 @@ Its goal is to provide a way to delegate properties and attributes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber47">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>To force a delegate to a property.</p>
+  <div data-ice="description"><p>To force the delegation to a property.</p>
 </div>
 
   
@@ -566,7 +660,7 @@ Its goal is to provide a way to delegate properties and attributes.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber37">source</a></span></span>
+      <span data-ice="source"><span><a href="file/lib/builder/DelegateBuilder.js.html#lineNumber39">source</a></span></span>
     </span>
   </h3>
 
@@ -628,7 +722,7 @@ Its goal is to provide a way to delegate properties and attributes.</p>
 </div>
 
 <footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.2)</span></a>
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.2.4)</span></a>
 </footer>
 
 <script src="script/search_index.js"></script>

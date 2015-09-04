@@ -1,27 +1,27 @@
 {
   "coverage": "100%",
-  "expectCount": 54,
-  "actualCount": 54,
+  "expectCount": 55,
+  "actualCount": 55,
   "files": {
     "lib/builder/AttributeBuilder.js": {
       "expectCount": 7,
       "actualCount": 7
     },
-    "lib/ceb.js": {
-      "expectCount": 8,
-      "actualCount": 8
-    },
     "lib/builder/Builder.js": {
       "expectCount": 2,
       "actualCount": 2
+    },
+    "lib/ceb.js": {
+      "expectCount": 8,
+      "actualCount": 8
     },
     "lib/builder/CustomElementBuilder.js": {
       "expectCount": 8,
       "actualCount": 8
     },
     "lib/builder/DelegateBuilder.js": {
-      "expectCount": 6,
-      "actualCount": 6
+      "expectCount": 7,
+      "actualCount": 7
     },
     "lib/builder/MethodBuilder.js": {
       "expectCount": 5,

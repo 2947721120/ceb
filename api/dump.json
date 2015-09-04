@@ -766,7 +766,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {isUndefined, isFunction} from '../utils.js';\nimport {getAttValue, setAttValue} from './AttributeBuilder.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The delegate builder.\n * Its goal is to provide a way to delegate properties and attributes.\n * @extends {Builder}\n */\nexport class DelegateBuilder extends Builder {\n\n    /**\n     * @param {!PropertyBuilder|AttributeBuilder} fieldBuilder the field builder\n     */\n    constructor(fieldBuilder) {\n        super();\n        /**\n         * @ignore\n         */\n        this.fieldBuilder = fieldBuilder;\n        /**\n         * @ignore\n         */\n        this.data = {};\n        if (fieldBuilder.data.attrName) {\n            this.data.attrName = fieldBuilder.data.attrName;\n        } else if (this.fieldBuilder.data.propName) {\n            this.data.propName = fieldBuilder.data.propName;\n        }\n    }\n\n    /**\n     * The target of the delegate.\n     * @param {!string} selector a valid css query\n     * @returns {DelegateBuilder} the builder\n     */\n    to(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To force a delegate to a property.\n     * @param {string} [propName] the name of the property\n     * @returns {DelegateBuilder} the builder\n     */\n    property(propName) {\n        this.data.attrName = null;\n        if (!isUndefined(propName)) {\n            this.data.propName = propName;\n        } else {\n            this.data.propName = this.fieldBuilder.data.propName;\n        }\n        return this;\n    }\n\n    /**\n     * To force the delegate to an attribute.\n     * @param {string} [attrName] the name of the attribute\n     * @returns {DelegateBuilder} the builder\n     */\n    attribute(attrName) {\n        this.data.propName = null;\n        if (!isUndefined(attrName)) {\n            this.data.attrName = attrName;\n        } else {\n            this.data.attrName = this.fieldBuilder.data.attrName || this.fieldBuilder.data.propName;\n        }\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let data = this.data,\n            fieldBuilderData = this.fieldBuilder.data,\n            targetedPropName = this.data.propName,\n            targetedAttrName = this.data.attrName,\n            fieldGetter = fieldBuilderData.getter,\n            fieldSetter = fieldBuilderData.setter;\n\n        if (fieldBuilderData.attrName) {\n            fieldBuilderData.getterFactory = (attrName, isBoolean) => {\n                return (el) => {\n                    let target = el.querySelector(data.selector);\n                    if (target) {\n                        return targetedAttrName ? getAttValue(target, targetedAttrName, isBoolean) : target[targetedPropName];\n                    }\n                };\n            };\n            fieldBuilderData.setterFactory = (attrName, isBoolean, attSetter) => {\n                return (el, value) => {\n                    let target = el.querySelector(data.selector),\n                        attrValue = isFunction(attSetter) ? attSetter.call(el, el, value) : value;\n                    if (target) {\n                        if (targetedAttrName) {\n                            setAttValue(target, targetedAttrName, isBoolean, attrValue);\n                        } else {\n                            target[targetedPropName] = attrValue;\n                        }\n                        setAttValue(el, attrName, isBoolean, attrValue);\n                    }\n                };\n            };\n        } else if (fieldBuilderData.propName) {\n            fieldBuilderData.descriptorValue = false;\n            fieldBuilderData.getter = (el) => {\n                let target = el.querySelector(data.selector),\n                    targetValue;\n                if (target) {\n                    if (targetedAttrName) {\n                        targetValue = target.getAttribute(targetedAttrName);\n                    } else {\n                        targetValue = target[targetedPropName];\n                    }\n                }\n                return isFunction(fieldGetter) ? fieldGetter.call(this, this, targetValue) : targetValue;\n            };\n            fieldBuilderData.setter = (el, value) => {\n                let target = el.querySelector(data.selector),\n                    targetValue = isFunction(fieldSetter) ? fieldSetter.call(this, this, value) : value;\n                if (target) {\n                    if (targetedAttrName) {\n                        target.setAttribute(targetedAttrName, targetValue);\n                    } else {\n                        target[targetedPropName] = targetValue;\n                    }\n                }\n            };\n        }\n\n        this.fieldBuilder.build(proto, on);\n    }\n\n}\n"
+    "content": "import {isUndefined, isFunction, toArray} from '../utils.js';\nimport {getAttValue, setAttValue} from './AttributeBuilder.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The delegate builder.\n * Its goal is to provide a way to delegate methods, properties and attributes.\n * @extends {Builder}\n */\nexport class DelegateBuilder extends Builder {\n\n    /**\n     * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} fieldBuilder the field builder\n     */\n    constructor(fieldBuilder) {\n        super();\n        /**\n         * @ignore\n         */\n        this.fieldBuilder = fieldBuilder;\n        /**\n         * @ignore\n         */\n        this.data = {};\n        if (fieldBuilder.data.attrName) {\n            this.data.attrName = fieldBuilder.data.attrName;\n        } else if (this.fieldBuilder.data.propName) {\n            this.data.propName = fieldBuilder.data.propName;\n        } else if (this.fieldBuilder.data.methName) {\n            this.data.methName = fieldBuilder.data.methName;\n        }\n    }\n\n    /**\n     * The target of the delegate.\n     * @param {!string} selector a valid css query\n     * @returns {DelegateBuilder} the builder\n     */\n    to(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To force the delegation to a property.\n     * @param {string} [propName] the name of the property\n     * @returns {DelegateBuilder} the builder\n     */\n    property(propName) {\n        this.data.attrName = null;\n        if (!isUndefined(propName)) {\n            this.data.propName = propName;\n        } else {\n            this.data.propName = this.fieldBuilder.data.propName;\n        }\n        return this;\n    }\n\n    /**\n     * To force the delegation to an attribute.\n     * @param {string} [attrName] the name of the attribute\n     * @returns {DelegateBuilder} the builder\n     */\n    attribute(attrName) {\n        this.data.propName = null;\n        if (!isUndefined(attrName)) {\n            this.data.attrName = attrName;\n        } else {\n            this.data.attrName = this.fieldBuilder.data.attrName || this.fieldBuilder.data.propName;\n        }\n        return this;\n    }\n\n    /**\n     * To force the delegation to a method.\n     * @param {string} [methName] the name of the method\n     * @returns {DelegateBuilder} the builder\n     */\n    method(methName) {\n        this.data.methName = null;\n        if (!isUndefined(methName)) {\n            this.data.methName = methName;\n        } else {\n            this.data.methName = this.fieldBuilder.data.methName;\n        }\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let data = this.data,\n            fieldBuilderData = this.fieldBuilder.data,\n            targetedPropName = this.data.propName,\n            targetedMethName = this.data.methName,\n            targetedAttrName = this.data.attrName,\n            fieldGetter = fieldBuilderData.getter,\n            fieldSetter = fieldBuilderData.setter;\n\n        if (fieldBuilderData.attrName) {\n            fieldBuilderData.getterFactory = (attrName, isBoolean) => {\n                return (el) => {\n                    let target = el.querySelector(data.selector);\n                    if (target) {\n                        return targetedAttrName ? getAttValue(target, targetedAttrName, isBoolean) : target[targetedPropName];\n                    }\n                };\n            };\n            fieldBuilderData.setterFactory = (attrName, isBoolean, attSetter) => {\n                return (el, value) => {\n                    let target = el.querySelector(data.selector),\n                        attrValue = isFunction(attSetter) ? attSetter.call(el, el, value) : value;\n                    if (target) {\n                        if (targetedAttrName) {\n                            setAttValue(target, targetedAttrName, isBoolean, attrValue);\n                        } else {\n                            target[targetedPropName] = attrValue;\n                        }\n                        setAttValue(el, attrName, isBoolean, attrValue);\n                    }\n                };\n            };\n        } else if (fieldBuilderData.propName) {\n            fieldBuilderData.descriptorValue = false;\n            fieldBuilderData.getter = (el) => {\n                let target = el.querySelector(data.selector),\n                    targetValue;\n                if (target) {\n                    if (targetedAttrName) {\n                        targetValue = target.getAttribute(targetedAttrName);\n                    } else {\n                        targetValue = target[targetedPropName];\n                    }\n                }\n                return isFunction(fieldGetter) ? fieldGetter.call(el, el, targetValue) : targetValue;\n            };\n            fieldBuilderData.setter = (el, value) => {\n                let target = el.querySelector(data.selector),\n                    targetValue = isFunction(fieldSetter) ? fieldSetter.call(el, el, value) : value;\n                if (target) {\n                    if (targetedAttrName) {\n                        target.setAttribute(targetedAttrName, targetValue);\n                    } else {\n                        target[targetedPropName] = targetValue;\n                    }\n                }\n            };\n        } else if (fieldBuilderData.methName) {\n            fieldBuilderData.invoke = function (el) {\n                let target = el.querySelector(data.selector);\n                if (isFunction(target[targetedMethName])) {\n                    let args = toArray(arguments);\n                    args.shift();\n                    return target[targetedMethName].apply(target, args);\n                }\n            };\n        }\n\n        this.fieldBuilder.build(proto, on);\n    }\n\n}\n"
   },
   {
     "kind": "class",
@@ -779,7 +779,7 @@
     "export": true,
     "importPath": "custom-elements-builder/lib/builder/DelegateBuilder.js",
     "importStyle": "{DelegateBuilder}",
-    "description": "The delegate builder.\nIts goal is to provide a way to delegate properties and attributes.",
+    "description": "The delegate builder.\nIts goal is to provide a way to delegate methods, properties and attributes.",
     "lineNumber": 10,
     "interface": false,
     "extends": [
@@ -801,7 +801,8 @@
         "nullable": false,
         "types": [
           "PropertyBuilder",
-          "AttributeBuilder"
+          "AttributeBuilder",
+          "MethodBuilder"
         ],
         "spread": false,
         "optional": false,
@@ -854,7 +855,7 @@
     "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#to",
     "access": null,
     "description": "The target of the delegate.",
-    "lineNumber": 37,
+    "lineNumber": 39,
     "unknown": [
       {
         "tagName": "@returns",
@@ -891,8 +892,8 @@
     "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
     "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#property",
     "access": null,
-    "description": "To force a delegate to a property.",
-    "lineNumber": 47,
+    "description": "To force the delegation to a property.",
+    "lineNumber": 49,
     "unknown": [
       {
         "tagName": "@returns",
@@ -929,8 +930,8 @@
     "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
     "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#attribute",
     "access": null,
-    "description": "To force the delegate to an attribute.",
-    "lineNumber": 62,
+    "description": "To force the delegation to an attribute.",
+    "lineNumber": 64,
     "unknown": [
       {
         "tagName": "@returns",
@@ -963,12 +964,50 @@
     "kind": "method",
     "static": false,
     "variation": null,
+    "name": "method",
+    "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
+    "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#method",
+    "access": null,
+    "description": "To force the delegation to a method.",
+    "lineNumber": 79,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{DelegateBuilder} the builder"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "methName",
+        "description": "the name of the method"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "DelegateBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "method",
+    "static": false,
+    "variation": null,
     "name": "build",
     "memberof": "lib/builder/DelegateBuilder.js~DelegateBuilder",
     "longname": "lib/builder/DelegateBuilder.js~DelegateBuilder#build",
     "access": null,
     "description": null,
-    "lineNumber": 75,
+    "lineNumber": 92,
     "params": [
       {
         "name": "proto",

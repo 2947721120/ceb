@@ -552,6 +552,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "lib/builder/delegatebuilder.js~delegatebuilder#method",
+    "class/lib/builder/DelegateBuilder.js~DelegateBuilder.html#instance-method-method",
+    "lib/builder/DelegateBuilder.js~DelegateBuilder#method",
+    "method"
+  ],
+  [
     "lib/builder/delegatebuilder.js~delegatebuilder#property",
     "class/lib/builder/DelegateBuilder.js~DelegateBuilder.html#instance-method-property",
     "lib/builder/DelegateBuilder.js~DelegateBuilder#property",
