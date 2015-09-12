@@ -5,39 +5,48 @@
   "files": {
     "lib/builder/AttributeBuilder.js": {
       "expectCount": 7,
-      "actualCount": 7
+      "actualCount": 7,
+      "undocumentLines": []
     },
     "lib/builder/Builder.js": {
       "expectCount": 2,
-      "actualCount": 2
+      "actualCount": 2,
+      "undocumentLines": []
     },
     "lib/ceb.js": {
       "expectCount": 8,
-      "actualCount": 8
+      "actualCount": 8,
+      "undocumentLines": []
     },
     "lib/builder/CustomElementBuilder.js": {
       "expectCount": 8,
-      "actualCount": 8
+      "actualCount": 8,
+      "undocumentLines": []
     },
     "lib/builder/DelegateBuilder.js": {
       "expectCount": 7,
-      "actualCount": 7
+      "actualCount": 7,
+      "undocumentLines": []
     },
     "lib/builder/MethodBuilder.js": {
       "expectCount": 5,
-      "actualCount": 5
+      "actualCount": 5,
+      "undocumentLines": []
     },
     "lib/builder/OnBuilder.js": {
       "expectCount": 8,
-      "actualCount": 8
+      "actualCount": 8,
+      "undocumentLines": []
     },
     "lib/builder/PropertyBuilder.js": {
       "expectCount": 7,
-      "actualCount": 7
+      "actualCount": 7,
+      "undocumentLines": []
     },
     "lib/builder/TemplateBuilder.js": {
       "expectCount": 3,
-      "actualCount": 3
+      "actualCount": 3,
+      "undocumentLines": []
     }
   }
 }

@@ -1,8 +1,9 @@
 {
   "name": "custom-elements-builder",
-  "version": "0.5.5",
+  "version": "0.5.7",
   "description": "Just a set of builders, natively scalable and designed for FRP.",
   "keywords": [
+    "web-components",
     "Web",
     "Components",
     "Component",
@@ -33,7 +34,8 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/gulp karma:sauce",
-    "prepublish": "./node_modules/.bin/gulp"
+    "prepublish": "./node_modules/.bin/gulp",
+    "release": "./node_modules/.bin/gulp && ./node_modules/.bin/grunt release"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -51,6 +53,7 @@
     "document-register-element": "^0.4.5",
     "esdoc": "^0.2.1",
     "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
     "grunt-release": "^0.13.0",
     "gulp": "^3.9.0",
     "gulp-babel": "^5.2.0",
@@ -63,7 +66,7 @@
     "gulp-zip": "^3.0.2",
     "handlebars": "^4.0.1",
     "idom-template": "^0.1.1",
-    "immutable": "^3.7.4",
+    "immutable": "^3.7.5",
     "incremental-dom": "^0.1.0",
     "jquery": "^2.1.4",
     "jshint-stylish": "^2.0.1",
@@ -80,6 +83,7 @@
     "lodash": "^3.10.1",
     "mocha": "^2.2.5",
     "phantomjs": "^1.9.18",
+    "redux": "^2.0.0",
     "require-dir": "^0.3.0",
     "requirejs": "^2.1.20",
     "run-sequence": "^1.1.2",

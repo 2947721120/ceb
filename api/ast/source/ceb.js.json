@@ -2150,10 +2150,10 @@
         "trailingComments": [
           {
             "type": "Block",
-            "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
+            "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} builder a property, attribute or method builder\n * @returns {DelegateBuilder} the delegate builder\n ",
             "range": [
               1553,
-              1730
+              1750
             ],
             "loc": {
               "start": {
@@ -2207,10 +2207,10 @@
       "trailingComments": [
         {
           "type": "Block",
-          "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
+          "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} builder a property, attribute or method builder\n * @returns {DelegateBuilder} the delegate builder\n ",
           "range": [
             1553,
-            1730
+            1750
           ],
           "loc": {
             "start": {
@@ -2233,8 +2233,8 @@
           "type": "Identifier",
           "name": "delegate",
           "range": [
-            1747,
-            1755
+            1767,
+            1775
           ],
           "loc": {
             "start": {
@@ -2252,8 +2252,8 @@
             "type": "Identifier",
             "name": "builder",
             "range": [
-              1756,
-              1763
+              1776,
+              1783
             ],
             "loc": {
               "start": {
@@ -2278,8 +2278,8 @@
                   "type": "Identifier",
                   "name": "DelegateBuilder",
                   "range": [
-                    1782,
-                    1797
+                    1802,
+                    1817
                   ],
                   "loc": {
                     "start": {
@@ -2297,8 +2297,8 @@
                     "type": "Identifier",
                     "name": "builder",
                     "range": [
-                      1798,
-                      1805
+                      1818,
+                      1825
                     ],
                     "loc": {
                       "start": {
@@ -2313,8 +2313,8 @@
                   }
                 ],
                 "range": [
-                  1778,
-                  1806
+                  1798,
+                  1826
                 ],
                 "loc": {
                   "start": {
@@ -2328,8 +2328,8 @@
                 }
               },
               "range": [
-                1771,
-                1807
+                1791,
+                1827
               ],
               "loc": {
                 "start": {
@@ -2344,8 +2344,8 @@
             }
           ],
           "range": [
-            1765,
-            1809
+            1785,
+            1829
           ],
           "loc": {
             "start": {
@@ -2361,8 +2361,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          1738,
-          1809
+          1758,
+          1829
         ],
         "loc": {
           "start": {
@@ -2377,10 +2377,10 @@
         "leadingComments": [
           {
             "type": "Block",
-            "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
+            "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} builder a property, attribute or method builder\n * @returns {DelegateBuilder} the delegate builder\n ",
             "range": [
               1553,
-              1730
+              1750
             ],
             "loc": {
               "start": {
@@ -2399,8 +2399,8 @@
             "type": "Block",
             "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
             "range": [
-              1811,
-              1965
+              1831,
+              1985
             ],
             "loc": {
               "start": {
@@ -2418,8 +2418,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1731,
-        1809
+        1751,
+        1829
       ],
       "loc": {
         "start": {
@@ -2434,10 +2434,10 @@
       "leadingComments": [
         {
           "type": "Block",
-          "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
+          "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} builder a property, attribute or method builder\n * @returns {DelegateBuilder} the delegate builder\n ",
           "range": [
             1553,
-            1730
+            1750
           ],
           "loc": {
             "start": {
@@ -2456,8 +2456,8 @@
           "type": "Block",
           "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
           "range": [
-            1811,
-            1965
+            1831,
+            1985
           ],
           "loc": {
             "start": {
@@ -2480,8 +2480,8 @@
           "type": "Identifier",
           "name": "template",
           "range": [
-            1982,
-            1990
+            2002,
+            2010
           ],
           "loc": {
             "start": {
@@ -2499,8 +2499,8 @@
             "type": "Identifier",
             "name": "tpl",
             "range": [
-              1991,
-              1994
+              2011,
+              2014
             ],
             "loc": {
               "start": {
@@ -2525,8 +2525,8 @@
                   "type": "Identifier",
                   "name": "TemplateBuilder",
                   "range": [
-                    2013,
-                    2028
+                    2033,
+                    2048
                   ],
                   "loc": {
                     "start": {
@@ -2544,8 +2544,8 @@
                     "type": "Identifier",
                     "name": "tpl",
                     "range": [
-                      2029,
-                      2032
+                      2049,
+                      2052
                     ],
                     "loc": {
                       "start": {
@@ -2560,8 +2560,8 @@
                   }
                 ],
                 "range": [
-                  2009,
-                  2033
+                  2029,
+                  2053
                 ],
                 "loc": {
                   "start": {
@@ -2575,8 +2575,8 @@
                 }
               },
               "range": [
-                2002,
-                2034
+                2022,
+                2054
               ],
               "loc": {
                 "start": {
@@ -2591,8 +2591,8 @@
             }
           ],
           "range": [
-            1996,
-            2036
+            2016,
+            2056
           ],
           "loc": {
             "start": {
@@ -2608,8 +2608,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          1973,
-          2036
+          1993,
+          2056
         ],
         "loc": {
           "start": {
@@ -2626,8 +2626,8 @@
             "type": "Block",
             "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
             "range": [
-              1811,
-              1965
+              1831,
+              1985
             ],
             "loc": {
               "start": {
@@ -2646,8 +2646,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        1966,
-        2036
+        1986,
+        2056
       ],
       "loc": {
         "start": {
@@ -2664,8 +2664,8 @@
           "type": "Block",
           "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
           "range": [
-            1811,
-            1965
+            1831,
+            1985
           ],
           "loc": {
             "start": {
@@ -2692,8 +2692,8 @@
             "type": "Identifier",
             "name": "template",
             "range": [
-              2037,
-              2045
+              2057,
+              2065
             ],
             "loc": {
               "start": {
@@ -2710,8 +2710,8 @@
             "type": "Identifier",
             "name": "applyTemplate",
             "range": [
-              2046,
-              2059
+              2066,
+              2079
             ],
             "loc": {
               "start": {
@@ -2725,8 +2725,8 @@
             }
           },
           "range": [
-            2037,
-            2059
+            2057,
+            2079
           ],
           "loc": {
             "start": {
@@ -2743,8 +2743,8 @@
           "type": "Identifier",
           "name": "applyTemplate",
           "range": [
-            2062,
-            2075
+            2082,
+            2095
           ],
           "loc": {
             "start": {
@@ -2758,8 +2758,8 @@
           }
         },
         "range": [
-          2037,
-          2075
+          2057,
+          2095
         ],
         "loc": {
           "start": {
@@ -2773,8 +2773,8 @@
         }
       },
       "range": [
-        2037,
-        2076
+        2057,
+        2096
       ],
       "loc": {
         "start": {
@@ -2791,8 +2791,8 @@
           "type": "Block",
           "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
           "range": [
-            2078,
-            2250
+            2098,
+            2270
           ],
           "loc": {
             "start": {
@@ -2815,8 +2815,8 @@
           "type": "Identifier",
           "name": "on",
           "range": [
-            2267,
-            2269
+            2287,
+            2289
           ],
           "loc": {
             "start": {
@@ -2834,8 +2834,8 @@
             "type": "Identifier",
             "name": "events",
             "range": [
-              2270,
-              2276
+              2290,
+              2296
             ],
             "loc": {
               "start": {
@@ -2860,8 +2860,8 @@
                   "type": "Identifier",
                   "name": "OnBuilder",
                   "range": [
-                    2295,
-                    2304
+                    2315,
+                    2324
                   ],
                   "loc": {
                     "start": {
@@ -2879,8 +2879,8 @@
                     "type": "Identifier",
                     "name": "events",
                     "range": [
-                      2305,
-                      2311
+                      2325,
+                      2331
                     ],
                     "loc": {
                       "start": {
@@ -2895,8 +2895,8 @@
                   }
                 ],
                 "range": [
-                  2291,
-                  2312
+                  2311,
+                  2332
                 ],
                 "loc": {
                   "start": {
@@ -2910,8 +2910,8 @@
                 }
               },
               "range": [
-                2284,
-                2313
+                2304,
+                2333
               ],
               "loc": {
                 "start": {
@@ -2926,8 +2926,8 @@
             }
           ],
           "range": [
-            2278,
-            2315
+            2298,
+            2335
           ],
           "loc": {
             "start": {
@@ -2943,8 +2943,8 @@
         "generator": false,
         "expression": false,
         "range": [
-          2258,
-          2315
+          2278,
+          2335
         ],
         "loc": {
           "start": {
@@ -2961,8 +2961,8 @@
             "type": "Block",
             "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
             "range": [
-              2078,
-              2250
+              2098,
+              2270
             ],
             "loc": {
               "start": {
@@ -2981,8 +2981,8 @@
       "specifiers": [],
       "source": null,
       "range": [
-        2251,
-        2315
+        2271,
+        2335
       ],
       "loc": {
         "start": {
@@ -2999,8 +2999,8 @@
           "type": "Block",
           "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
           "range": [
-            2078,
-            2250
+            2098,
+            2270
           ],
           "loc": {
             "start": {
@@ -3019,7 +3019,7 @@
   "sourceType": "module",
   "range": [
     0,
-    2315
+    2335
   ],
   "loc": {
     "start": {
@@ -3124,10 +3124,10 @@
     },
     {
       "type": "Block",
-      "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder} builder the property or attribute builder\n * @returns {DelegateBuilder} the delegate builder\n ",
+      "value": "*\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} builder a property, attribute or method builder\n * @returns {DelegateBuilder} the delegate builder\n ",
       "range": [
         1553,
-        1730
+        1750
       ],
       "loc": {
         "start": {
@@ -3144,8 +3144,8 @@
       "type": "Block",
       "value": "*\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n ",
       "range": [
-        1811,
-        1965
+        1831,
+        1985
       ],
       "loc": {
         "start": {
@@ -3162,8 +3162,8 @@
       "type": "Block",
       "value": "*\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n ",
       "range": [
-        2078,
-        2250
+        2098,
+        2270
       ],
       "loc": {
         "start": {
