@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../">
-  <title data-ice="title">Variable | API Document</title>
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/idomizer/idomizer-plugin.js | API Document</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -58,148 +58,18 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">Variable</h1>
-<div data-ice="summaries"><table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Static Public Summary</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="variable/index.html#static-variable-Builder">Builder</a></span></span><span data-ice="signature">: <span><a href="class/lib/builder/Builder.js~Builder.html">Builder</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description">The base builder type</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-           <span data-ice="name"><span><a href="variable/index.html#static-variable-OPTIONS">OPTIONS</a></span></span><span data-ice="signature">: <span>*</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-</tbody>
-</table>
-</div>
-<div data-ice="details"><h2 data-ice="title">Static Public </h2>
+<div class="content" data-ice="content"><h1 data-ice="title">lib/idomizer/idomizer-plugin.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {compile} from &apos;./idomizer.js&apos;;
 
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-variable-Builder">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">Builder</span><span data-ice="signature">: <span><a href="class/lib/builder/Builder.js~Builder.html">Builder</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/lib/ceb.js.html#lineNumber14">source</a></span></span>
-    </span>
-  </h3>
+export function translate(load) {
+    return compile(load.source).toString();
+}
 
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {Builder} from &apos;<span><a href="file/lib/ceb.js.html#lineNumber14">custom-elements-builder</a></span>&apos;</code></pre></div>
-  
-  
-  <div data-ice="description"><p>The base builder type</p>
-</div>
+export function instantiate(load) {
+    return new Function([&apos;i&apos;, &apos;h&apos;], `return (${load.source}(i, h));`);
+}
+</code></pre>
 
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="static-variable-OPTIONS">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    <span data-ice="name">OPTIONS</span><span data-ice="signature">: <span>*</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/lib/idomizer/idomizer.js.html#lineNumber12">source</a></span></span>
-    </span>
-  </h3>
-
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {OPTIONS} from &apos;<span><a href="file/lib/idomizer/idomizer.js.html#lineNumber12">custom-elements-builder/lib/idomizer/idomizer.js</a></span>&apos;</code></pre></div>
-  
-  
-  
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-</div>
 </div>
 
 <footer class="footer">

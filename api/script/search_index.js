@@ -36,6 +36,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "custom-elements-builder/lib/idomizer/idomizer.js~options",
+    "variable/index.html#static-variable-OPTIONS",
+    "<span>OPTIONS</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/idomizer/idomizer.js</span>",
+    "variable"
+  ],
+  [
     "custom-elements-builder/lib/builder/onbuilder.js~onbuilder",
     "class/lib/builder/OnBuilder.js~OnBuilder.html",
     "<span>OnBuilder</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/builder/OnBuilder.js</span>",
@@ -72,15 +78,33 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "custom-elements-builder/lib/idomizer/idomizer.js~compile",
+    "function/index.html#static-function-compile",
+    "<span>compile</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/idomizer/idomizer.js</span>",
+    "function"
+  ],
+  [
     "custom-elements-builder~delegate",
     "function/index.html#static-function-delegate",
     "<span>delegate</span> <span class=\"search-result-import-path\">custom-elements-builder</span>",
     "function"
   ],
   [
+    "custom-elements-builder/lib/idomizer/idomizer.js~evaluate",
+    "function/index.html#static-function-evaluate",
+    "<span>evaluate</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/idomizer/idomizer.js</span>",
+    "function"
+  ],
+  [
     "custom-elements-builder/lib/builder/attributebuilder.js~getattvalue",
     "function/index.html#static-function-getAttValue",
     "<span>getAttValue</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/builder/AttributeBuilder.js</span>",
+    "function"
+  ],
+  [
+    "custom-elements-builder/lib/idomizer/idomizer-plugin.js~instantiate",
+    "function/index.html#static-function-instantiate",
+    "<span>instantiate</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/idomizer/idomizer-plugin.js</span>",
     "function"
   ],
   [
@@ -111,6 +135,12 @@ window.esdocSearchIndex = [
     "custom-elements-builder~template",
     "function/index.html#static-function-template",
     "<span>template</span> <span class=\"search-result-import-path\">custom-elements-builder</span>",
+    "function"
+  ],
+  [
+    "custom-elements-builder/lib/idomizer/idomizer-plugin.js~translate",
+    "function/index.html#static-function-translate",
+    "<span>translate</span> <span class=\"search-result-import-path\">custom-elements-builder/lib/idomizer/idomizer-plugin.js</span>",
     "function"
   ],
   [
@@ -705,6 +735,18 @@ window.esdocSearchIndex = [
     "lib/ceb.js",
     "file/lib/ceb.js.html",
     "lib/ceb.js",
+    "file"
+  ],
+  [
+    "lib/idomizer/idomizer-plugin.js",
+    "file/lib/idomizer/idomizer-plugin.js.html",
+    "lib/idomizer/idomizer-plugin.js",
+    "file"
+  ],
+  [
+    "lib/idomizer/idomizer.js",
+    "file/lib/idomizer/idomizer.js.html",
+    "lib/idomizer/idomizer.js",
     "file"
   ],
   [

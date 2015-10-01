@@ -413,7 +413,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {isString, isFunction, toArray, flatten, invoke, partial, bind} from '../utils.js';\n\nconst LIFECYCLE_CALLBACKS = [\n    'createdCallback',\n    'attachedCallback',\n    'detachedCallback',\n    'attributeChangedCallback'\n];\n\nconst LIFECYCLE_EVENTS = flatten(LIFECYCLE_CALLBACKS.map(name => [`before:${name}`, `after:${name}`]));\n\n/**\n * The custom element builder.\n * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).\n */\nexport class CustomElementBuilder {\n\n    /**\n     */\n    constructor() {\n        let proto = Object.create(HTMLElement.prototype),\n            builders = [],\n            events = LIFECYCLE_EVENTS.reduce((a, b) => {\n                a[b] = [];\n                return a;\n            }, {\n                'before:builders': [],\n                'after:builders': [],\n                'before:registerElement': [],\n                'after:registerElement': []\n            });\n        /**\n         * @type {Object}\n         * @property {!Object} proto - the prototype\n         * @property {!string} extends - the name of a native element\n         * @desc the context of the builder\n         */\n        this.context = {proto, builders, events};\n    }\n\n    /**\n     * To extend a native element.\n     * @param {!string} value the name of the element\n     * @returns {CustomElementBuilder} the builder\n     */\n    extends(value) {\n        this.context.extends = value;\n        return this;\n    }\n\n    /**\n     * To override the default prototype.\n     * @param {!Object} value the prototype\n     * @returns {CustomElementBuilder} the builder\n     */\n    proto(value) {\n        this.context.proto = value;\n        return this;\n    }\n\n    /**\n     * To apply the given builders during the build process.\n     * @param {...Builder} builders the builders\n     * @returns {CustomElementBuilder} the builder\n     */\n    augment(...builders) {\n        builders.forEach(builder => this.context.builders.push(builder));\n        return this;\n    }\n\n    /**\n     * To register call back on events.\n     * @param {!string} event the event name\n     * @returns {Object} the on builder.\n     * @property {function(callback: function)} invoke - to register the callback\n     */\n    on(event) {\n        let invoke = cb => {\n            this.context.events[event].push(cb);\n            return this;\n        };\n        return {invoke};\n    }\n\n    /**\n     * To register the custom element.\n     * @param {!string} name the name of the cutsom element\n     * @returns {Element} the custom element Type\n     */\n    register(name) {\n        this.context.events['before:builders'].forEach(fn => fn(this.context));\n\n        invoke(this.context.builders, 'build', this.context.proto, bind(this.on, this));\n\n        this.context.events['after:builders'].forEach(fn => fn(this.context));\n\n        LIFECYCLE_CALLBACKS.forEach(partial(applyLifecycle, this.context));\n\n        let options = {prototype: this.context.proto};\n\n        if (isString(this.context.extends)) {\n            options.extends = this.context.extends;\n        }\n\n        this.context.events['before:registerElement'].forEach(fn => fn(this.context));\n\n        let CustomElement = document.registerElement(name, options);\n\n        this.context.events['after:registerElement'].forEach(fn => fn(CustomElement));\n\n        return CustomElement;\n    }\n}\n\nfunction applyLifecycle(context, name) {\n    let proto = context.proto,\n        original = proto[name],\n        beforeFns = context.events['before:' + name],\n        afterFns = context.events['after:' + name];\n\n    proto[name] = function () {\n        let args = [this].concat(toArray(arguments));\n\n        beforeFns.forEach(fn => fn.apply(this, args));\n\n        if (isFunction(original)) {\n            original.apply(this, args);\n        }\n\n        afterFns.forEach(fn => fn.apply(this, args));\n    };\n}\n"
+    "content": "import {isString, isFunction, toArray, flatten, invoke, partial, bind} from '../utils.js';\n\nconst LIFECYCLE_CALLBACKS = [\n    'createdCallback',\n    'attachedCallback',\n    'detachedCallback',\n    'attributeChangedCallback'\n];\n\nconst LIFECYCLE_EVENTS = flatten(LIFECYCLE_CALLBACKS.map(name => [`before:${name}`, `after:${name}`, `ready:${name}`]));\n\n/**\n * The custom element builder.\n * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).\n */\nexport class CustomElementBuilder {\n\n    /**\n     */\n    constructor() {\n        let proto = Object.create(HTMLElement.prototype),\n            builders = [],\n            events = LIFECYCLE_EVENTS.reduce((a, b) => {\n                a[b] = [];\n                return a;\n            }, {\n                'before:builders': [],\n                'after:builders': [],\n                'ready:builders': [],\n                'before:registerElement': [],\n                'after:registerElement': [],\n                'ready:registerElement': []\n            });\n        /**\n         * @type {Object}\n         * @property {!Object} proto - the prototype\n         * @property {!string} extends - the name of a native element\n         * @desc the context of the builder\n         */\n        this.context = {proto, builders, events};\n    }\n\n    /**\n     * To extend a native element.\n     * @param {!string} value the name of the element\n     * @returns {CustomElementBuilder} the builder\n     */\n    extends(value) {\n        this.context.extends = value;\n        return this;\n    }\n\n    /**\n     * To override the default prototype.\n     * @param {!Object} value the prototype\n     * @returns {CustomElementBuilder} the builder\n     */\n    proto(value) {\n        this.context.proto = value;\n        return this;\n    }\n\n    /**\n     * To apply the given builders during the build process.\n     * @param {...Builder} builders the builders\n     * @returns {CustomElementBuilder} the builder\n     */\n    augment(...builders) {\n        builders.forEach(builder => this.context.builders.push(builder));\n        return this;\n    }\n\n    /**\n     * To register call back on events.\n     * @param {!string} event the event name\n     * @returns {Object} the on builder.\n     * @property {function(callback: function)} invoke - to register the callback\n     */\n    on(event) {\n        let invoke = cb => {\n            this.context.events[event].push(cb);\n            return this;\n        };\n        return {invoke};\n    }\n\n    /**\n     * To register the custom element.\n     * @param {!string} name the name of the cutsom element\n     * @returns {Element} the custom element Type\n     */\n    register(name) {\n        this.context.events['before:builders'].forEach(fn => fn(this.context));\n\n        invoke(this.context.builders, 'build', this.context.proto, bind(this.on, this));\n\n        this.context.events['after:builders'].forEach(fn => fn(this.context));\n\n        LIFECYCLE_CALLBACKS.forEach(partial(applyLifecycle, this.context));\n\n        let options = {prototype: this.context.proto};\n\n        if (isString(this.context.extends)) {\n            options.extends = this.context.extends;\n        }\n\n        this.context.events['before:registerElement'].forEach(fn => fn(this.context));\n\n        let CustomElement = document.registerElement(name, options);\n\n        this.context.events['after:registerElement'].forEach(fn => fn(CustomElement));\n\n        this.context.events['ready:registerElement'].forEach(fn => fn(CustomElement));\n\n        return CustomElement;\n    }\n}\n\nfunction applyLifecycle(context, name) {\n    let proto = context.proto,\n        original = proto[name],\n        beforeFns = context.events['before:' + name],\n        afterFns = context.events['after:' + name],\n        readyFns = context.events['ready:' + name];\n\n    proto[name] = function () {\n        let args = [this].concat(toArray(arguments));\n\n        beforeFns.forEach(fn => fn.apply(this, args));\n\n        if (isFunction(original)) {\n            original.apply(this, args);\n        }\n\n        afterFns.forEach(fn => fn.apply(this, args));\n\n        readyFns.forEach(fn => fn.apply(this, args));\n    };\n}\n"
   },
   {
     "kind": "variable",
@@ -492,7 +492,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#context",
     "access": null,
     "description": "the context of the builder",
-    "lineNumber": 38,
+    "lineNumber": 40,
     "properties": [
       {
         "nullable": false,
@@ -533,7 +533,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#extends",
     "access": null,
     "description": "To extend a native element.",
-    "lineNumber": 46,
+    "lineNumber": 48,
     "unknown": [
       {
         "tagName": "@returns",
@@ -571,7 +571,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#proto",
     "access": null,
     "description": "To override the default prototype.",
-    "lineNumber": 56,
+    "lineNumber": 58,
     "unknown": [
       {
         "tagName": "@returns",
@@ -609,7 +609,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#augment",
     "access": null,
     "description": "To apply the given builders during the build process.",
-    "lineNumber": 66,
+    "lineNumber": 68,
     "unknown": [
       {
         "tagName": "@returns",
@@ -647,7 +647,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#on",
     "access": null,
     "description": "To register call back on events.",
-    "lineNumber": 77,
+    "lineNumber": 79,
     "unknown": [
       {
         "tagName": "@returns",
@@ -697,7 +697,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#register",
     "access": null,
     "description": "To register the custom element.",
-    "lineNumber": 90,
+    "lineNumber": 92,
     "unknown": [
       {
         "tagName": "@returns",
@@ -738,7 +738,7 @@
     "importPath": "custom-elements-builder/lib/builder/CustomElementBuilder.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 115,
+    "lineNumber": 119,
     "undocument": true,
     "params": [
       {
@@ -1209,7 +1209,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {isFunction, toArray, find, noop} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The on builder.\n * Its goal is to provide a way to listen events coming from the custom element.\n * @extends {Builder}\n */\nexport class OnBuilder extends Builder {\n\n    /**\n     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n     */\n    constructor(events) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {events, invoke: noop};\n    }\n\n    /**\n     * To do something when events occurred.\n     * The target arugment is by default the custom element.\n     * When the delegate feature is used, target is the matched element.\n     * @param {!function(el: HTMLElement, evt: DOMEvent, target: HTMLElement)} fn the event's logic\n     * @returns {OnBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To attach the event on the capture phase instread of on the bubble phase.\n     * @returns {OnBuilder} the builder\n     */\n    capture() {\n        this.data.capture = true;\n        return this;\n    }\n\n    /**\n     * To delegate the event.\n     * @param {!string} selector the selector\n     * @returns {OnBuilder} the builder\n     */\n    delegate(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior.\n     * @returns {OnBuilder} the builder\n     */\n    prevent() {\n        this.data.preventDefault = true;\n        return this;\n    }\n\n    /**\n     * To stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    stop() {\n        this.data.stopPropagation = true;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior and to stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    skip() {\n        return this.prevent().stop();\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let events = this.data.events.split(',').map(event => event.trim().split(' ')),\n            capture = !!this.data.capture,\n            invoke = this.data.invoke,\n            selector = this.data.selector,\n            stopPropagation = this.data.stopPropagation,\n            preventDefault = this.data.preventDefault;\n\n        on('before:createdCallback').invoke((el) => {\n            el._cebOnHandlers = [];\n        });\n\n        on('before:attachedCallback').invoke((el) => {\n            let listener = evt => {\n                if (selector) {\n                    let target = find(\n                        toArray(el.querySelectorAll(selector)),\n                            el => el === evt.target || el.contains(evt.target)\n                    );\n                    if (target) {\n                        if (stopPropagation) {\n                            evt.stopPropagation();\n                        }\n                        if (preventDefault) {\n                            evt.preventDefault();\n                        }\n                        invoke(el, evt, target);\n                    }\n                } else {\n                    if (stopPropagation) {\n                        evt.stopPropagation();\n                    }\n                    if (preventDefault) {\n                        evt.preventDefault();\n                    }\n                    invoke(el, evt, el);\n                }\n            };\n\n            el._cebOnHandlers = events\n                .map(([name, target]) => [name, target ? el.querySelector(target) : el])\n                .filter(([name, target]) => !!target)\n                .map(([name, target]) => {\n                    target.addEventListener(name, listener, capture);\n                    return [target, name, listener, capture];\n                });\n\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.addEventListener(name, listener, capture));\n\n        });\n\n        on('before:detachedCallback').invoke((el) => {\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.removeEventListener(name, listener, capture));\n        });\n    }\n\n}\n"
+    "content": "import {isFunction, toArray, find, noop} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The on builder.\n * Its goal is to provide a way to listen events coming from the custom element.\n * @extends {Builder}\n */\nexport class OnBuilder extends Builder {\n\n    /**\n     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n     */\n    constructor(events) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {events, invoke: noop};\n    }\n\n    /**\n     * To do something when events occurred.\n     * The target argument is by default the custom element.\n     * When the delegate feature is used, target is the matched element.\n     * @param {!function(el: HTMLElement, evt: DOMEvent, target: HTMLElement)} fn the event's logic\n     * @returns {OnBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To attach the event on the capture phase insteadof of on the bubble phase.\n     * @returns {OnBuilder} the builder\n     */\n    capture() {\n        this.data.capture = true;\n        return this;\n    }\n\n    /**\n     * To delegate the event.\n     * @param {!string} selector the selector\n     * @returns {OnBuilder} the builder\n     */\n    delegate(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior.\n     * @returns {OnBuilder} the builder\n     */\n    prevent() {\n        this.data.preventDefault = true;\n        return this;\n    }\n\n    /**\n     * To stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    stop() {\n        this.data.stopPropagation = true;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior and to stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    skip() {\n        return this.prevent().stop();\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let events = this.data.events.split(',').map(event => event.trim().split(' ')),\n            capture = !!this.data.capture,\n            invoke = this.data.invoke,\n            selector = this.data.selector,\n            stopPropagation = this.data.stopPropagation,\n            preventDefault = this.data.preventDefault;\n\n        on('before:createdCallback').invoke((el) => {\n            el._cebOnHandlers = [];\n        });\n\n        on('before:attachedCallback').invoke((el) => {\n            let listener = evt => {\n                if (selector) {\n                    let target = find(\n                        toArray(el.querySelectorAll(selector)),\n                            el => el === evt.target || el.contains(evt.target)\n                    );\n                    if (target) {\n                        if (stopPropagation) {\n                            evt.stopPropagation();\n                        }\n                        if (preventDefault) {\n                            evt.preventDefault();\n                        }\n                        invoke(el, evt, target);\n                    }\n                } else {\n                    if (stopPropagation) {\n                        evt.stopPropagation();\n                    }\n                    if (preventDefault) {\n                        evt.preventDefault();\n                    }\n                    invoke(el, evt, el);\n                }\n            };\n\n            el._cebOnHandlers = events\n                .map(([name, target]) => [name, target ? el.querySelector(target) : el])\n                .filter(([name, target]) => !!target)\n                .map(([name, target]) => {\n                    target.addEventListener(name, listener, capture);\n                    return [target, name, listener, capture];\n                });\n\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.addEventListener(name, listener, capture));\n\n        });\n\n        on('before:detachedCallback').invoke((el) => {\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.removeEventListener(name, listener, capture));\n        });\n    }\n\n}\n"
   },
   {
     "kind": "class",
@@ -1278,7 +1278,7 @@
     "memberof": "lib/builder/OnBuilder.js~OnBuilder",
     "longname": "lib/builder/OnBuilder.js~OnBuilder#invoke",
     "access": null,
-    "description": "To do something when events occurred.\nThe target arugment is by default the custom element.\nWhen the delegate feature is used, target is the matched element.",
+    "description": "To do something when events occurred.\nThe target argument is by default the custom element.\nWhen the delegate feature is used, target is the matched element.",
     "lineNumber": 29,
     "unknown": [
       {
@@ -1316,7 +1316,7 @@
     "memberof": "lib/builder/OnBuilder.js~OnBuilder",
     "longname": "lib/builder/OnBuilder.js~OnBuilder#capture",
     "access": null,
-    "description": "To attach the event on the capture phase instread of on the bubble phase.",
+    "description": "To attach the event on the capture phase insteadof of on the bubble phase.",
     "lineNumber": 40,
     "unknown": [
       {
@@ -2512,6 +2512,578 @@
       ],
       "spread": false,
       "description": "the on builder"
+    },
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/idomizer/idomizer-plugin.js",
+    "memberof": null,
+    "longname": "lib/idomizer/idomizer-plugin.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import {compile} from './idomizer.js';\n\nexport function translate(load) {\n    return compile(load.source).toString();\n}\n\nexport function instantiate(load) {\n    return new Function(['i', 'h'], `return (${load.source}(i, h));`);\n}\n"
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "translate",
+    "memberof": "lib/idomizer/idomizer-plugin.js",
+    "longname": "lib/idomizer/idomizer-plugin.js~translate",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer-plugin.js",
+    "importStyle": "{translate}",
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "params": [
+      {
+        "name": "load",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "instantiate",
+    "memberof": "lib/idomizer/idomizer-plugin.js",
+    "longname": "lib/idomizer/idomizer-plugin.js~instantiate",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer-plugin.js",
+    "importStyle": "{instantiate}",
+    "description": null,
+    "lineNumber": 7,
+    "undocument": true,
+    "params": [
+      {
+        "name": "load",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "file",
+    "static": true,
+    "variation": null,
+    "name": "lib/idomizer/idomizer.js",
+    "memberof": null,
+    "longname": "lib/idomizer/idomizer.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1,
+    "content": "import htmlparser2 from 'htmlparser2';\n\nfunction assign() {\n    return Array.prototype.reduce.call(arguments, function (target, source) {\n        return Object.keys(Object(source)).reduce((target, key) => {\n            target[key] = source[key];\n            return target;\n        }, target);\n    });\n}\n\nexport const OPTIONS = {\n    pretty: true,\n    evaluation: /\\{\\{([\\s\\S]+?)}}/gm,\n    attributeKey: 'tpl-key',\n    attributePlaceholder: 'tpl-placeholder',\n    varDataName: 'data',\n    varHelpersName: 'helpers',\n    elements: {\n        'tpl-logger': {\n            onopentag(name, attrs, key, statics, varArgs, options) {\n                let level = statics.level || varArgs.level || 'log',\n                    content = statics.content || varArgs.content || '';\n                return `console.${level}(${content});`;\n            }\n        },\n        'tpl-each': {\n            onopentag(name, attrs, key, statics, varArgs, options) {\n                let itemsName = statics.items || varArgs.items || `items`,\n                    itemName = statics.item || varArgs.item || `item`,\n                    indexName = statics.index || varArgs.index || `index`;\n                return `(${itemsName} || []).forEach(function (${itemName}, ${indexName}) {`;\n            },\n            onclosetag(name, attrs, statics, varArgs, options) {\n                return `});`;\n            }\n        },\n        'tpl-text': {\n            onopentag(name, attrs, key, statics, varArgs, options) {\n                return `t(${statics.value || varArgs.value});`;\n            }\n        },\n        'tpl-call': {\n            onopentag(name, attrs, key, statics, varArgs, options) {\n                let helperName = statics.name || varArgs.name;\n                return `${options.varHelpersName}.${helperName}(${options.varDataName});`;\n            }\n        }\n    },\n    // http://www.w3.org/TR/html5/syntax.html#void-elements\n    selfClosingElements: ['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'source', 'track', 'wbr']\n};\n\nfunction stringify(value = '') {\n    return value.replace(/'/gim, '\\\\\\'').replace(/\\n/gi, '\\\\n');\n}\n\nfunction isSelfClosing(name = '', options = OPTIONS) {\n    return options.selfClosingElements.indexOf(name) > -1;\n}\n\nfunction getFunctionName(name = '', placeholder = false, options = OPTIONS) {\n    return placeholder ? 'ph' : (isSelfClosing(name, options) ? 'v' : 'o');\n}\n\nfunction append(body = '', line = '', options = OPTIONS) {\n    return body + (options.pretty ? '\\n' : '') + line;\n}\n\nconst stringEvaluator = {\n    appender: ' + ',\n    toText: text => `'${stringify(text)}'`,\n    toJs: clause => `(${clause})`\n};\n\nconst inlineEvaluator = {\n    appender: ' ',\n    toText: text => `t('${stringify(text)}');`,\n    toJs: clause => `${clause}`\n};\n\n/**\n * Evaluate the string to return a JavaScript compliant syntax.\n * @param {!string} value the value\n * @param {*} options the options\n * @param {*} conf the evaluator's configuration\n * @returns {string} the JavaScript compliant syntax\n */\nexport function evaluate(value = '', options = OPTIONS, conf = stringEvaluator) {\n    let js = [];\n    let result;\n    let lastIndex = 0;\n    while ((result = options.evaluation.exec(value)) !== null) {\n        let full = result[0];\n        let group = result[1];\n        let index = result.index;\n        let before = value.substring(lastIndex, index);\n        if (before) {\n            js.push(conf.toText(before));\n        }\n        js.push(conf.toJs(group));\n        lastIndex = index + full.length;\n    }\n    let after = value.substring(lastIndex, value.length);\n    if (after) {\n        js.push(conf.toText(after));\n    }\n    //conf\n    return js.join(conf.appender);\n}\n\nfunction parseAttributes(attrs = {}, options = OPTIONS) {\n    let statics = {},\n        varArgs = {},\n        key,\n        placeholder = attrs[options.attributePlaceholder] !== null && attrs[options.attributePlaceholder] !== undefined;\n    Object.keys(attrs)\n        .filter(key => [options.attributePlaceholder].indexOf(key) < 0)\n        .forEach(function (key) {\n            let value = attrs[key];\n            if (value.search(options.evaluation) > -1) {\n                varArgs[key] = evaluate(value, options);\n            } else {\n                statics[key] = value;\n            }\n        });\n    key = statics[options.attributeKey] || varArgs[options.attributeKey];\n    delete statics[options.attributeKey];\n    delete varArgs[options.attributeKey];\n    return [statics, varArgs, key, placeholder];\n}\n\n/**\n * Helper to transform a map of variables attributes into a JavaScript compliant syntax.\n * @param {*} varArgs the variables arguments\n * @returns {string} the JavaScript\n */\nfunction varArgsToJs(varArgs = {}) {\n    let keys = Object.keys(varArgs);\n    return keys.length > 0 ? (keys.map(key => `'${key}', ${varArgs[key]}`).join(', ')) : 'null';\n}\n\n/**\n * Helper to transform a map of statics attributes into a JavaScript compliant syntax.\n * @param {*} statics the statics\n * @returns {string} the JavaScript\n */\nfunction staticsToJs(statics = {}) {\n    let keys = Object.keys(statics);\n    return keys.length > 0 ? `[${keys.map(key => `'${key}', '${stringify(statics[key])}'`).join(', ')}]` : 'null';\n}\n\n/**\n * Compile the given HTML template into a function factory.\n *\n * If the incrementalDOM argument is provided, this function will return a render function.\n * The render function is used with IncrementalDOM.patch.\n *\n * If the incrementalDOM argument is not provided, this function will return a factory function.\n * The factory function requires the IncrementalDOM library as argument and return the render function..\n *\n * Basically, when the template is compiled at build time, the IncrementalDOM should not be given.\n * When the template is compiled at runtime, the IncrementalDOM should be given.\n *\n * @param {!string} html the template\n * @param {Object} [options] the options\n * @returns {function(i: !IncrementalDOM, h: *)} the function factory\n */\nexport function compile(html = '', options = {}) {\n    options = assign({}, OPTIONS, options, {\n        elements: assign({}, OPTIONS.elements, options.elements)\n    });\n\n    let fnBody = '';\n    let skipClosing;\n    let parser = new htmlparser2.Parser({\n        onopentag(name, attrs) {\n            let [statics, varArgs, key, placeholder] = parseAttributes(attrs, options);\n            skipClosing = placeholder;\n            if (options.elements[name]) {\n                let element = options.elements[name];\n                if (typeof element.onopentag === 'function') {\n                    fnBody = append(fnBody, element.onopentag(name, attrs, key, statics, varArgs, options), options);\n                }\n            } else {\n                let fn = getFunctionName(name, placeholder, options);\n                fnBody = append(fnBody, `${fn}('${name}', ${key ? `${key}` : 'null'}, ${staticsToJs(statics)}, ${varArgsToJs(varArgs)});`, options);\n            }\n        },\n        onclosetag(name) {\n            if (options.elements[name]) {\n                let element = options.elements[name];\n                if (typeof element.onclosetag === 'function') {\n                    fnBody = append(fnBody, element.onclosetag(name, options), options);\n                }\n            } else if (!isSelfClosing(name, options) && !skipClosing) {\n                fnBody = append(fnBody, `c('${name}');`, options);\n            }\n            skipClosing = false;\n        },\n        ontext(text){\n            if (text.search(options.evaluation) > -1) {\n                fnBody = append(fnBody, `${evaluate(text, options, inlineEvaluator)}`, options);\n            } else {\n                fnBody = append(fnBody, `t('${stringify(text)}');`, options);\n            }\n        }\n    }, {\n        xmlMode: false,\n        decodeEntities: true,\n        lowerCaseTags: false,\n        lowerCaseAttributeNames: false,\n        recognizeSelfClosing: true\n    });\n\n    parser.parseComplete(html);\n\n    let fnWrapper = `\n        var o = i.elementOpen,\n            c = i.elementClose,\n            v = i.elementVoid,\n            t = i.text,\n            ph = i.elementPlaceholder;\n        return function (_data_) {\n            var ${options.varHelpersName || 'helpers'} = h || {},\n                ${options.varDataName || 'data'} = _data_ || {};\n            ${fnBody}\n        };\n    `;\n\n    let factory = new Function(['i', 'h'], fnWrapper);\n\n    return factory;\n}\n"
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "assign",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~assign",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 3,
+    "undocument": true,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "OPTIONS",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~OPTIONS",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": "{OPTIONS}",
+    "description": null,
+    "lineNumber": 12,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "stringify",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~stringify",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 54,
+    "undocument": true,
+    "params": [
+      {
+        "name": "value",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "",
+        "defaultValue": ""
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "isSelfClosing",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~isSelfClosing",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 58,
+    "undocument": true,
+    "params": [
+      {
+        "name": "name",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "",
+        "defaultValue": ""
+      },
+      {
+        "name": "options",
+        "optional": true,
+        "types": [
+          "*"
+        ],
+        "defaultRaw": "OPTIONS",
+        "defaultValue": "OPTIONS"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "getFunctionName",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~getFunctionName",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 62,
+    "undocument": true,
+    "params": [
+      {
+        "name": "name",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "",
+        "defaultValue": ""
+      },
+      {
+        "name": "placeholder",
+        "optional": true,
+        "types": [
+          "boolean"
+        ],
+        "defaultRaw": false,
+        "defaultValue": "false"
+      },
+      {
+        "name": "options",
+        "optional": true,
+        "types": [
+          "*"
+        ],
+        "defaultRaw": "OPTIONS",
+        "defaultValue": "OPTIONS"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "append",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~append",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 66,
+    "undocument": true,
+    "params": [
+      {
+        "name": "body",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "",
+        "defaultValue": ""
+      },
+      {
+        "name": "line",
+        "optional": true,
+        "types": [
+          "string"
+        ],
+        "defaultRaw": "",
+        "defaultValue": ""
+      },
+      {
+        "name": "options",
+        "optional": true,
+        "types": [
+          "*"
+        ],
+        "defaultRaw": "OPTIONS",
+        "defaultValue": "OPTIONS"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "stringEvaluator",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~stringEvaluator",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 70,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "variable",
+    "static": true,
+    "variation": null,
+    "name": "inlineEvaluator",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~inlineEvaluator",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 76,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "evaluate",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~evaluate",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": "{evaluate}",
+    "description": "Evaluate the string to return a JavaScript compliant syntax.",
+    "lineNumber": 89,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{string} the JavaScript compliant syntax"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "value",
+        "description": "the value"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "the options"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "conf",
+        "description": "the evaluator's configuration"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "the JavaScript compliant syntax"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "parseAttributes",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~parseAttributes",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 112,
+    "undocument": true,
+    "params": [
+      {
+        "name": "attrs",
+        "optional": true,
+        "types": [
+          "{}"
+        ],
+        "defaultRaw": {},
+        "defaultValue": "{}"
+      },
+      {
+        "name": "options",
+        "optional": true,
+        "types": [
+          "*"
+        ],
+        "defaultRaw": "OPTIONS",
+        "defaultValue": "OPTIONS"
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "varArgsToJs",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~varArgsToJs",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": "Helper to transform a map of variables attributes into a JavaScript compliant syntax.",
+    "lineNumber": 138,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{string} the JavaScript"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "varArgs",
+        "description": "the variables arguments"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "the JavaScript"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "staticsToJs",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~staticsToJs",
+    "access": null,
+    "export": false,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": null,
+    "description": "Helper to transform a map of statics attributes into a JavaScript compliant syntax.",
+    "lineNumber": 148,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{string} the JavaScript"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "*"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "statics",
+        "description": "the statics"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "the JavaScript"
+    },
+    "generator": false
+  },
+  {
+    "kind": "function",
+    "static": true,
+    "variation": null,
+    "name": "compile",
+    "memberof": "lib/idomizer/idomizer.js",
+    "longname": "lib/idomizer/idomizer.js~compile",
+    "access": null,
+    "export": true,
+    "importPath": "custom-elements-builder/lib/idomizer/idomizer.js",
+    "importStyle": "{compile}",
+    "description": "Compile the given HTML template into a function factory.\n\nIf the incrementalDOM argument is provided, this function will return a render function.\nThe render function is used with IncrementalDOM.patch.\n\nIf the incrementalDOM argument is not provided, this function will return a factory function.\nThe factory function requires the IncrementalDOM library as argument and return the render function..\n\nBasically, when the template is compiled at build time, the IncrementalDOM should not be given.\nWhen the template is compiled at runtime, the IncrementalDOM should be given.",
+    "lineNumber": 169,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{function(i: !IncrementalDOM, h: *)} the function factory"
+      }
+    ],
+    "params": [
+      {
+        "nullable": false,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "html",
+        "description": "the template"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "Object"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "options",
+        "description": "the options"
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "function(i: !IncrementalDOM, h: *)"
+      ],
+      "spread": false,
+      "description": "the function factory"
     },
     "generator": false
   },

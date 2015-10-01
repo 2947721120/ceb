@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">lib/idomizer/idomizer.js | API Document</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  
+  
+</head>
+<body class="layout-container">
+
+<header>
+  <a href="./">Home</a>
+  <a href="identifiers.html">Identifier</a>
+  <a href="source.html">Source</a>
+  
+  <a data-ice="repoURL" href="git://github.com/tmorin/custom-elements-builder.git">Repository</a>
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attribute">attribute</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-ceb">ceb</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-delegate">delegate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-method">method</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-on">on</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-property">property</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-template">template</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-Builder">Builder</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">builder</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/builder/AttributeBuilder.js~AttributeBuilder.html">AttributeBuilder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/builder/Builder.js~Builder.html">Builder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html">CustomElementBuilder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/builder/DelegateBuilder.js~DelegateBuilder.html">DelegateBuilder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/builder/MethodBuilder.js~MethodBuilder.html">MethodBuilder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/builder/OnBuilder.js~OnBuilder.html">OnBuilder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/builder/PropertyBuilder.js~PropertyBuilder.html">PropertyBuilder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/lib/builder/TemplateBuilder.js~TemplateBuilder.html">TemplateBuilder</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyTemplate">applyTemplate</a></span></span></li>
+<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">idomizer</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-instantiate">instantiate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-translate">translate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-compile">compile</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-evaluate">evaluate</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-variable">V</span><span data-ice="name"><span><a href="variable/index.html#static-variable-OPTIONS">OPTIONS</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">lib/idomizer/idomizer.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import htmlparser2 from &apos;htmlparser2&apos;;
+
+function assign() {
+    return Array.prototype.reduce.call(arguments, function (target, source) {
+        return Object.keys(Object(source)).reduce((target, key) =&gt; {
+            target[key] = source[key];
+            return target;
+        }, target);
+    });
+}
+
+export const OPTIONS = {
+    pretty: true,
+    evaluation: /\{\{([\s\S]+?)}}/gm,
+    attributeKey: &apos;tpl-key&apos;,
+    attributePlaceholder: &apos;tpl-placeholder&apos;,
+    varDataName: &apos;data&apos;,
+    varHelpersName: &apos;helpers&apos;,
+    elements: {
+        &apos;tpl-logger&apos;: {
+            onopentag(name, attrs, key, statics, varArgs, options) {
+                let level = statics.level || varArgs.level || &apos;log&apos;,
+                    content = statics.content || varArgs.content || &apos;&apos;;
+                return `console.${level}(${content});`;
+            }
+        },
+        &apos;tpl-each&apos;: {
+            onopentag(name, attrs, key, statics, varArgs, options) {
+                let itemsName = statics.items || varArgs.items || `items`,
+                    itemName = statics.item || varArgs.item || `item`,
+                    indexName = statics.index || varArgs.index || `index`;
+                return `(${itemsName} || []).forEach(function (${itemName}, ${indexName}) {`;
+            },
+            onclosetag(name, attrs, statics, varArgs, options) {
+                return `});`;
+            }
+        },
+        &apos;tpl-text&apos;: {
+            onopentag(name, attrs, key, statics, varArgs, options) {
+                return `t(${statics.value || varArgs.value});`;
+            }
+        },
+        &apos;tpl-call&apos;: {
+            onopentag(name, attrs, key, statics, varArgs, options) {
+                let helperName = statics.name || varArgs.name;
+                return `${options.varHelpersName}.${helperName}(${options.varDataName});`;
+            }
+        }
+    },
+    // http://www.w3.org/TR/html5/syntax.html#void-elements
+    selfClosingElements: [&apos;area&apos;, &apos;base&apos;, &apos;br&apos;, &apos;col&apos;, &apos;embed&apos;, &apos;hr&apos;, &apos;img&apos;, &apos;input&apos;, &apos;keygen&apos;, &apos;link&apos;, &apos;meta&apos;, &apos;param&apos;, &apos;source&apos;, &apos;track&apos;, &apos;wbr&apos;]
+};
+
+function stringify(value = &apos;&apos;) {
+    return value.replace(/&apos;/gim, &apos;\\\&apos;&apos;).replace(/\n/gi, &apos;\\n&apos;);
+}
+
+function isSelfClosing(name = &apos;&apos;, options = OPTIONS) {
+    return options.selfClosingElements.indexOf(name) &gt; -1;
+}
+
+function getFunctionName(name = &apos;&apos;, placeholder = false, options = OPTIONS) {
+    return placeholder ? &apos;ph&apos; : (isSelfClosing(name, options) ? &apos;v&apos; : &apos;o&apos;);
+}
+
+function append(body = &apos;&apos;, line = &apos;&apos;, options = OPTIONS) {
+    return body + (options.pretty ? &apos;\n&apos; : &apos;&apos;) + line;
+}
+
+const stringEvaluator = {
+    appender: &apos; + &apos;,
+    toText: text =&gt; `&apos;${stringify(text)}&apos;`,
+    toJs: clause =&gt; `(${clause})`
+};
+
+const inlineEvaluator = {
+    appender: &apos; &apos;,
+    toText: text =&gt; `t(&apos;${stringify(text)}&apos;);`,
+    toJs: clause =&gt; `${clause}`
+};
+
+/**
+ * Evaluate the string to return a JavaScript compliant syntax.
+ * @param {!string} value the value
+ * @param {*} options the options
+ * @param {*} conf the evaluator&apos;s configuration
+ * @returns {string} the JavaScript compliant syntax
+ */
+export function evaluate(value = &apos;&apos;, options = OPTIONS, conf = stringEvaluator) {
+    let js = [];
+    let result;
+    let lastIndex = 0;
+    while ((result = options.evaluation.exec(value)) !== null) {
+        let full = result[0];
+        let group = result[1];
+        let index = result.index;
+        let before = value.substring(lastIndex, index);
+        if (before) {
+            js.push(conf.toText(before));
+        }
+        js.push(conf.toJs(group));
+        lastIndex = index + full.length;
+    }
+    let after = value.substring(lastIndex, value.length);
+    if (after) {
+        js.push(conf.toText(after));
+    }
+    //conf
+    return js.join(conf.appender);
+}
+
+function parseAttributes(attrs = {}, options = OPTIONS) {
+    let statics = {},
+        varArgs = {},
+        key,
+        placeholder = attrs[options.attributePlaceholder] !== null &amp;&amp; attrs[options.attributePlaceholder] !== undefined;
+    Object.keys(attrs)
+        .filter(key =&gt; [options.attributePlaceholder].indexOf(key) &lt; 0)
+        .forEach(function (key) {
+            let value = attrs[key];
+            if (value.search(options.evaluation) &gt; -1) {
+                varArgs[key] = evaluate(value, options);
+            } else {
+                statics[key] = value;
+            }
+        });
+    key = statics[options.attributeKey] || varArgs[options.attributeKey];
+    delete statics[options.attributeKey];
+    delete varArgs[options.attributeKey];
+    return [statics, varArgs, key, placeholder];
+}
+
+/**
+ * Helper to transform a map of variables attributes into a JavaScript compliant syntax.
+ * @param {*} varArgs the variables arguments
+ * @returns {string} the JavaScript
+ */
+function varArgsToJs(varArgs = {}) {
+    let keys = Object.keys(varArgs);
+    return keys.length &gt; 0 ? (keys.map(key =&gt; `&apos;${key}&apos;, ${varArgs[key]}`).join(&apos;, &apos;)) : &apos;null&apos;;
+}
+
+/**
+ * Helper to transform a map of statics attributes into a JavaScript compliant syntax.
+ * @param {*} statics the statics
+ * @returns {string} the JavaScript
+ */
+function staticsToJs(statics = {}) {
+    let keys = Object.keys(statics);
+    return keys.length &gt; 0 ? `[${keys.map(key =&gt; `&apos;${key}&apos;, &apos;${stringify(statics[key])}&apos;`).join(&apos;, &apos;)}]` : &apos;null&apos;;
+}
+
+/**
+ * Compile the given HTML template into a function factory.
+ *
+ * If the incrementalDOM argument is provided, this function will return a render function.
+ * The render function is used with IncrementalDOM.patch.
+ *
+ * If the incrementalDOM argument is not provided, this function will return a factory function.
+ * The factory function requires the IncrementalDOM library as argument and return the render function..
+ *
+ * Basically, when the template is compiled at build time, the IncrementalDOM should not be given.
+ * When the template is compiled at runtime, the IncrementalDOM should be given.
+ *
+ * @param {!string} html the template
+ * @param {Object} [options] the options
+ * @returns {function(i: !IncrementalDOM, h: *)} the function factory
+ */
+export function compile(html = &apos;&apos;, options = {}) {
+    options = assign({}, OPTIONS, options, {
+        elements: assign({}, OPTIONS.elements, options.elements)
+    });
+
+    let fnBody = &apos;&apos;;
+    let skipClosing;
+    let parser = new htmlparser2.Parser({
+        onopentag(name, attrs) {
+            let [statics, varArgs, key, placeholder] = parseAttributes(attrs, options);
+            skipClosing = placeholder;
+            if (options.elements[name]) {
+                let element = options.elements[name];
+                if (typeof element.onopentag === &apos;function&apos;) {
+                    fnBody = append(fnBody, element.onopentag(name, attrs, key, statics, varArgs, options), options);
+                }
+            } else {
+                let fn = getFunctionName(name, placeholder, options);
+                fnBody = append(fnBody, `${fn}(&apos;${name}&apos;, ${key ? `${key}` : &apos;null&apos;}, ${staticsToJs(statics)}, ${varArgsToJs(varArgs)});`, options);
+            }
+        },
+        onclosetag(name) {
+            if (options.elements[name]) {
+                let element = options.elements[name];
+                if (typeof element.onclosetag === &apos;function&apos;) {
+                    fnBody = append(fnBody, element.onclosetag(name, options), options);
+                }
+            } else if (!isSelfClosing(name, options) &amp;&amp; !skipClosing) {
+                fnBody = append(fnBody, `c(&apos;${name}&apos;);`, options);
+            }
+            skipClosing = false;
+        },
+        ontext(text){
+            if (text.search(options.evaluation) &gt; -1) {
+                fnBody = append(fnBody, `${evaluate(text, options, inlineEvaluator)}`, options);
+            } else {
+                fnBody = append(fnBody, `t(&apos;${stringify(text)}&apos;);`, options);
+            }
+        }
+    }, {
+        xmlMode: false,
+        decodeEntities: true,
+        lowerCaseTags: false,
+        lowerCaseAttributeNames: false,
+        recognizeSelfClosing: true
+    });
+
+    parser.parseComplete(html);
+
+    let fnWrapper = `
+        var o = i.elementOpen,
+            c = i.elementClose,
+            v = i.elementVoid,
+            t = i.text,
+            ph = i.elementPlaceholder;
+        return function (_data_) {
+            var ${options.varHelpersName || &apos;helpers&apos;} = h || {},
+                ${options.varDataName || &apos;data&apos;} = _data_ || {};
+            ${fnBody}
+        };
+    `;
+
+    let factory = new Function([&apos;i&apos;, &apos;h&apos;], fnWrapper);
+
+    return factory;
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.3.1)</span></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
