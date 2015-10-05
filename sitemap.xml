@@ -2,138 +2,178 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/about.html</loc>
-        <lastmod>2015-10-01T18:49:01.368Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.436Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/attribute.html</loc>
-        <lastmod>2015-10-01T18:49:01.368Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.436Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/ceb.html</loc>
-        <lastmod>2015-10-01T18:49:01.368Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.444Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/delegate.html</loc>
-        <lastmod>2015-10-01T18:49:01.368Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.444Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/</loc>
-        <lastmod>2015-10-01T18:49:01.364Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.420Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/method.html</loc>
-        <lastmod>2015-10-01T18:49:01.368Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.448Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/on.html</loc>
-        <lastmod>2015-10-01T18:49:01.372Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.452Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/property.html</loc>
-        <lastmod>2015-10-01T18:49:01.372Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.456Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/template.html</loc>
-        <lastmod>2015-10-01T18:49:01.372Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.456Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/identifiers.html</loc>
-        <lastmod>2015-10-01T18:49:01.364Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.408Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/</loc>
-        <lastmod>2015-10-01T18:49:01.368Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.436Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/source.html</loc>
-        <lastmod>2015-10-01T18:49:01.368Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.448Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/ceb-address-selector.html</loc>
+        <lastmod>2015-10-05T17:59:02.664Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/ceb-list-plusplus.html</loc>
+        <lastmod>2015-10-05T17:59:02.664Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/ceb-list.html</loc>
+        <lastmod>2015-10-05T17:59:02.664Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/ceb-templator.html</loc>
+        <lastmod>2015-10-05T17:59:02.664Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/</loc>
+        <lastmod>2015-10-05T17:59:02.664Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/todo-app.html</loc>
+        <lastmod>2015-10-05T17:59:02.664Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/wui.html</loc>
+        <lastmod>2015-10-05T17:59:02.664Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/function/</loc>
-        <lastmod>2015-10-01T18:49:01.380Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.464Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/variable/</loc>
-        <lastmod>2015-10-01T18:49:01.392Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.488Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/load/System.html</loc>
+        <lastmod>2015-10-05T17:59:02.668Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/load/amd.html</loc>
+        <lastmod>2015-10-05T17:59:02.668Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/load/standalone.html</loc>
+        <lastmod>2015-10-05T17:59:02.668Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/load/umd.html</loc>
+        <lastmod>2015-10-05T17:59:02.668Z</lastmod>
+    </url>
+    <url>
+        <loc>http://tmorin.github.io/custom-elements-builder/example/todo-app/todo-app.html</loc>
+        <lastmod>2015-10-05T17:59:02.672Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/ceb.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.396Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.492Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/utils.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.400Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.496Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/class/lib/builder/AttributeBuilder.js~AttributeBuilder.html</loc>
-        <lastmod>2015-10-01T18:49:01.412Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.512Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/class/lib/builder/Builder.js~Builder.html</loc>
-        <lastmod>2015-10-01T18:49:01.416Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.512Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html</loc>
-        <lastmod>2015-10-01T18:49:01.416Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.516Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/class/lib/builder/DelegateBuilder.js~DelegateBuilder.html</loc>
-        <lastmod>2015-10-01T18:49:01.416Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.520Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/class/lib/builder/MethodBuilder.js~MethodBuilder.html</loc>
-        <lastmod>2015-10-01T18:49:01.416Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.520Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/class/lib/builder/OnBuilder.js~OnBuilder.html</loc>
-        <lastmod>2015-10-01T18:49:01.416Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.520Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/class/lib/builder/PropertyBuilder.js~PropertyBuilder.html</loc>
-        <lastmod>2015-10-01T18:49:01.420Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.520Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/class/lib/builder/TemplateBuilder.js~TemplateBuilder.html</loc>
-        <lastmod>2015-10-01T18:49:01.420Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.524Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/builder/AttributeBuilder.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.420Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.524Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/builder/Builder.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.420Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.528Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/builder/CustomElementBuilder.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.420Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.528Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/builder/DelegateBuilder.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.420Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.528Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/builder/MethodBuilder.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.424Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.528Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/builder/OnBuilder.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.424Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.528Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/builder/PropertyBuilder.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.424Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.528Z</lastmod>
     </url>
     <url>
         <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/builder/TemplateBuilder.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.424Z</lastmod>
-    </url>
-    <url>
-        <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/idomizer/idomizer-plugin.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.424Z</lastmod>
-    </url>
-    <url>
-        <loc>http://tmorin.github.io/custom-elements-builder/api/file/lib/idomizer/idomizer.js.html</loc>
-        <lastmod>2015-10-01T18:49:01.424Z</lastmod>
+        <lastmod>2015-10-05T17:59:02.528Z</lastmod>
     </url>
 </urlset>

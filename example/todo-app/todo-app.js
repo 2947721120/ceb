@@ -1,0 +1,10 @@
+import {ceb} from 'es6/lib/ceb.js';
+import {idomify} from '../builders/idomify.js';
+
+import template from './todo-app.html!./idomizer-plugin.js';
+import './todo-list.js';
+import './todo-form.js';
+
+ceb().augment(
+    idomify(template)
+).register('todo-app');

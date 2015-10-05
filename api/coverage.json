@@ -1,21 +1,21 @@
 {
-  "coverage": "95%",
-  "expectCount": 60,
-  "actualCount": 57,
+  "coverage": "100%",
+  "expectCount": 55,
+  "actualCount": 55,
   "files": {
     "lib/builder/AttributeBuilder.js": {
       "expectCount": 7,
       "actualCount": 7,
       "undocumentLines": []
     },
-    "lib/ceb.js": {
-      "expectCount": 8,
-      "actualCount": 8,
-      "undocumentLines": []
-    },
     "lib/builder/Builder.js": {
       "expectCount": 2,
       "actualCount": 2,
+      "undocumentLines": []
+    },
+    "lib/ceb.js": {
+      "expectCount": 8,
+      "actualCount": 8,
       "undocumentLines": []
     },
     "lib/builder/CustomElementBuilder.js": {
@@ -33,13 +33,6 @@
       "actualCount": 5,
       "undocumentLines": []
     },
-    "lib/idomizer/idomizer.js": {
-      "expectCount": 3,
-      "actualCount": 2,
-      "undocumentLines": [
-        12
-      ]
-    },
     "lib/builder/OnBuilder.js": {
       "expectCount": 8,
       "actualCount": 8,
@@ -54,14 +47,6 @@
       "expectCount": 3,
       "actualCount": 3,
       "undocumentLines": []
-    },
-    "lib/idomizer/idomizer-plugin.js": {
-      "expectCount": 2,
-      "actualCount": 0,
-      "undocumentLines": [
-        7,
-        3
-      ]
     }
   }
 }
