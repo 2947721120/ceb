@@ -39,7 +39,6 @@
 
     function getAttValue(el, attrName, isBoolean) {
         if (isBoolean) {
-            //let value = el.getAttribute(attrName);
             return el.hasAttribute(attrName);
         }
         return el.getAttribute(attrName);
@@ -74,15 +73,15 @@
     }
 
     function getterFactory(attrName, isBoolean) {
-        return function (el) {
-            return getAttValue(el, attrName, isBoolean);
+        return function () {
+            return getAttValue(this, attrName, isBoolean);
         };
     }
 
     function setterFactory(attrName, isBoolean, attSetter) {
-        return function (el, value) {
-            var attValue = (0, _utilsJs.isFunction)(attSetter) ? attSetter.call(el, el, value) : value;
-            return setAttValue(el, attrName, isBoolean, attValue);
+        return function (value) {
+            var attValue = (0, _utilsJs.isFunction)(attSetter) ? attSetter.call(this, this, value) : value;
+            return setAttValue(this, attrName, isBoolean, attValue);
         };
     }
 
@@ -108,6 +107,7 @@
              */
             (0, _utilsJs.assign)(this.data, {
                 attrName: attrName,
+                listeners: [],
                 getterFactory: getterFactory,
                 setterFactory: setterFactory,
                 descriptorValue: false,
@@ -132,12 +132,24 @@
             /**
              * To override the property name.
              * @param {!string} propName the property name
-             * @returns {AttributeBuilder}
+             * @returns {AttributeBuilder} the builder
              */
         }, {
             key: 'property',
             value: function property(propName) {
                 this.data.propName = propName;
+                return this;
+            }
+
+            /**
+             * To be notified when the attribute is updated.
+             * @param {function(el: HTMLElement, oldVal: string, newVal: string)} listener the listener function
+             * @returns {AttributeBuilder} the builder
+             */
+        }, {
+            key: 'listen',
+            value: function listen(listener) {
+                this.data.listeners.push(listener);
                 return this;
             }
 
@@ -149,16 +161,15 @@
             value: function build(proto, on) {
                 var _this = this;
 
-                var attGetter = this.data.getter,
-                    attSetter = this.data.setter,
-                    defaultValue = (0, _utilsJs.result)(this.data, 'value');
+                var defaultValue = (0, _utilsJs.result)(this.data, 'value'),
+                    descriptor = {
+                    enumerable: this.data.enumerable,
+                    configurable: false,
+                    get: this.data.getterFactory(this.data.attrName, this.data.boolean),
+                    set: this.data.setterFactory(this.data.attrName, this.data.boolean)
+                };
 
-                this.data.value = undefined;
-
-                this.data.getter = this.data.getterFactory(this.data.attrName, this.data.boolean, attGetter);
-                this.data.setter = this.data.setterFactory(this.data.attrName, this.data.boolean, attSetter);
-
-                _get(Object.getPrototypeOf(AttributeBuilder.prototype), 'build', this).call(this, proto, on);
+                Object.defineProperty(proto, this.data.propName, descriptor);
 
                 on('after:createdCallback').invoke(function (el) {
                     var attrValue = getAttValue(el, _this.data.attrName, _this.data.boolean);
@@ -169,14 +180,37 @@
                     } else if (!(0, _utilsJs.isUndefined)(defaultValue)) {
                         el[_this.data.propName] = defaultValue;
                     }
+
+                    if (_this.data.listeners.length > 0) {
+                        (function () {
+                            var oldValue = _this.data.boolean ? false : null;
+                            var setValue = el[_this.data.propName];
+                            if (oldValue !== setValue) {
+                                _this.data.listeners.forEach(function (listener) {
+                                    return listener.call(el, el, oldValue, setValue);
+                                });
+                            }
+                        })();
+                    }
                 });
 
                 on('before:attributeChangedCallback').invoke(function (el, attName, oldVal, newVal) {
                     // Synchronize the attribute value with its properties
                     if (attName === _this.data.attrName) {
-                        var value = _this.data.boolean ? newVal === '' : newVal;
-                        if (el[_this.data.propName] !== value) {
-                            el[_this.data.propName] = value;
+                        var newValue = _this.data.boolean ? newVal === '' : newVal;
+                        if (el[_this.data.propName] !== newValue) {
+                            el[_this.data.propName] = newValue;
+                        }
+                        if (_this.data.listeners.length > 0) {
+                            (function () {
+                                var oldValue = _this.data.boolean ? oldVal === '' : oldVal;
+                                var setValue = _this.data.boolean ? newVal === '' : newVal;
+                                if (oldValue !== setValue) {
+                                    _this.data.listeners.forEach(function (listener) {
+                                        return listener.call(el, el, oldValue, setValue);
+                                    });
+                                }
+                            })();
                         }
                     }
                 });
@@ -271,6 +305,36 @@
         return ['before:' + name, 'after:' + name, 'ready:' + name];
     }));
 
+    function applyLifecycle(context, name) {
+        var proto = context.proto,
+            original = proto[name],
+            beforeFns = context.events['before:' + name],
+            afterFns = context.events['after:' + name],
+            readyFns = context.events['ready:' + name];
+
+        proto[name] = function () {
+            var _this = this;
+
+            var args = [this].concat((0, _utilsJs.toArray)(arguments));
+
+            beforeFns.forEach(function (fn) {
+                return fn.apply(_this, args);
+            });
+
+            if ((0, _utilsJs.isFunction)(original)) {
+                original.apply(this, args);
+            }
+
+            afterFns.forEach(function (fn) {
+                return fn.apply(_this, args);
+            });
+
+            readyFns.forEach(function (fn) {
+                return fn.apply(_this, args);
+            });
+        };
+    }
+
     /**
      * The custom element builder.
      * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).
@@ -339,14 +403,14 @@
         }, {
             key: 'augment',
             value: function augment() {
-                var _this = this;
+                var _this2 = this;
 
                 for (var _len = arguments.length, builders = Array(_len), _key = 0; _key < _len; _key++) {
                     builders[_key] = arguments[_key];
                 }
 
                 builders.forEach(function (builder) {
-                    return _this.context.builders.push(builder);
+                    return _this2.context.builders.push(builder);
                 });
                 return this;
             }
@@ -360,11 +424,11 @@
         }, {
             key: 'on',
             value: function on(event) {
-                var _this2 = this;
+                var _this3 = this;
 
                 var invoke = function invoke(cb) {
-                    _this2.context.events[event].push(cb);
-                    return _this2;
+                    _this3.context.events[event].push(cb);
+                    return _this3;
                 };
                 return { invoke: invoke };
             }
@@ -377,16 +441,16 @@
         }, {
             key: 'register',
             value: function register(name) {
-                var _this3 = this;
+                var _this4 = this;
 
                 this.context.events['before:builders'].forEach(function (fn) {
-                    return fn(_this3.context);
+                    return fn(_this4.context);
                 });
 
                 (0, _utilsJs.invoke)(this.context.builders, 'build', this.context.proto, (0, _utilsJs.bind)(this.on, this));
 
                 this.context.events['after:builders'].forEach(function (fn) {
-                    return fn(_this3.context);
+                    return fn(_this4.context);
                 });
 
                 LIFECYCLE_CALLBACKS.forEach((0, _utilsJs.partial)(applyLifecycle, this.context));
@@ -398,7 +462,7 @@
                 }
 
                 this.context.events['before:registerElement'].forEach(function (fn) {
-                    return fn(_this3.context);
+                    return fn(_this4.context);
                 });
 
                 var CustomElement = document.registerElement(name, options);
@@ -419,36 +483,6 @@
     })();
 
     exports.CustomElementBuilder = CustomElementBuilder;
-
-    function applyLifecycle(context, name) {
-        var proto = context.proto,
-            original = proto[name],
-            beforeFns = context.events['before:' + name],
-            afterFns = context.events['after:' + name],
-            readyFns = context.events['ready:' + name];
-
-        proto[name] = function () {
-            var _this4 = this;
-
-            var args = [this].concat((0, _utilsJs.toArray)(arguments));
-
-            beforeFns.forEach(function (fn) {
-                return fn.apply(_this4, args);
-            });
-
-            if ((0, _utilsJs.isFunction)(original)) {
-                original.apply(this, args);
-            }
-
-            afterFns.forEach(function (fn) {
-                return fn.apply(_this4, args);
-            });
-
-            readyFns.forEach(function (fn) {
-                return fn.apply(_this4, args);
-            });
-        };
-    }
 });
 
 },{"../utils.js":10}],4:[function(require,module,exports){
@@ -593,24 +627,24 @@
 
                 if (fieldBuilderData.attrName) {
                     fieldBuilderData.getterFactory = function (attrName, isBoolean) {
-                        return function (el) {
-                            var target = el.querySelector(data.selector);
+                        return function () {
+                            var target = this.querySelector(data.selector);
                             if (target) {
                                 return targetedAttrName ? (0, _AttributeBuilderJs.getAttValue)(target, targetedAttrName, isBoolean) : target[targetedPropName];
                             }
                         };
                     };
-                    fieldBuilderData.setterFactory = function (attrName, isBoolean, attSetter) {
-                        return function (el, value) {
-                            var target = el.querySelector(data.selector),
-                                attrValue = (0, _utilsJs.isFunction)(attSetter) ? attSetter.call(el, el, value) : value;
+                    fieldBuilderData.setterFactory = function (attrName, isBoolean) {
+                        return function (value) {
+                            var target = this.querySelector(data.selector),
+                                attrValue = value;
                             if (target) {
                                 if (targetedAttrName) {
                                     (0, _AttributeBuilderJs.setAttValue)(target, targetedAttrName, isBoolean, attrValue);
                                 } else {
                                     target[targetedPropName] = attrValue;
                                 }
-                                (0, _AttributeBuilderJs.setAttValue)(el, attrName, isBoolean, attrValue);
+                                (0, _AttributeBuilderJs.setAttValue)(this, attrName, isBoolean, attrValue);
                             }
                         };
                     };
@@ -708,7 +742,7 @@
             /**
              * @ignore
              */
-            this.data = { methName: methName, invoke: _utilsJs.noop, wrappers: [] };
+            this.data = { methName: methName, wrappers: [] };
         }
 
         /**
@@ -750,15 +784,33 @@
             value: function build(proto, on) {
                 var data = this.data;
 
-                proto[data.methName] = function () {
-                    return data.invoke.apply(this, [this].concat((0, _utilsJs.toArray)(arguments)));
-                };
+                if (data.invoke) {
+                    proto[data.methName] = function () {
+                        return data.invoke.apply(this, [this].concat((0, _utilsJs.toArray)(arguments)));
+                    };
+                }
 
-                on('after:builders').invoke(function () {
-                    data.wrappers.forEach(function (wrapper) {
-                        return data.invoke = (0, _utilsJs.wrap)(data.invoke, wrapper);
+                if (data.wrappers.length) {
+                    on('before:createdCallback').invoke(function (el) {
+                        if ((0, _utilsJs.isFunction)(el[data.methName])) {
+                            (function () {
+                                var lastIndex = data.wrappers.length - 1,
+                                    original = el[data.methName],
+                                    target = function target() {
+                                    var args = (0, _utilsJs.toArray)(arguments);
+                                    args.shift();
+                                    original.apply(el, args);
+                                };
+                                el[data.methName] = data.wrappers.reduce(function (next, current, i, a) {
+                                    if (i === lastIndex) {
+                                        return (0, _utilsJs.bind)((0, _utilsJs.partial)(current, next, el), el);
+                                    }
+                                    return (0, _utilsJs.bind)((0, _utilsJs.partial)(current, next), el);
+                                }, target);
+                            })();
+                        }
                     });
-                });
+                }
             }
         }]);
 
@@ -1228,7 +1280,7 @@
      * @returns {string} the updated HTML template
      */
     function replaceContent(html, newCebContentId) {
-        return html.replace('<content></content>', '<span ceb-content></span>').replace('ceb-content', newCebContentId);
+        return html.replace('<content></content>', '<ceb-lightdom ceb-content></ceb-lightdom>').replace('ceb-content', newCebContentId);
     }
 
     /**
@@ -1644,12 +1696,11 @@
 
     /**
      * @ignore
-     * TODO: handle legacy ways
      */
 
-    function trigger(el, options, detail) {
+    function trigger(el, event, params) {
         var evt = document.createEvent('CustomEvent');
-        evt.initCustomEvent(options.name, options.bubbles, options.cancellable, detail);
+        evt.initCustomEvent(event, params.bubbles, params.cancellable, params.detail);
         return el.dispatchEvent(evt);
     }
 });

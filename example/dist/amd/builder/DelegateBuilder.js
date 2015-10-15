@@ -127,24 +127,24 @@ define(['exports', '../utils.js', './AttributeBuilder.js', './Builder.js'], func
 
                 if (fieldBuilderData.attrName) {
                     fieldBuilderData.getterFactory = function (attrName, isBoolean) {
-                        return function (el) {
-                            var target = el.querySelector(data.selector);
+                        return function () {
+                            var target = this.querySelector(data.selector);
                             if (target) {
                                 return targetedAttrName ? (0, _AttributeBuilderJs.getAttValue)(target, targetedAttrName, isBoolean) : target[targetedPropName];
                             }
                         };
                     };
-                    fieldBuilderData.setterFactory = function (attrName, isBoolean, attSetter) {
-                        return function (el, value) {
-                            var target = el.querySelector(data.selector),
-                                attrValue = (0, _utilsJs.isFunction)(attSetter) ? attSetter.call(el, el, value) : value;
+                    fieldBuilderData.setterFactory = function (attrName, isBoolean) {
+                        return function (value) {
+                            var target = this.querySelector(data.selector),
+                                attrValue = value;
                             if (target) {
                                 if (targetedAttrName) {
                                     (0, _AttributeBuilderJs.setAttValue)(target, targetedAttrName, isBoolean, attrValue);
                                 } else {
                                     target[targetedPropName] = attrValue;
                                 }
-                                (0, _AttributeBuilderJs.setAttValue)(el, attrName, isBoolean, attrValue);
+                                (0, _AttributeBuilderJs.setAttValue)(this, attrName, isBoolean, attrValue);
                             }
                         };
                     };

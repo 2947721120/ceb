@@ -54,7 +54,7 @@ define(['exports', '../utils.js', './Builder.js', './PropertyBuilder.js'], funct
      * @returns {string} the updated HTML template
      */
     function replaceContent(html, newCebContentId) {
-        return html.replace('<content></content>', '<span ceb-content></span>').replace('ceb-content', newCebContentId);
+        return html.replace('<content></content>', '<ceb-lightdom ceb-content></ceb-lightdom>').replace('ceb-content', newCebContentId);
     }
 
     /**

@@ -99,7 +99,7 @@ function hasContent(html) {
  */
 function replaceContent(html, newCebContentId) {
     return html
-        .replace(&apos;&lt;content&gt;&lt;/content&gt;&apos;, &apos;&lt;span ceb-content&gt;&lt;/span&gt;&apos;)
+        .replace(&apos;&lt;content&gt;&lt;/content&gt;&apos;, &apos;&lt;ceb-lightdom ceb-content&gt;&lt;/ceb-lightdom&gt;&apos;)
         .replace(&apos;ceb-content&apos;, newCebContentId);
 }
 

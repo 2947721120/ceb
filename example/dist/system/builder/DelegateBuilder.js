@@ -137,24 +137,24 @@ System.register(['../utils.js', './AttributeBuilder.js', './Builder.js'], functi
 
                         if (fieldBuilderData.attrName) {
                             fieldBuilderData.getterFactory = function (attrName, isBoolean) {
-                                return function (el) {
-                                    var target = el.querySelector(data.selector);
+                                return function () {
+                                    var target = this.querySelector(data.selector);
                                     if (target) {
                                         return targetedAttrName ? getAttValue(target, targetedAttrName, isBoolean) : target[targetedPropName];
                                     }
                                 };
                             };
-                            fieldBuilderData.setterFactory = function (attrName, isBoolean, attSetter) {
-                                return function (el, value) {
-                                    var target = el.querySelector(data.selector),
-                                        attrValue = isFunction(attSetter) ? attSetter.call(el, el, value) : value;
+                            fieldBuilderData.setterFactory = function (attrName, isBoolean) {
+                                return function (value) {
+                                    var target = this.querySelector(data.selector),
+                                        attrValue = value;
                                     if (target) {
                                         if (targetedAttrName) {
                                             setAttValue(target, targetedAttrName, isBoolean, attrValue);
                                         } else {
                                             target[targetedPropName] = attrValue;
                                         }
-                                        setAttValue(el, attrName, isBoolean, attrValue);
+                                        setAttValue(this, attrName, isBoolean, attrValue);
                                     }
                                 };
                             };

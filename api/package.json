@@ -1,6 +1,6 @@
 {
   "name": "custom-elements-builder",
-  "version": "0.5.12",
+  "version": "0.5.15",
   "description": "Just a set of builders, natively scalable and designed for FRP.",
   "keywords": [
     "web-components",
@@ -28,12 +28,14 @@
     "url": "https://tmorin.github.io"
   },
   "main": "lib/ceb.js",
-  "jsnext:main": "src/lib/ceb.js",
+  "jsnext:main": "es6/lib/ceb.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/tmorin/custom-elements-builder.git"
   },
   "scripts": {
+    "karma": "karma start",
+    "karma:watch": "npm run karma -- --no-single-run --auto-watch",
     "test": "./node_modules/.bin/gulp karma:sauce",
     "prepublish": "./node_modules/.bin/gulp",
     "release": "./node_modules/.bin/gulp && ./node_modules/.bin/grunt release"
@@ -43,7 +45,7 @@
   },
   "dependencies": {
     "htmlparser2": "^3.8.3",
-    "idomizer": "^0.3.0"
+    "idomizer": "^0.4.0"
   },
   "devDependencies": {
     "babel": "^5.8.3",
@@ -78,6 +80,7 @@
     "karma": "^0.13.8",
     "karma-browserify": "^4.3.0",
     "karma-chrome-launcher": "^0.2.0",
+    "karma-cli": "^0.1.1",
     "karma-firefox-launcher": "^0.1.6",
     "karma-ie-launcher": "^0.2.0",
     "karma-mocha": "^0.2.0",

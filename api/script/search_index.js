@@ -462,6 +462,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "lib/builder/attributebuilder.js~attributebuilder#listen",
+    "class/lib/builder/AttributeBuilder.js~AttributeBuilder.html#instance-method-listen",
+    "lib/builder/AttributeBuilder.js~AttributeBuilder#listen",
+    "method"
+  ],
+  [
     "lib/builder/attributebuilder.js~attributebuilder#property",
     "class/lib/builder/AttributeBuilder.js~AttributeBuilder.html#instance-method-property",
     "lib/builder/AttributeBuilder.js~AttributeBuilder#property",

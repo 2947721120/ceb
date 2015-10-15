@@ -36,6 +36,11 @@ System.register(['../utils.js'], function (_export) {
             });
         };
     }
+
+    /**
+     * The custom element builder.
+     * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).
+     */
     return {
         setters: [function (_utilsJs) {
             isString = _utilsJs.isString;
@@ -51,11 +56,6 @@ System.register(['../utils.js'], function (_export) {
             LIFECYCLE_EVENTS = flatten(LIFECYCLE_CALLBACKS.map(function (name) {
                 return ['before:' + name, 'after:' + name, 'ready:' + name];
             }));
-
-            /**
-             * The custom element builder.
-             * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).
-             */
 
             CustomElementBuilder = (function () {
 

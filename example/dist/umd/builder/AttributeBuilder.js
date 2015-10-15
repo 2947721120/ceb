@@ -38,7 +38,6 @@
 
     function getAttValue(el, attrName, isBoolean) {
         if (isBoolean) {
-            //let value = el.getAttribute(attrName);
             return el.hasAttribute(attrName);
         }
         return el.getAttribute(attrName);
@@ -73,15 +72,15 @@
     }
 
     function getterFactory(attrName, isBoolean) {
-        return function (el) {
-            return getAttValue(el, attrName, isBoolean);
+        return function () {
+            return getAttValue(this, attrName, isBoolean);
         };
     }
 
     function setterFactory(attrName, isBoolean, attSetter) {
-        return function (el, value) {
-            var attValue = (0, _utilsJs.isFunction)(attSetter) ? attSetter.call(el, el, value) : value;
-            return setAttValue(el, attrName, isBoolean, attValue);
+        return function (value) {
+            var attValue = (0, _utilsJs.isFunction)(attSetter) ? attSetter.call(this, this, value) : value;
+            return setAttValue(this, attrName, isBoolean, attValue);
         };
     }
 
@@ -107,6 +106,7 @@
              */
             (0, _utilsJs.assign)(this.data, {
                 attrName: attrName,
+                listeners: [],
                 getterFactory: getterFactory,
                 setterFactory: setterFactory,
                 descriptorValue: false,
@@ -131,12 +131,24 @@
             /**
              * To override the property name.
              * @param {!string} propName the property name
-             * @returns {AttributeBuilder}
+             * @returns {AttributeBuilder} the builder
              */
         }, {
             key: 'property',
             value: function property(propName) {
                 this.data.propName = propName;
+                return this;
+            }
+
+            /**
+             * To be notified when the attribute is updated.
+             * @param {function(el: HTMLElement, oldVal: string, newVal: string)} listener the listener function
+             * @returns {AttributeBuilder} the builder
+             */
+        }, {
+            key: 'listen',
+            value: function listen(listener) {
+                this.data.listeners.push(listener);
                 return this;
             }
 
@@ -148,16 +160,15 @@
             value: function build(proto, on) {
                 var _this = this;
 
-                var attGetter = this.data.getter,
-                    attSetter = this.data.setter,
-                    defaultValue = (0, _utilsJs.result)(this.data, 'value');
+                var defaultValue = (0, _utilsJs.result)(this.data, 'value'),
+                    descriptor = {
+                    enumerable: this.data.enumerable,
+                    configurable: false,
+                    get: this.data.getterFactory(this.data.attrName, this.data.boolean),
+                    set: this.data.setterFactory(this.data.attrName, this.data.boolean)
+                };
 
-                this.data.value = undefined;
-
-                this.data.getter = this.data.getterFactory(this.data.attrName, this.data.boolean, attGetter);
-                this.data.setter = this.data.setterFactory(this.data.attrName, this.data.boolean, attSetter);
-
-                _get(Object.getPrototypeOf(AttributeBuilder.prototype), 'build', this).call(this, proto, on);
+                Object.defineProperty(proto, this.data.propName, descriptor);
 
                 on('after:createdCallback').invoke(function (el) {
                     var attrValue = getAttValue(el, _this.data.attrName, _this.data.boolean);
@@ -168,14 +179,37 @@
                     } else if (!(0, _utilsJs.isUndefined)(defaultValue)) {
                         el[_this.data.propName] = defaultValue;
                     }
+
+                    if (_this.data.listeners.length > 0) {
+                        (function () {
+                            var oldValue = _this.data.boolean ? false : null;
+                            var setValue = el[_this.data.propName];
+                            if (oldValue !== setValue) {
+                                _this.data.listeners.forEach(function (listener) {
+                                    return listener.call(el, el, oldValue, setValue);
+                                });
+                            }
+                        })();
+                    }
                 });
 
                 on('before:attributeChangedCallback').invoke(function (el, attName, oldVal, newVal) {
                     // Synchronize the attribute value with its properties
                     if (attName === _this.data.attrName) {
-                        var value = _this.data.boolean ? newVal === '' : newVal;
-                        if (el[_this.data.propName] !== value) {
-                            el[_this.data.propName] = value;
+                        var newValue = _this.data.boolean ? newVal === '' : newVal;
+                        if (el[_this.data.propName] !== newValue) {
+                            el[_this.data.propName] = newValue;
+                        }
+                        if (_this.data.listeners.length > 0) {
+                            (function () {
+                                var oldValue = _this.data.boolean ? oldVal === '' : oldVal;
+                                var setValue = _this.data.boolean ? newVal === '' : newVal;
+                                if (oldValue !== setValue) {
+                                    _this.data.listeners.forEach(function (listener) {
+                                        return listener.call(el, el, oldValue, setValue);
+                                    });
+                                }
+                            })();
                         }
                     }
                 });

@@ -1,11 +1,11 @@
 {
   "coverage": "100%",
-  "expectCount": 55,
-  "actualCount": 55,
+  "expectCount": 56,
+  "actualCount": 56,
   "files": {
     "lib/builder/AttributeBuilder.js": {
-      "expectCount": 7,
-      "actualCount": 7,
+      "expectCount": 8,
+      "actualCount": 8,
       "undocumentLines": []
     },
     "lib/builder/Builder.js": {

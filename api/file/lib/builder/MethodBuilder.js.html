@@ -55,7 +55,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">lib/builder/MethodBuilder.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {isFunction, toArray, noop, wrap} from &apos;../utils.js&apos;;
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {isFunction, toArray, partial, bind} from &apos;../utils.js&apos;;
 import {Builder} from &apos;./Builder.js&apos;;
 
 /**
@@ -73,7 +73,7 @@ export class MethodBuilder extends Builder {
         /**
          * @ignore
          */
-        this.data = {methName, invoke: noop, wrappers: []};
+        this.data = {methName, wrappers: []};
     }
 
     /**
@@ -104,13 +104,32 @@ export class MethodBuilder extends Builder {
     build(proto, on) {
         let data = this.data;
 
-        proto[data.methName] = function () {
-            return data.invoke.apply(this, [this].concat(toArray(arguments)));
-        };
+        if (data.invoke) {
+            proto[data.methName] = function () {
+                return data.invoke.apply(this, [this].concat(toArray(arguments)));
+            };
+        }
 
-        on(&apos;after:builders&apos;).invoke(() =&gt; {
-            data.wrappers.forEach(wrapper =&gt; data.invoke = wrap(data.invoke, wrapper));
-        });
+        if (data.wrappers.length) {
+            on(&apos;before:createdCallback&apos;).invoke(el =&gt; {
+                if (isFunction(el[data.methName])) {
+                    let lastIndex = data.wrappers.length - 1,
+                        original = el[data.methName],
+                        target = function target() {
+                            let args = toArray(arguments);
+                            args.shift();
+                            original.apply(el, args);
+                        };
+                    el[data.methName] = data.wrappers.reduce((next, current, i, a) =&gt; {
+                        if (i === lastIndex) {
+                            return bind(partial(current, next, el), el);
+                        }
+                        return bind(partial(current, next), el);
+                    }, target);
+
+                }
+            });
+        }
     }
 }
 </code></pre>

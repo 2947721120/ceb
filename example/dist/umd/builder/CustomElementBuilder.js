@@ -27,6 +27,36 @@
         return ['before:' + name, 'after:' + name, 'ready:' + name];
     }));
 
+    function applyLifecycle(context, name) {
+        var proto = context.proto,
+            original = proto[name],
+            beforeFns = context.events['before:' + name],
+            afterFns = context.events['after:' + name],
+            readyFns = context.events['ready:' + name];
+
+        proto[name] = function () {
+            var _this = this;
+
+            var args = [this].concat((0, _utilsJs.toArray)(arguments));
+
+            beforeFns.forEach(function (fn) {
+                return fn.apply(_this, args);
+            });
+
+            if ((0, _utilsJs.isFunction)(original)) {
+                original.apply(this, args);
+            }
+
+            afterFns.forEach(function (fn) {
+                return fn.apply(_this, args);
+            });
+
+            readyFns.forEach(function (fn) {
+                return fn.apply(_this, args);
+            });
+        };
+    }
+
     /**
      * The custom element builder.
      * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).
@@ -95,14 +125,14 @@
         }, {
             key: 'augment',
             value: function augment() {
-                var _this = this;
+                var _this2 = this;
 
                 for (var _len = arguments.length, builders = Array(_len), _key = 0; _key < _len; _key++) {
                     builders[_key] = arguments[_key];
                 }
 
                 builders.forEach(function (builder) {
-                    return _this.context.builders.push(builder);
+                    return _this2.context.builders.push(builder);
                 });
                 return this;
             }
@@ -116,11 +146,11 @@
         }, {
             key: 'on',
             value: function on(event) {
-                var _this2 = this;
+                var _this3 = this;
 
                 var invoke = function invoke(cb) {
-                    _this2.context.events[event].push(cb);
-                    return _this2;
+                    _this3.context.events[event].push(cb);
+                    return _this3;
                 };
                 return { invoke: invoke };
             }
@@ -133,16 +163,16 @@
         }, {
             key: 'register',
             value: function register(name) {
-                var _this3 = this;
+                var _this4 = this;
 
                 this.context.events['before:builders'].forEach(function (fn) {
-                    return fn(_this3.context);
+                    return fn(_this4.context);
                 });
 
                 (0, _utilsJs.invoke)(this.context.builders, 'build', this.context.proto, (0, _utilsJs.bind)(this.on, this));
 
                 this.context.events['after:builders'].forEach(function (fn) {
-                    return fn(_this3.context);
+                    return fn(_this4.context);
                 });
 
                 LIFECYCLE_CALLBACKS.forEach((0, _utilsJs.partial)(applyLifecycle, this.context));
@@ -154,7 +184,7 @@
                 }
 
                 this.context.events['before:registerElement'].forEach(function (fn) {
-                    return fn(_this3.context);
+                    return fn(_this4.context);
                 });
 
                 var CustomElement = document.registerElement(name, options);
@@ -175,34 +205,4 @@
     })();
 
     exports.CustomElementBuilder = CustomElementBuilder;
-
-    function applyLifecycle(context, name) {
-        var proto = context.proto,
-            original = proto[name],
-            beforeFns = context.events['before:' + name],
-            afterFns = context.events['after:' + name],
-            readyFns = context.events['ready:' + name];
-
-        proto[name] = function () {
-            var _this4 = this;
-
-            var args = [this].concat((0, _utilsJs.toArray)(arguments));
-
-            beforeFns.forEach(function (fn) {
-                return fn.apply(_this4, args);
-            });
-
-            if ((0, _utilsJs.isFunction)(original)) {
-                original.apply(this, args);
-            }
-
-            afterFns.forEach(function (fn) {
-                return fn.apply(_this4, args);
-            });
-
-            readyFns.forEach(function (fn) {
-                return fn.apply(_this4, args);
-            });
-        };
-    }
 });
