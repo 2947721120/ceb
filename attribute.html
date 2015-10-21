@@ -11,6 +11,12 @@ ceb()
         attribute(&#39;att1&#39;).boolean()
     )
     .register(&#39;ceb-example&#39;);
+</code></pre><h3 id=unbound-attribute>Unbound attribute</h3><p>By default the attribute will be linked to a property. The link can be skip calling the <code>.unbound()</code> method.</p><p>The registered custom element will have an attribute <code>att1</code>. But the property <code>att1</code> will not be defined, and obviously not bound the attribute.</p><pre><code class=lang-javascript>import {ceb, attribute} from &#39;custom-element-builder&#39;;
+ceb()
+    .augment(
+        attribute(&#39;att1&#39;).unbound()
+    )
+    .register(&#39;ceb-example&#39;);
 </code></pre><h3 id=override-the-property-name>Override the property name</h3><p>The registered custom element will have a property <code>prop1</code> bound to an attribute <code>att1</code>.</p><pre><code class=lang-javascript>import {ceb, attribute} from &#39;custom-element-builder&#39;;
 ceb()
     .augment(

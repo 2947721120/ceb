@@ -474,6 +474,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "lib/builder/attributebuilder.js~attributebuilder#unbound",
+    "class/lib/builder/AttributeBuilder.js~AttributeBuilder.html#instance-method-unbound",
+    "lib/builder/AttributeBuilder.js~AttributeBuilder#unbound",
+    "method"
+  ],
+  [
     "lib/builder/builder.js",
     "file/lib/builder/Builder.js.html",
     "lib/builder/Builder.js",

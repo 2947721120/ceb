@@ -10,7 +10,7 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {camelCase, isFunction, isUndefined, result, isNull, assign} from '../utils.js';\nimport {PropertyBuilder} from './PropertyBuilder.js';\n\n/**\n * Get the value from an attribute.\n * @param {!HTMLElement} el an HTML element\n * @param {!string} attrName the name of the attribute\n * @param {!boolean} isBoolean true is the returned value should be a boolean\n * @returns {string|boolean}\n */\nexport function getAttValue(el, attrName, isBoolean) {\n    if (isBoolean) {\n        return el.hasAttribute(attrName);\n    }\n    return el.getAttribute(attrName);\n}\n\n/**\n * Set the value of an attribute.\n * @param {!HTMLElement} el an HTML element\n * @param {!string} attrName the name of the attribute\n * @param {!boolean} isBoolean true is the value should be a boolean\n * @param {string|boolean} value the value to set\n */\nexport function setAttValue(el, attrName, isBoolean, value) {\n    if (isBoolean) {\n        // Handle boolean value\n        if (value && !el.hasAttribute(attrName)) {\n            el.setAttribute(attrName, '');\n        } else if (!value && el.hasAttribute(attrName)) {\n            el.removeAttribute(attrName);\n        }\n    } else {\n        // Handle none boolean value\n        if ((isUndefined(value) || isNull(value)) && el.hasAttribute(attrName)) {\n            // There is no value, so the attribute must be removed\n            el.removeAttribute(attrName);\n        } else if (!isUndefined(value) && !isNull(value) && el.getAttribute(attrName) !== value) {\n            // Sync the attribute value with value\n            el.setAttribute(attrName, value);\n        }\n    }\n}\n\nfunction getterFactory(attrName, isBoolean) {\n    return function () {\n        return getAttValue(this, attrName, isBoolean);\n    };\n}\n\nfunction setterFactory(attrName, isBoolean, attSetter) {\n    return function (value) {\n        var attValue = isFunction(attSetter) ? attSetter.call(this, this, value) : value;\n        return setAttValue(this, attrName, isBoolean, attValue);\n    };\n}\n\n/**\n * The attribute builder.\n * Its goal is to provide a way to define an attribute.\n * @extends {PropertyBuilder}\n */\nexport class AttributeBuilder extends PropertyBuilder {\n\n    /**\n     * @param {!string} attrName the name of the attribute\n     */\n    constructor(attrName) {\n        super(camelCase(attrName));\n        /**\n         * @ignore\n         */\n        assign(this.data, {\n            attrName,\n            listeners: [],\n            getterFactory,\n            setterFactory,\n            descriptorValue: false,\n            getAttValue: getAttValue,\n            setAttValue: setAttValue\n        });\n    }\n\n    /**\n     * To handle the attribute/property value as a boolean:\n     * Attribute is present when true and missing when false.\n     * @returns {AttributeBuilder} the builder\n     */\n    boolean() {\n        this.data.boolean = true;\n        return this;\n    }\n\n    /**\n     * To override the property name.\n     * @param {!string} propName the property name\n     * @returns {AttributeBuilder} the builder\n     */\n    property(propName) {\n        this.data.propName = propName;\n        return this;\n    }\n\n    /**\n     * To be notified when the attribute is updated.\n     * @param {function(el: HTMLElement, oldVal: string, newVal: string)} listener the listener function\n     * @returns {AttributeBuilder} the builder\n     */\n    listen(listener) {\n        this.data.listeners.push(listener);\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let defaultValue = result(this.data, 'value'),\n            descriptor = {\n                enumerable: this.data.enumerable,\n                configurable: false,\n                get: this.data.getterFactory(this.data.attrName, this.data.boolean),\n                set: this.data.setterFactory(this.data.attrName, this.data.boolean)\n            };\n\n        Object.defineProperty(proto, this.data.propName, descriptor);\n\n        on('after:createdCallback').invoke(el => {\n            let attrValue = getAttValue(el, this.data.attrName, this.data.boolean);\n            if (this.data.boolean) {\n                el[this.data.propName] = !!defaultValue ? defaultValue : attrValue;\n            } else if (!isNull(attrValue) && !isUndefined(attrValue)) {\n                el[this.data.propName] = attrValue;\n            } else if (!isUndefined(defaultValue)) {\n                el[this.data.propName] = defaultValue;\n            }\n\n            if (this.data.listeners.length > 0) {\n                let oldValue = this.data.boolean ? false : null;\n                let setValue = el[this.data.propName];\n                if (oldValue !== setValue) {\n                    this.data.listeners.forEach(listener => listener.call(el, el, oldValue, setValue));\n                }\n            }\n        });\n\n        on('before:attributeChangedCallback').invoke((el, attName, oldVal, newVal) => {\n            // Synchronize the attribute value with its properties\n            if (attName === this.data.attrName) {\n                let newValue = this.data.boolean ? newVal === '' : newVal;\n                if (el[this.data.propName] !== newValue) {\n                    el[this.data.propName] = newValue;\n                }\n                if (this.data.listeners.length > 0) {\n                    let oldValue = this.data.boolean ? oldVal === '' : oldVal;\n                    let setValue = this.data.boolean ? newVal === '' : newVal;\n                    if (oldValue !== setValue) {\n                        this.data.listeners.forEach(listener => listener.call(el, el, oldValue, setValue));\n                    }\n                }\n            }\n        });\n    }\n\n}\n"
+    "content": "import {camelCase, isFunction, isUndefined, result, isNull, assign} from '../utils.js';\nimport {PropertyBuilder} from './PropertyBuilder.js';\n\n/**\n * Get the value from an attribute.\n * @param {!HTMLElement} el an HTML element\n * @param {!string} attrName the name of the attribute\n * @param {!boolean} isBoolean true is the returned value should be a boolean\n * @returns {string|boolean}\n */\nexport function getAttValue(el, attrName, isBoolean) {\n    if (isBoolean) {\n        return el.hasAttribute(attrName);\n    }\n    return el.getAttribute(attrName);\n}\n\n/**\n * Set the value of an attribute.\n * @param {!HTMLElement} el an HTML element\n * @param {!string} attrName the name of the attribute\n * @param {!boolean} isBoolean true is the value should be a boolean\n * @param {string|boolean} value the value to set\n */\nexport function setAttValue(el, attrName, isBoolean, value) {\n    if (isBoolean) {\n        // Handle boolean value\n        if (value && !el.hasAttribute(attrName)) {\n            el.setAttribute(attrName, '');\n        } else if (!value && el.hasAttribute(attrName)) {\n            el.removeAttribute(attrName);\n        }\n    } else {\n        // Handle none boolean value\n        if ((isUndefined(value) || isNull(value)) && el.hasAttribute(attrName)) {\n            // There is no value, so the attribute must be removed\n            el.removeAttribute(attrName);\n        } else if (!isUndefined(value) && !isNull(value) && el.getAttribute(attrName) !== value) {\n            // Sync the attribute value with value\n            el.setAttribute(attrName, value);\n        }\n    }\n}\n\nfunction getterFactory(attrName, isBoolean) {\n    return function () {\n        return getAttValue(this, attrName, isBoolean);\n    };\n}\n\nfunction setterFactory(attrName, isBoolean, attSetter) {\n    return function (value) {\n        var attValue = isFunction(attSetter) ? attSetter.call(this, this, value) : value;\n        return setAttValue(this, attrName, isBoolean, attValue);\n    };\n}\n\n/**\n * The attribute builder.\n * Its goal is to provide a way to define an attribute.\n * @extends {PropertyBuilder}\n */\nexport class AttributeBuilder extends PropertyBuilder {\n\n    /**\n     * @param {!string} attrName the name of the attribute\n     */\n    constructor(attrName) {\n        super(camelCase(attrName));\n        /**\n         * @ignore\n         */\n        assign(this.data, {\n            attrName,\n            bound: true,\n            listeners: [],\n            getterFactory,\n            setterFactory,\n            descriptorValue: false,\n            getAttValue: getAttValue,\n            setAttValue: setAttValue\n        });\n    }\n\n    /**\n     * To handle the attribute/property value as a boolean:\n     * Attribute is present when true and missing when false.\n     * @returns {AttributeBuilder} the builder\n     */\n    boolean() {\n        this.data.boolean = true;\n        return this;\n    }\n\n    /**\n     * To skip the link between the attribute and its property\n     * @returns {AttributeBuilder} the builder\n     */\n    unbound() {\n        this.data.bound = false;\n        return this;\n    }\n\n    /**\n     * To override the property name.\n     * @param {!string} propName the property name\n     * @returns {AttributeBuilder} the builder\n     */\n    property(propName) {\n        this.data.propName = propName;\n        return this;\n    }\n\n    /**\n     * To be notified when the attribute is updated.\n     * @param {function(el: HTMLElement, oldVal: string, newVal: string)} listener the listener function\n     * @returns {AttributeBuilder} the builder\n     */\n    listen(listener) {\n        this.data.listeners.push(listener);\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let defaultValue = result(this.data, 'value'),\n            descriptor = {\n                enumerable: this.data.enumerable,\n                configurable: false,\n                get: this.data.getterFactory(this.data.attrName, this.data.boolean),\n                set: this.data.setterFactory(this.data.attrName, this.data.boolean)\n            };\n\n        if (this.data.bound) {\n            Object.defineProperty(proto, this.data.propName, descriptor);\n        }\n\n        on('after:createdCallback').invoke(el => {\n            if (this.data.bound) {\n                let attrValue = getAttValue(el, this.data.attrName, this.data.boolean);\n                if (this.data.boolean) {\n                    el[this.data.propName] = !!defaultValue ? defaultValue : attrValue;\n                } else if (!isNull(attrValue) && !isUndefined(attrValue)) {\n                    el[this.data.propName] = attrValue;\n                } else if (!isUndefined(defaultValue)) {\n                    el[this.data.propName] = defaultValue;\n                }\n            }\n            if (this.data.listeners.length > 0) {\n                let oldValue = this.data.boolean ? false : null;\n                let setValue = el[this.data.propName];\n                if (oldValue !== setValue) {\n                    this.data.listeners.forEach(listener => listener.call(el, el, oldValue, setValue));\n                }\n            }\n        });\n\n        on('before:attributeChangedCallback').invoke((el, attName, oldVal, newVal) => {\n            // Synchronize the attribute value with its properties\n            if (attName === this.data.attrName) {\n                if (this.data.bound) {\n                    let newValue = this.data.boolean ? newVal === '' : newVal;\n                    if (el[this.data.propName] !== newValue) {\n                        el[this.data.propName] = newValue;\n                    }\n                }\n                if (this.data.listeners.length > 0) {\n                    let oldValue = this.data.boolean ? oldVal === '' : oldVal;\n                    let setValue = this.data.boolean ? newVal === '' : newVal;\n                    if (oldValue !== setValue) {\n                        this.data.listeners.forEach(listener => listener.call(el, el, oldValue, setValue));\n                    }\n                }\n            }\n        });\n    }\n\n}\n"
   },
   {
     "__docId__": 1,
@@ -266,7 +266,7 @@
     "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#boolean",
     "access": null,
     "description": "To handle the attribute/property value as a boolean:\nAttribute is present when true and missing when false.",
-    "lineNumber": 89,
+    "lineNumber": 90,
     "unknown": [
       {
         "tagName": "@returns",
@@ -289,12 +289,40 @@
     "kind": "method",
     "static": false,
     "variation": null,
+    "name": "unbound",
+    "memberof": "lib/builder/AttributeBuilder.js~AttributeBuilder",
+    "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#unbound",
+    "access": null,
+    "description": "To skip the link between the attribute and its property",
+    "lineNumber": 99,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{AttributeBuilder} the builder"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "AttributeBuilder"
+      ],
+      "spread": false,
+      "description": "the builder"
+    },
+    "generator": false
+  },
+  {
+    "__docId__": 9,
+    "kind": "method",
+    "static": false,
+    "variation": null,
     "name": "property",
     "memberof": "lib/builder/AttributeBuilder.js~AttributeBuilder",
     "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#property",
     "access": null,
     "description": "To override the property name.",
-    "lineNumber": 99,
+    "lineNumber": 109,
     "unknown": [
       {
         "tagName": "@returns",
@@ -324,7 +352,7 @@
     "generator": false
   },
   {
-    "__docId__": 9,
+    "__docId__": 10,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -333,7 +361,7 @@
     "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#listen",
     "access": null,
     "description": "To be notified when the attribute is updated.",
-    "lineNumber": 109,
+    "lineNumber": 119,
     "unknown": [
       {
         "tagName": "@returns",
@@ -363,7 +391,7 @@
     "generator": false
   },
   {
-    "__docId__": 10,
+    "__docId__": 11,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -372,7 +400,7 @@
     "longname": "lib/builder/AttributeBuilder.js~AttributeBuilder#build",
     "access": null,
     "description": null,
-    "lineNumber": 117,
+    "lineNumber": 127,
     "params": [
       {
         "name": "proto",
@@ -391,7 +419,7 @@
     "generator": false
   },
   {
-    "__docId__": 11,
+    "__docId__": 12,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -404,7 +432,7 @@
     "content": "/**\n * A builder is defined by a build method.\n * @abstract\n */\nexport class Builder {\n    /**\n     * To specify the logic of the builder.\n     * @param {!CustomElementBuilder.context.proto} proto the prototype\n     * @param {!CustomElementBuilder.on} on the method on\n     */\n    build() {\n        throw new Error('not implemented');\n    }\n\n}\n"
   },
   {
-    "__docId__": 12,
+    "__docId__": 13,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -421,7 +449,7 @@
     "interface": false
   },
   {
-    "__docId__": 13,
+    "__docId__": 14,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -456,7 +484,7 @@
     "generator": false
   },
   {
-    "__docId__": 14,
+    "__docId__": 15,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -466,10 +494,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {isString, isFunction, toArray, flatten, invoke, partial, bind} from '../utils.js';\n\nconst LIFECYCLE_CALLBACKS = [\n    'createdCallback',\n    'attachedCallback',\n    'detachedCallback',\n    'attributeChangedCallback'\n];\n\nconst LIFECYCLE_EVENTS = flatten(LIFECYCLE_CALLBACKS.map(name => [`before:${name}`, `after:${name}`, `ready:${name}`]));\n\nfunction applyLifecycle(context, name) {\n    let proto = context.proto,\n        original = proto[name],\n        beforeFns = context.events['before:' + name],\n        afterFns = context.events['after:' + name],\n        readyFns = context.events['ready:' + name];\n\n    proto[name] = function () {\n        let args = [this].concat(toArray(arguments));\n\n        beforeFns.forEach(fn => fn.apply(this, args));\n\n        if (isFunction(original)) {\n            original.apply(this, args);\n        }\n\n        afterFns.forEach(fn => fn.apply(this, args));\n\n        readyFns.forEach(fn => fn.apply(this, args));\n    };\n}\n\n/**\n * The custom element builder.\n * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).\n */\nexport class CustomElementBuilder {\n\n    /**\n     */\n    constructor() {\n        let proto = Object.create(HTMLElement.prototype),\n            builders = [],\n            events = LIFECYCLE_EVENTS.reduce((a, b) => {\n                a[b] = [];\n                return a;\n            }, {\n                'before:builders': [],\n                'after:builders': [],\n                'ready:builders': [],\n                'before:registerElement': [],\n                'after:registerElement': [],\n                'ready:registerElement': []\n            });\n        /**\n         * @type {Object}\n         * @property {!Object} proto - the prototype\n         * @property {!string} extends - the name of a native element\n         * @desc the context of the builder\n         */\n        this.context = {proto, builders, events};\n    }\n\n    /**\n     * To extend a native element.\n     * @param {!string} value the name of the element\n     * @returns {CustomElementBuilder} the builder\n     */\n    extends(value) {\n        this.context.extends = value;\n        return this;\n    }\n\n    /**\n     * To override the default prototype.\n     * @param {!Object} value the prototype\n     * @returns {CustomElementBuilder} the builder\n     */\n    proto(value) {\n        this.context.proto = value;\n        return this;\n    }\n\n    /**\n     * To apply the given builders during the build process.\n     * @param {...Builder} builders the builders\n     * @returns {CustomElementBuilder} the builder\n     */\n    augment(...builders) {\n        builders.forEach(builder => this.context.builders.push(builder));\n        return this;\n    }\n\n    /**\n     * To register call back on events.\n     * @param {!string} event the event name\n     * @returns {Object} the on builder.\n     * @property {function(callback: function)} invoke - to register the callback\n     */\n    on(event) {\n        let invoke = cb => {\n            this.context.events[event].push(cb);\n            return this;\n        };\n        return {invoke};\n    }\n\n    /**\n     * To register the custom element.\n     * @param {!string} name the name of the cutsom element\n     * @returns {Element} the custom element Type\n     */\n    register(name) {\n        this.context.events['before:builders'].forEach(fn => fn(this.context));\n\n        invoke(this.context.builders, 'build', this.context.proto, bind(this.on, this));\n\n        this.context.events['after:builders'].forEach(fn => fn(this.context));\n\n        LIFECYCLE_CALLBACKS.forEach(partial(applyLifecycle, this.context));\n\n        let options = {prototype: this.context.proto};\n\n        if (isString(this.context.extends)) {\n            options.extends = this.context.extends;\n        }\n\n        this.context.events['before:registerElement'].forEach(fn => fn(this.context));\n\n        let CustomElement = document.registerElement(name, options);\n\n        this.context.events['after:registerElement'].forEach(fn => fn(CustomElement));\n\n        this.context.events['ready:registerElement'].forEach(fn => fn(CustomElement));\n\n        return CustomElement;\n    }\n}\n"
+    "content": "import {isString, isFunction, toArray, flatten, invoke, partial, bind} from '../utils.js';\n\nconst LIFECYCLE_CALLBACKS = [\n    'createdCallback',\n    'attachedCallback',\n    'detachedCallback',\n    'attributeChangedCallback'\n];\n\nconst LIFECYCLE_EVENTS = flatten(LIFECYCLE_CALLBACKS.map(name => [`before:${name}`, `after:${name}`]));\n\nfunction applyLifecycle(context, name) {\n    let proto = context.proto,\n        original = proto[name],\n        beforeFns = context.events['before:' + name],\n        afterFns = context.events['after:' + name];\n\n    proto[name] = function () {\n        let args = [this].concat(toArray(arguments));\n\n        beforeFns.forEach(fn => fn.apply(this, args));\n\n        if (isFunction(original)) {\n            original.apply(this, args);\n        }\n\n        afterFns.forEach(fn => fn.apply(this, args));\n    };\n}\n\n/**\n * The custom element builder.\n * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).\n */\nexport class CustomElementBuilder {\n\n    /**\n     */\n    constructor() {\n        let proto = Object.create(HTMLElement.prototype),\n            builders = [],\n            events = LIFECYCLE_EVENTS.reduce((a, b) => {\n                a[b] = [];\n                return a;\n            }, {\n                'before:builders': [],\n                'after:builders': [],\n                'before:registerElement': [],\n                'after:registerElement': []\n            });\n        /**\n         * @type {Object}\n         * @property {!Object} proto - the prototype\n         * @property {!string} extends - the name of a native element\n         * @desc the context of the builder\n         */\n        this.context = {proto, builders, events};\n    }\n\n    /**\n     * To extend a native element.\n     * @param {!string} value the name of the element\n     * @returns {CustomElementBuilder} the builder\n     */\n    extends(value) {\n        this.context.extends = value;\n        return this;\n    }\n\n    /**\n     * To override the default prototype.\n     * @param {!Object} value the prototype\n     * @returns {CustomElementBuilder} the builder\n     */\n    proto(value) {\n        this.context.proto = value;\n        return this;\n    }\n\n    /**\n     * To apply the given builders during the build process.\n     * @param {...Builder} builders the builders\n     * @returns {CustomElementBuilder} the builder\n     */\n    augment(...builders) {\n        builders.forEach(builder => this.context.builders.push(builder));\n        return this;\n    }\n\n    /**\n     * To register call back on events.\n     * @param {!string} event the event name\n     * @returns {Object} the on builder.\n     * @property {function(callback: function)} invoke - to register the callback\n     */\n    on(event) {\n        let invoke = cb => {\n            this.context.events[event].push(cb);\n            return this;\n        };\n        return {invoke};\n    }\n\n    /**\n     * To register the custom element.\n     * @param {!string} name the name of the cutsom element\n     * @returns {Element} the custom element Type\n     */\n    register(name) {\n        this.context.events['before:builders'].forEach(fn => fn(this.context));\n\n        invoke(this.context.builders, 'build', this.context.proto, bind(this.on, this));\n\n        this.context.events['after:builders'].forEach(fn => fn(this.context));\n\n        LIFECYCLE_CALLBACKS.forEach(partial(applyLifecycle, this.context));\n\n        let options = {prototype: this.context.proto};\n\n        if (isString(this.context.extends)) {\n            options.extends = this.context.extends;\n        }\n\n        this.context.events['before:registerElement'].forEach(fn => fn(this.context));\n\n        let CustomElement = document.registerElement(name, options);\n\n        this.context.events['after:registerElement'].forEach(fn => fn(CustomElement));\n\n        return CustomElement;\n    }\n}\n"
   },
   {
-    "__docId__": 15,
+    "__docId__": 16,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -490,7 +518,7 @@
     }
   },
   {
-    "__docId__": 16,
+    "__docId__": 17,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -511,7 +539,7 @@
     }
   },
   {
-    "__docId__": 17,
+    "__docId__": 18,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -542,7 +570,7 @@
     "generator": false
   },
   {
-    "__docId__": 18,
+    "__docId__": 19,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -554,11 +582,11 @@
     "importPath": "custom-elements-builder/lib/builder/CustomElementBuilder.js",
     "importStyle": "{CustomElementBuilder}",
     "description": "The custom element builder.\nIts goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).",
-    "lineNumber": 38,
+    "lineNumber": 35,
     "interface": false
   },
   {
-    "__docId__": 19,
+    "__docId__": 20,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -567,12 +595,12 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#constructor",
     "access": null,
     "description": "",
-    "lineNumber": 42,
+    "lineNumber": 39,
     "params": [],
     "generator": false
   },
   {
-    "__docId__": 20,
+    "__docId__": 21,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -581,7 +609,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#context",
     "access": null,
     "description": "the context of the builder",
-    "lineNumber": 62,
+    "lineNumber": 57,
     "properties": [
       {
         "nullable": false,
@@ -614,7 +642,7 @@
     }
   },
   {
-    "__docId__": 21,
+    "__docId__": 22,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -623,7 +651,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#extends",
     "access": null,
     "description": "To extend a native element.",
-    "lineNumber": 70,
+    "lineNumber": 65,
     "unknown": [
       {
         "tagName": "@returns",
@@ -653,7 +681,7 @@
     "generator": false
   },
   {
-    "__docId__": 22,
+    "__docId__": 23,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -662,7 +690,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#proto",
     "access": null,
     "description": "To override the default prototype.",
-    "lineNumber": 80,
+    "lineNumber": 75,
     "unknown": [
       {
         "tagName": "@returns",
@@ -692,7 +720,7 @@
     "generator": false
   },
   {
-    "__docId__": 23,
+    "__docId__": 24,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -701,7 +729,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#augment",
     "access": null,
     "description": "To apply the given builders during the build process.",
-    "lineNumber": 90,
+    "lineNumber": 85,
     "unknown": [
       {
         "tagName": "@returns",
@@ -731,7 +759,7 @@
     "generator": false
   },
   {
-    "__docId__": 24,
+    "__docId__": 25,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -740,7 +768,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#on",
     "access": null,
     "description": "To register call back on events.",
-    "lineNumber": 101,
+    "lineNumber": 96,
     "unknown": [
       {
         "tagName": "@returns",
@@ -782,7 +810,7 @@
     "generator": false
   },
   {
-    "__docId__": 25,
+    "__docId__": 26,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -791,7 +819,7 @@
     "longname": "lib/builder/CustomElementBuilder.js~CustomElementBuilder#register",
     "access": null,
     "description": "To register the custom element.",
-    "lineNumber": 114,
+    "lineNumber": 109,
     "unknown": [
       {
         "tagName": "@returns",
@@ -821,7 +849,7 @@
     "generator": false
   },
   {
-    "__docId__": 26,
+    "__docId__": 27,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -834,7 +862,7 @@
     "content": "import {isUndefined, isFunction, toArray} from '../utils.js';\nimport {getAttValue, setAttValue} from './AttributeBuilder.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The delegate builder.\n * Its goal is to provide a way to delegate methods, properties and attributes.\n * @extends {Builder}\n */\nexport class DelegateBuilder extends Builder {\n\n    /**\n     * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} fieldBuilder the field builder\n     */\n    constructor(fieldBuilder) {\n        super();\n        /**\n         * @ignore\n         */\n        this.fieldBuilder = fieldBuilder;\n        /**\n         * @ignore\n         */\n        this.data = {};\n        if (fieldBuilder.data.attrName) {\n            this.data.attrName = fieldBuilder.data.attrName;\n        } else if (this.fieldBuilder.data.propName) {\n            this.data.propName = fieldBuilder.data.propName;\n        } else if (this.fieldBuilder.data.methName) {\n            this.data.methName = fieldBuilder.data.methName;\n        }\n    }\n\n    /**\n     * The target of the delegate.\n     * @param {!string} selector a valid css query\n     * @returns {DelegateBuilder} the builder\n     */\n    to(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To force the delegation to a property.\n     * @param {string} [propName] the name of the property\n     * @returns {DelegateBuilder} the builder\n     */\n    property(propName) {\n        this.data.attrName = null;\n        if (!isUndefined(propName)) {\n            this.data.propName = propName;\n        } else {\n            this.data.propName = this.fieldBuilder.data.propName;\n        }\n        return this;\n    }\n\n    /**\n     * To force the delegation to an attribute.\n     * @param {string} [attrName] the name of the attribute\n     * @returns {DelegateBuilder} the builder\n     */\n    attribute(attrName) {\n        this.data.propName = null;\n        if (!isUndefined(attrName)) {\n            this.data.attrName = attrName;\n        } else {\n            this.data.attrName = this.fieldBuilder.data.attrName || this.fieldBuilder.data.propName;\n        }\n        return this;\n    }\n\n    /**\n     * To force the delegation to a method.\n     * @param {string} [methName] the name of the method\n     * @returns {DelegateBuilder} the builder\n     */\n    method(methName) {\n        this.data.methName = null;\n        if (!isUndefined(methName)) {\n            this.data.methName = methName;\n        } else {\n            this.data.methName = this.fieldBuilder.data.methName;\n        }\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let data = this.data,\n            fieldBuilderData = this.fieldBuilder.data,\n            targetedPropName = this.data.propName,\n            targetedMethName = this.data.methName,\n            targetedAttrName = this.data.attrName,\n            fieldGetter = fieldBuilderData.getter,\n            fieldSetter = fieldBuilderData.setter;\n\n        if (fieldBuilderData.attrName) {\n            fieldBuilderData.getterFactory = (attrName, isBoolean) => {\n                return function () {\n                    let target = this.querySelector(data.selector);\n                    if (target) {\n                        return targetedAttrName ? getAttValue(target, targetedAttrName, isBoolean) : target[targetedPropName];\n                    }\n                };\n            };\n            fieldBuilderData.setterFactory = (attrName, isBoolean) => {\n                return function (value) {\n                    let target = this.querySelector(data.selector),\n                        attrValue = value;\n                    if (target) {\n                        if (targetedAttrName) {\n                            setAttValue(target, targetedAttrName, isBoolean, attrValue);\n                        } else {\n                            target[targetedPropName] = attrValue;\n                        }\n                        setAttValue(this, attrName, isBoolean, attrValue);\n                    }\n                };\n            };\n        } else if (fieldBuilderData.propName) {\n            fieldBuilderData.descriptorValue = false;\n            fieldBuilderData.getter = (el) => {\n                let target = el.querySelector(data.selector),\n                    targetValue;\n                if (target) {\n                    if (targetedAttrName) {\n                        targetValue = target.getAttribute(targetedAttrName);\n                    } else {\n                        targetValue = target[targetedPropName];\n                    }\n                }\n                return isFunction(fieldGetter) ? fieldGetter.call(el, el, targetValue) : targetValue;\n            };\n            fieldBuilderData.setter = (el, value) => {\n                let target = el.querySelector(data.selector),\n                    targetValue = isFunction(fieldSetter) ? fieldSetter.call(el, el, value) : value;\n                if (target) {\n                    if (targetedAttrName) {\n                        target.setAttribute(targetedAttrName, targetValue);\n                    } else {\n                        target[targetedPropName] = targetValue;\n                    }\n                }\n            };\n        } else if (fieldBuilderData.methName) {\n            fieldBuilderData.invoke = function (el) {\n                let target = el.querySelector(data.selector);\n                if (isFunction(target[targetedMethName])) {\n                    let args = toArray(arguments);\n                    args.shift();\n                    return target[targetedMethName].apply(target, args);\n                }\n            };\n        }\n\n        this.fieldBuilder.build(proto, on);\n    }\n\n}\n"
   },
   {
-    "__docId__": 27,
+    "__docId__": 28,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -853,7 +881,7 @@
     ]
   },
   {
-    "__docId__": 28,
+    "__docId__": 29,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -880,7 +908,7 @@
     "generator": false
   },
   {
-    "__docId__": 29,
+    "__docId__": 30,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -898,7 +926,7 @@
     }
   },
   {
-    "__docId__": 30,
+    "__docId__": 31,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -916,7 +944,7 @@
     }
   },
   {
-    "__docId__": 31,
+    "__docId__": 32,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -955,7 +983,7 @@
     "generator": false
   },
   {
-    "__docId__": 32,
+    "__docId__": 33,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -994,7 +1022,7 @@
     "generator": false
   },
   {
-    "__docId__": 33,
+    "__docId__": 34,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1033,7 +1061,7 @@
     "generator": false
   },
   {
-    "__docId__": 34,
+    "__docId__": 35,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1072,7 +1100,7 @@
     "generator": false
   },
   {
-    "__docId__": 35,
+    "__docId__": 36,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1100,7 +1128,7 @@
     "generator": false
   },
   {
-    "__docId__": 36,
+    "__docId__": 37,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1110,10 +1138,10 @@
     "access": null,
     "description": null,
     "lineNumber": 1,
-    "content": "import {isFunction, toArray, partial, bind} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The method builder.\n * Its goal is to provide a way to define a method.\n * @extends {Builder}\n */\nexport class MethodBuilder extends Builder {\n\n    /**\n     * @param {!string} methName the name of the method\n     */\n    constructor(methName) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {methName, wrappers: []};\n    }\n\n    /**\n     * To do something when invoked.\n     * @param {!function(el: HTMLElement, args: ...*)} fn the method's logic\n     * @returns {MethodBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To do something around the invocation.\n     * @param {...function(el: HTMLElement, args: ...*)} wrappers a set of wrappers\n     * @returns {MethodBuilder} the builder\n     */\n    wrap(...wrappers) {\n        this.data.wrappers = this.data.wrappers.concat(wrappers);\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let data = this.data;\n\n        if (data.invoke) {\n            proto[data.methName] = function () {\n                return data.invoke.apply(this, [this].concat(toArray(arguments)));\n            };\n        }\n\n        if (data.wrappers.length) {\n            on('before:createdCallback').invoke(el => {\n                if (isFunction(el[data.methName])) {\n                    let lastIndex = data.wrappers.length - 1,\n                        original = el[data.methName],\n                        target = function target() {\n                            let args = toArray(arguments);\n                            args.shift();\n                            original.apply(el, args);\n                        };\n                    el[data.methName] = data.wrappers.reduce((next, current, i, a) => {\n                        if (i === lastIndex) {\n                            return bind(partial(current, next, el), el);\n                        }\n                        return bind(partial(current, next), el);\n                    }, target);\n\n                }\n            });\n        }\n    }\n}\n"
+    "content": "import {isFunction, toArray, partial, bind} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The method builder.\n * Its goal is to provide a way to define a method.\n * @extends {Builder}\n */\nexport class MethodBuilder extends Builder {\n\n    /**\n     * @param {!string} methName the name of the method\n     */\n    constructor(methName) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {methName, wrappers: []};\n    }\n\n    /**\n     * To do something when invoked.\n     * @param {!function(el: HTMLElement, args: ...*)} fn the method's logic\n     * @returns {MethodBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To do something around the invocation.\n     * @param {...function(el: HTMLElement, args: ...*)} wrappers a set of wrappers\n     * @returns {MethodBuilder} the builder\n     */\n    wrap(...wrappers) {\n        this.data.wrappers = this.data.wrappers.concat(wrappers);\n        return this;\n    }\n\n    /**\n     * @override\n     */\n    build(proto, on) {\n        let data = this.data;\n\n        if (data.invoke) {\n            proto[data.methName] = function () {\n                return data.invoke.apply(this, [this].concat(toArray(arguments)));\n            };\n        }\n\n        if (data.wrappers.length) {\n            on('before:createdCallback').invoke(el => {\n                if (isFunction(el[data.methName])) {\n                    let lastIndex = data.wrappers.length - 1,\n                        original = el[data.methName],\n                        target = function target() {\n                            let args = toArray(arguments);\n                            args.shift();\n                            original.apply(el, args);\n                        };\n                    el[data.methName] = data.wrappers.reduce((next, current, index) => {\n                        if (index === lastIndex) {\n                            return bind(partial(current, next, el), el);\n                        }\n                        return bind(partial(current, next), el);\n                    }, target);\n\n                }\n            });\n        }\n    }\n}\n"
   },
   {
-    "__docId__": 37,
+    "__docId__": 38,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1132,7 +1160,7 @@
     ]
   },
   {
-    "__docId__": 38,
+    "__docId__": 39,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1157,7 +1185,7 @@
     "generator": false
   },
   {
-    "__docId__": 39,
+    "__docId__": 40,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1175,7 +1203,7 @@
     }
   },
   {
-    "__docId__": 40,
+    "__docId__": 41,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1214,7 +1242,7 @@
     "generator": false
   },
   {
-    "__docId__": 41,
+    "__docId__": 42,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1253,7 +1281,7 @@
     "generator": false
   },
   {
-    "__docId__": 42,
+    "__docId__": 43,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1281,7 +1309,7 @@
     "generator": false
   },
   {
-    "__docId__": 43,
+    "__docId__": 44,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1294,7 +1322,7 @@
     "content": "import {isFunction, toArray, find, noop} from '../utils.js';\nimport {Builder} from './Builder.js';\n\n/**\n * The on builder.\n * Its goal is to provide a way to listen events coming from the custom element.\n * @extends {Builder}\n */\nexport class OnBuilder extends Builder {\n\n    /**\n     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n     */\n    constructor(events) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {events, invoke: noop};\n    }\n\n    /**\n     * To do something when events occurred.\n     * The target argument is by default the custom element.\n     * When the delegate feature is used, target is the matched element.\n     * @param {!function(el: HTMLElement, evt: DOMEvent, target: HTMLElement)} fn the event's logic\n     * @returns {OnBuilder} the builder\n     */\n    invoke(fn) {\n        if (isFunction(fn)) {\n            this.data.invoke = fn;\n        }\n        return this;\n    }\n\n    /**\n     * To attach the event on the capture phase insteadof of on the bubble phase.\n     * @returns {OnBuilder} the builder\n     */\n    capture() {\n        this.data.capture = true;\n        return this;\n    }\n\n    /**\n     * To delegate the event.\n     * @param {!string} selector the selector\n     * @returns {OnBuilder} the builder\n     */\n    delegate(selector) {\n        this.data.selector = selector;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior.\n     * @returns {OnBuilder} the builder\n     */\n    prevent() {\n        this.data.preventDefault = true;\n        return this;\n    }\n\n    /**\n     * To stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    stop() {\n        this.data.stopPropagation = true;\n        return this;\n    }\n\n    /**\n     * To prevent the default behavior and to stop the event propagation.\n     * @returns {OnBuilder} the builder\n     */\n    skip() {\n        return this.prevent().stop();\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let events = this.data.events.split(',').map(event => event.trim().split(' ')),\n            capture = !!this.data.capture,\n            invoke = this.data.invoke,\n            selector = this.data.selector,\n            stopPropagation = this.data.stopPropagation,\n            preventDefault = this.data.preventDefault;\n\n        on('before:createdCallback').invoke((el) => {\n            el._cebOnHandlers = [];\n        });\n\n        on('before:attachedCallback').invoke((el) => {\n            let listener = evt => {\n                if (selector) {\n                    let target = find(\n                        toArray(el.querySelectorAll(selector)),\n                            el => el === evt.target || el.contains(evt.target)\n                    );\n                    if (target) {\n                        if (stopPropagation) {\n                            evt.stopPropagation();\n                        }\n                        if (preventDefault) {\n                            evt.preventDefault();\n                        }\n                        invoke(el, evt, target);\n                    }\n                } else {\n                    if (stopPropagation) {\n                        evt.stopPropagation();\n                    }\n                    if (preventDefault) {\n                        evt.preventDefault();\n                    }\n                    invoke(el, evt, el);\n                }\n            };\n\n            el._cebOnHandlers = events\n                .map(([name, target]) => [name, target ? el.querySelector(target) : el])\n                .filter(([name, target]) => !!target)\n                .map(([name, target]) => {\n                    target.addEventListener(name, listener, capture);\n                    return [target, name, listener, capture];\n                });\n\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.addEventListener(name, listener, capture));\n\n        });\n\n        on('before:detachedCallback').invoke((el) => {\n            el._cebOnHandlers.forEach(([target, name, listener, capture]) => target.removeEventListener(name, listener, capture));\n        });\n    }\n\n}\n"
   },
   {
-    "__docId__": 44,
+    "__docId__": 45,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1313,7 +1341,7 @@
     ]
   },
   {
-    "__docId__": 45,
+    "__docId__": 46,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1338,7 +1366,7 @@
     "generator": false
   },
   {
-    "__docId__": 46,
+    "__docId__": 47,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1356,7 +1384,7 @@
     }
   },
   {
-    "__docId__": 47,
+    "__docId__": 48,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1395,7 +1423,7 @@
     "generator": false
   },
   {
-    "__docId__": 48,
+    "__docId__": 49,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1423,7 +1451,7 @@
     "generator": false
   },
   {
-    "__docId__": 49,
+    "__docId__": 50,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1462,7 +1490,7 @@
     "generator": false
   },
   {
-    "__docId__": 50,
+    "__docId__": 51,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1490,7 +1518,7 @@
     "generator": false
   },
   {
-    "__docId__": 51,
+    "__docId__": 52,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1518,7 +1546,7 @@
     "generator": false
   },
   {
-    "__docId__": 52,
+    "__docId__": 53,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1546,7 +1574,7 @@
     "generator": false
   },
   {
-    "__docId__": 53,
+    "__docId__": 54,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1574,7 +1602,7 @@
     "generator": false
   },
   {
-    "__docId__": 54,
+    "__docId__": 55,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1587,7 +1615,7 @@
     "content": "import {Builder} from './Builder.js';\nimport {isFunction, isUndefined, result, assign} from '../utils.js';\n\nconst DEFAULT_DATA = {\n    enumerable: true,\n    immutable: false,\n    descriptorValue: true\n};\n\n/**\n * The property builder.\n * Its goal is to provide a way to define a property.\n * @extends {Builder}\n */\nexport class PropertyBuilder extends Builder {\n\n    /**\n     * @param {!string} propName the name of the property\n     */\n    constructor(propName) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = assign({propName}, DEFAULT_DATA);\n    }\n\n    /**\n     * To make an immutable property.\n     * @returns {PropertyBuilder} the builder\n     */\n    immutable() {\n        this.data.immutable = true;\n        return this;\n    }\n\n    /**\n     * To hide the property name when using <code>Object.keys()</code>.\n     * @returns {PropertyBuilder} the builder\n     */\n    hidden() {\n        this.data.enumerable = false;\n        return this;\n    }\n\n    /**\n     * To set a default value.\n     * @param {*} value the default value\n     * @returns {PropertyBuilder} the builder\n     */\n    value(value) {\n        this.data.value = value;\n        return this;\n    }\n\n    /**\n     * To set a getter function.\n     * @param {function(el: HTMLElement): *} fn the getter function\n     * @returns {PropertyBuilder} the builder\n     */\n    getter(fn) {\n        this.data.descriptorValue = false;\n        this.data.getter = fn;\n        return this;\n    }\n\n    /**\n     * To set a setter function.\n     * @param {function(el: HTMLElement, value: *)} fn the setter function\n     * @returns {PropertyBuilder} the builder\n     */\n    setter(fn) {\n        this.data.descriptorValue = false;\n        this.data.setter = fn;\n        return this;\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let data = this.data,\n            defaultValue = result(this.data, 'value'),\n            descriptor = {\n                enumerable: this.data.enumerable\n            };\n\n        if (this.data.immutable) {\n            descriptor.configurable = false;\n            descriptor.writable = false;\n        } else if (isFunction(this.data.getter) || isFunction(this.data.setter)) {\n            descriptor.configurable = false;\n            descriptor.get = function () {\n                return data.getter.call(this, this);\n            };\n            descriptor.set = function (value) {\n                return data.setter.call(this, this, value);\n            };\n        } else {\n            descriptor.configurable = true;\n            descriptor.writable = true;\n        }\n\n        if (this.data.descriptorValue) {\n            descriptor.value = defaultValue;\n        }\n\n        Object.defineProperty(proto, this.data.propName, descriptor);\n\n        on('after:createdCallback').invoke(el => {\n            if (!this.data.descriptorValue && !isUndefined(defaultValue)) {\n                el[data.propName] = defaultValue;\n            }\n        });\n    }\n\n}\n"
   },
   {
-    "__docId__": 55,
+    "__docId__": 56,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1608,7 +1636,7 @@
     }
   },
   {
-    "__docId__": 56,
+    "__docId__": 57,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -1627,7 +1655,7 @@
     ]
   },
   {
-    "__docId__": 57,
+    "__docId__": 58,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -1652,7 +1680,7 @@
     "generator": false
   },
   {
-    "__docId__": 58,
+    "__docId__": 59,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -1670,7 +1698,7 @@
     }
   },
   {
-    "__docId__": 59,
+    "__docId__": 60,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1698,7 +1726,7 @@
     "generator": false
   },
   {
-    "__docId__": 60,
+    "__docId__": 61,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1726,7 +1754,7 @@
     "generator": false
   },
   {
-    "__docId__": 61,
+    "__docId__": 62,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1765,7 +1793,7 @@
     "generator": false
   },
   {
-    "__docId__": 62,
+    "__docId__": 63,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1804,7 +1832,7 @@
     "generator": false
   },
   {
-    "__docId__": 63,
+    "__docId__": 64,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1843,7 +1871,7 @@
     "generator": false
   },
   {
-    "__docId__": 64,
+    "__docId__": 65,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -1871,7 +1899,7 @@
     "generator": false
   },
   {
-    "__docId__": 65,
+    "__docId__": 66,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -1884,7 +1912,7 @@
     "content": "import {isFunction} from '../utils.js';\nimport {Builder} from './Builder.js';\nimport {PropertyBuilder} from './PropertyBuilder.js';\n\n/**\n * The counter is used to generate unique DOM's id.\n * @type {number}\n */\nvar counter = 0;\n\n/**\n * The attribute name hosting the old light node id.\n * @type {string}\n */\nconst OLD_CONTENT_ID_ATTR_NAME = 'ceb-old-content-id';\n\n/**\n * Regex to detect the *ceb-content* attributes.\n * @type {RegExp}\n */\nconst CONTENT_ATTR_REG_EX = /ceb\\-content/im;\n\n/**\n * Regex to detect the *content* element.\n * @type {RegExp}\n */\nconst CONTENT_NODE_REG_EX = /<content><\\/content>/im;\n\n/**\n * @param {!string} html the HTML template\n * @returns {boolean} true if the HTML template handle a light DOM node\n */\nfunction hasContent(html) {\n    return html.search(CONTENT_ATTR_REG_EX) !== -1 || html.search(CONTENT_NODE_REG_EX) !== -1;\n}\n\n/**\n * Update or replace an eventual content flag according to the given id.\n * @param {!string} html the HTML template\n * @param {!string} newCebContentId the new content node id\n * @returns {string} the updated HTML template\n */\nfunction replaceContent(html, newCebContentId) {\n    return html\n        .replace('<content></content>', '<ceb-lightdom ceb-content></ceb-lightdom>')\n        .replace('ceb-content', newCebContentId);\n}\n\n/**\n * Try to find a light DOM node\n * @param {!HTMLElement} el the custom element\n * @returns {HTMLElement} the light DOM node if found otherwise it's the given HTML Element\n */\nfunction findContentNode(el) {\n    if (!el) {\n        return;\n    }\n    let oldCebContentId = el.getAttribute(OLD_CONTENT_ID_ATTR_NAME);\n    if (oldCebContentId) {\n        return findContentNode(el.querySelector('[' + oldCebContentId + ']')) || el;\n    }\n    return el;\n}\n\n/**\n * Remove and return the children of the light DOM node.\n * @param {!HTMLElement} el the custom element\n * @returns {DocumentFragment} the light DOM fragment\n */\nfunction cleanOldContentNode(el) {\n    let oldContentNode = el.lightDom,\n        lightFrag = document.createDocumentFragment();\n    while (oldContentNode.childNodes.length > 0) {\n        lightFrag.appendChild(oldContentNode.removeChild(oldContentNode.childNodes[0]));\n    }\n    return lightFrag;\n}\n\n/**\n * Add the given DOM nodes list to the given element.\n * @param {!HTMLElement} el the custom element\n * @param {DocumentFragment} lightFrag the light DOM fragment\n */\nfunction fillNewContentNode(el, lightFrag) {\n    el.lightDom.appendChild(lightFrag);\n}\n\n/**\n * Apply the template given by the property cebTemplate.\n * @param {!HTMLElement} el the custom element\n * @param {!string} tpl the template\n */\nexport function applyTemplate(el, tpl) {\n    let lightFrag = [],\n        handleContentNode = hasContent(tpl);\n\n    if (handleContentNode) {\n        let newCebContentId = 'ceb-content-' + counter++;\n        lightFrag = cleanOldContentNode(el);\n\n        tpl = replaceContent(tpl, newCebContentId);\n\n        el.setAttribute(OLD_CONTENT_ID_ATTR_NAME, newCebContentId);\n    }\n\n    el.innerHTML = tpl;\n\n    if (handleContentNode) {\n        fillNewContentNode(el, lightFrag);\n    }\n}\n/**\n * The template builder.\n * Its goal is to provide a way to fill the content of a custom element.\n * @extends {Builder}\n */\nexport class TemplateBuilder extends Builder {\n\n    /**\n     * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function\n     */\n    constructor(tpl) {\n        super();\n        /**\n         * @ignore\n         */\n        this.data = {tpl};\n    }\n\n    /**\n     * @ignore\n     */\n    build(proto, on) {\n        let data = this.data;\n\n        (new PropertyBuilder('lightDom')).getter(el => findContentNode(el)).build(proto, on);\n\n        on('before:createdCallback').invoke(el => {\n            applyTemplate(el, isFunction(data.tpl) ? data.tpl(el) : data.tpl);\n        });\n    }\n\n}\n"
   },
   {
-    "__docId__": 66,
+    "__docId__": 67,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1907,7 +1935,7 @@
     }
   },
   {
-    "__docId__": 67,
+    "__docId__": 68,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1930,7 +1958,7 @@
     }
   },
   {
-    "__docId__": 68,
+    "__docId__": 69,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1953,7 +1981,7 @@
     }
   },
   {
-    "__docId__": 69,
+    "__docId__": 70,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -1976,7 +2004,7 @@
     }
   },
   {
-    "__docId__": 70,
+    "__docId__": 71,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2018,7 +2046,7 @@
     "generator": false
   },
   {
-    "__docId__": 71,
+    "__docId__": 72,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2070,7 +2098,7 @@
     "generator": false
   },
   {
-    "__docId__": 72,
+    "__docId__": 73,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2112,7 +2140,7 @@
     "generator": false
   },
   {
-    "__docId__": 73,
+    "__docId__": 74,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2154,7 +2182,7 @@
     "generator": false
   },
   {
-    "__docId__": 74,
+    "__docId__": 75,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2192,7 +2220,7 @@
     "generator": false
   },
   {
-    "__docId__": 75,
+    "__docId__": 76,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2230,7 +2258,7 @@
     "generator": false
   },
   {
-    "__docId__": 76,
+    "__docId__": 77,
     "kind": "class",
     "static": true,
     "variation": null,
@@ -2249,7 +2277,7 @@
     ]
   },
   {
-    "__docId__": 77,
+    "__docId__": 78,
     "kind": "constructor",
     "static": false,
     "variation": null,
@@ -2275,7 +2303,7 @@
     "generator": false
   },
   {
-    "__docId__": 78,
+    "__docId__": 79,
     "kind": "member",
     "static": false,
     "variation": null,
@@ -2293,7 +2321,7 @@
     }
   },
   {
-    "__docId__": 79,
+    "__docId__": 80,
     "kind": "method",
     "static": false,
     "variation": null,
@@ -2321,7 +2349,7 @@
     "generator": false
   },
   {
-    "__docId__": 80,
+    "__docId__": 81,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2334,7 +2362,7 @@
     "content": "import {CustomElementBuilder} from './builder/CustomElementBuilder.js';\nimport {PropertyBuilder} from './builder/PropertyBuilder.js';\nimport {AttributeBuilder, getAttValue, setAttValue} from './builder/AttributeBuilder.js';\nimport {DelegateBuilder} from './builder/DelegateBuilder.js';\nimport {MethodBuilder} from './builder/MethodBuilder.js';\nimport {TemplateBuilder, applyTemplate} from './builder/TemplateBuilder.js';\nimport {OnBuilder} from './builder/OnBuilder.js';\nimport {Builder as BuilderType} from './builder/Builder.js';\n\n/**\n * The base builder type\n * @type {Builder} the builder\n */\nexport const Builder = BuilderType;\n\n/**\n * Get a new custom element builder.\n * @returns {CustomElementBuilder} the custom element builder\n */\nexport function ceb() {\n    return new CustomElementBuilder();\n}\n\n/**\n * Get a new property builder.\n * @param {!string} propName the name of the property\n * @returns {PropertyBuilder} the property builder\n */\nexport function property(propName) {\n    return new PropertyBuilder(propName);\n}\n\n/**\n * Get a new attribute builder.\n * @param {!string} attrName the name of the attribute\n * @returns {AttributeBuilder} the attribute builder\n */\nexport function attribute(attrName) {\n    return new AttributeBuilder(attrName);\n}\nattribute.getAttValue = getAttValue;\nattribute.setAttValue = setAttValue;\n\n/**\n * Get a new method builder.\n * @param {!string} methName the name of the method\n * @returns {MethodBuilder} the method builder\n */\nexport function method(methName) {\n    return new MethodBuilder(methName);\n}\n\n/**\n * Get a new delegate builder.\n * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} builder a property, attribute or method builder\n * @returns {DelegateBuilder} the delegate builder\n */\nexport function delegate(builder) {\n    return new DelegateBuilder(builder);\n}\n\n/**\n * Get a new template builder.\n * @param {!string|Function} tpl the string or function template\n * @returns {TemplateBuilder} the template builder\n */\nexport function template(tpl) {\n    return new TemplateBuilder(tpl);\n}\ntemplate.applyTemplate = applyTemplate;\n\n/**\n * Get a new on builder.\n * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional\n * @returns {OnBuilder} the on builder\n */\nexport function on(events) {\n    return new OnBuilder(events);\n}\n"
   },
   {
-    "__docId__": 81,
+    "__docId__": 82,
     "kind": "variable",
     "static": true,
     "variation": null,
@@ -2357,7 +2385,7 @@
     }
   },
   {
-    "__docId__": 82,
+    "__docId__": 83,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2388,7 +2416,7 @@
     "generator": false
   },
   {
-    "__docId__": 83,
+    "__docId__": 84,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2430,7 +2458,7 @@
     "generator": false
   },
   {
-    "__docId__": 84,
+    "__docId__": 85,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2472,7 +2500,7 @@
     "generator": false
   },
   {
-    "__docId__": 85,
+    "__docId__": 86,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2514,7 +2542,7 @@
     "generator": false
   },
   {
-    "__docId__": 86,
+    "__docId__": 87,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2558,7 +2586,7 @@
     "generator": false
   },
   {
-    "__docId__": 87,
+    "__docId__": 88,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2601,7 +2629,7 @@
     "generator": false
   },
   {
-    "__docId__": 88,
+    "__docId__": 89,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2643,7 +2671,7 @@
     "generator": false
   },
   {
-    "__docId__": 89,
+    "__docId__": 90,
     "kind": "file",
     "static": true,
     "variation": null,
@@ -2653,10 +2681,10 @@
     "access": null,
     "description": null,
     "lineNumber": 4,
-    "content": "/**\n * @ignore\n */\nexport function camelCase(value) {\n    return value.toLowerCase().split('-').map((part, index) => index ? part.charAt(0).toUpperCase() + part.slice(1) : part).join('');\n}\n\n/**\n * @ignore\n */\nexport function isFunction(i) {\n    return Object.prototype.toString.call(i) === '[object Function]';\n}\n\n/**\n * @ignore\n */\nexport function isUndefined(i) {\n    return i === undefined;\n}\n\n/**\n * @ignore\n */\nexport function isNull(i) {\n    return i === null;\n}\n\n/**\n * @ignore\n */\nexport function isString(i) {\n    return Object.prototype.toString.call(i) === '[object String]';\n}\n\n/**\n * @ignore\n */\nexport function isArray(i) {\n    return Object.prototype.toString.call(i) === '[object Array]';\n}\n\n/**\n * @ignore\n */\nexport function result(obj, prop) {\n    let value = obj[prop];\n    return isFunction(value) ? value() : value;\n}\n\n/**\n * @ignore\n */\nexport function assign() {\n    return Array.prototype.reduce.call(arguments, function (target, source) {\n        return Object.keys(Object(source)).reduce((target, key) => {\n            target[key] = source[key];\n            return target;\n        }, target);\n    });\n}\n\n/**\n * @ignore\n */\nexport function toArray(i) {\n    return Array.prototype.slice.call(i);\n}\n\n/**\n * @ignore\n */\nexport function flatten(array) {\n    return array.reduce((a, b) => isArray(b) ? a.concat(flatten(b)) : a.concat(b), []);\n}\n\n/**\n * @ignore\n */\nexport function invoke() {\n    let args = toArray(arguments),\n        objects = args.shift(),\n        meth = args.shift();\n    if (isArray(objects)) {\n        objects.filter(obj => isFunction(obj[meth])).forEach(obj => obj[meth].apply(obj, args));\n    }\n}\n\n/**\n * @ignore\n */\nexport function partial() {\n    let args = toArray(arguments),\n        fn = args.shift();\n    return function () {\n        return fn.apply(this, args.concat(toArray(arguments)));\n    };\n}\n\n/**\n * @ignore\n */\nexport function bind(fn, ctx) {\n    return function () {\n        return fn.apply(ctx, toArray(arguments));\n    };\n}\n\n/**\n * @ignore\n */\nexport function noop() {\n    return function () {\n    };\n}\n\n/**\n * @ignore\n */\nexport function wrap(fn, wrapper) {\n    return partial(wrapper, fn);\n}\n\n/**\n * @ignore\n */\nexport function find(array, cb) {\n    return array.filter(cb)[0];\n}\n\n/**\n * @ignore\n */\nexport function trigger(el, event, params) {\n    var evt = document.createEvent('CustomEvent');\n    evt.initCustomEvent(event, params.bubbles, params.cancellable, params.detail);\n    return el.dispatchEvent(evt);\n}\n"
+    "content": "/**\n * @ignore\n */\nexport function camelCase(value) {\n    return value.toLowerCase().split('-').map((part, index) => index ? part.charAt(0).toUpperCase() + part.slice(1) : part).join('');\n}\n\n/**\n * @ignore\n */\nexport function isFunction(i) {\n    return Object.prototype.toString.call(i) === '[object Function]';\n}\n\n/**\n * @ignore\n */\nexport function isUndefined(i) {\n    return i === undefined;\n}\n\n/**\n * @ignore\n */\nexport function isNull(i) {\n    return i === null;\n}\n\n/**\n * @ignore\n */\nexport function isString(i) {\n    return Object.prototype.toString.call(i) === '[object String]';\n}\n\n/**\n * @ignore\n */\nexport function isArray(i) {\n    return Object.prototype.toString.call(i) === '[object Array]';\n}\n\n/**\n * @ignore\n */\nexport function result(obj, prop) {\n    let value = obj[prop];\n    return isFunction(value) ? value() : value;\n}\n\n/**\n * @ignore\n */\nexport function assign() {\n    return Array.prototype.reduce.call(arguments, function (target, source) {\n        return Object.keys(Object(source)).reduce((target, key) => {\n            target[key] = source[key];\n            return target;\n        }, target);\n    });\n}\n\n/**\n * @ignore\n */\nexport function toArray(i) {\n    return Array.prototype.slice.call(i);\n}\n\n/**\n * @ignore\n */\nexport function flatten(array) {\n    return array.reduce((a, b) => isArray(b) ? a.concat(flatten(b)) : a.concat(b), []);\n}\n\n/**\n * @ignore\n */\nexport function invoke() {\n    let args = toArray(arguments),\n        objects = args.shift(),\n        meth = args.shift();\n    if (isArray(objects)) {\n        objects.filter(obj => isFunction(obj[meth])).forEach(obj => obj[meth].apply(obj, args));\n    }\n}\n\n/**\n * @ignore\n */\nexport function partial() {\n    let args = toArray(arguments),\n        fn = args.shift();\n    return function () {\n        return fn.apply(this, args.concat(toArray(arguments)));\n    };\n}\n\n/**\n * @ignore\n */\nexport function bind(fn, ctx) {\n    return function () {\n        return fn.apply(ctx, toArray(arguments));\n    };\n}\n\n/**\n * @ignore\n */\nexport function noop() {\n    return function () {\n    };\n}\n\n/**\n * @ignore\n */\nexport function find(array, cb) {\n    return array.filter(cb)[0];\n}\n"
   },
   {
-    "__docId__": 90,
+    "__docId__": 91,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2686,7 +2714,7 @@
     "generator": false
   },
   {
-    "__docId__": 91,
+    "__docId__": 92,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2716,7 +2744,7 @@
     "generator": false
   },
   {
-    "__docId__": 92,
+    "__docId__": 93,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2746,7 +2774,7 @@
     "generator": false
   },
   {
-    "__docId__": 93,
+    "__docId__": 94,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2776,7 +2804,7 @@
     "generator": false
   },
   {
-    "__docId__": 94,
+    "__docId__": 95,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2806,7 +2834,7 @@
     "generator": false
   },
   {
-    "__docId__": 95,
+    "__docId__": 96,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2836,7 +2864,7 @@
     "generator": false
   },
   {
-    "__docId__": 96,
+    "__docId__": 97,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2872,7 +2900,7 @@
     "generator": false
   },
   {
-    "__docId__": 97,
+    "__docId__": 98,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2895,7 +2923,7 @@
     "generator": false
   },
   {
-    "__docId__": 98,
+    "__docId__": 99,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2925,7 +2953,7 @@
     "generator": false
   },
   {
-    "__docId__": 99,
+    "__docId__": 100,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2955,7 +2983,7 @@
     "generator": false
   },
   {
-    "__docId__": 100,
+    "__docId__": 101,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2973,7 +3001,7 @@
     "generator": false
   },
   {
-    "__docId__": 101,
+    "__docId__": 102,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -2996,7 +3024,7 @@
     "generator": false
   },
   {
-    "__docId__": 102,
+    "__docId__": 103,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -3032,7 +3060,7 @@
     "generator": false
   },
   {
-    "__docId__": 103,
+    "__docId__": 104,
     "kind": "function",
     "static": true,
     "variation": null,
@@ -3055,42 +3083,6 @@
     "generator": false
   },
   {
-    "__docId__": 104,
-    "kind": "function",
-    "static": true,
-    "variation": null,
-    "name": "wrap",
-    "memberof": "lib/utils.js",
-    "longname": "lib/utils.js~wrap",
-    "access": null,
-    "export": true,
-    "importPath": "custom-elements-builder/lib/utils.js",
-    "importStyle": "{wrap}",
-    "description": null,
-    "lineNumber": 120,
-    "ignore": true,
-    "params": [
-      {
-        "name": "fn",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "wrapper",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": {
-      "types": [
-        "*"
-      ]
-    },
-    "generator": false
-  },
-  {
     "__docId__": 105,
     "kind": "function",
     "static": true,
@@ -3103,7 +3095,7 @@
     "importPath": "custom-elements-builder/lib/utils.js",
     "importStyle": "{find}",
     "description": null,
-    "lineNumber": 127,
+    "lineNumber": 120,
     "ignore": true,
     "params": [
       {
@@ -3127,49 +3119,7 @@
     "generator": false
   },
   {
-    "__docId__": 106,
-    "kind": "function",
-    "static": true,
-    "variation": null,
-    "name": "trigger",
-    "memberof": "lib/utils.js",
-    "longname": "lib/utils.js~trigger",
-    "access": null,
-    "export": true,
-    "importPath": "custom-elements-builder/lib/utils.js",
-    "importStyle": "{trigger}",
-    "description": null,
-    "lineNumber": 134,
-    "ignore": true,
-    "params": [
-      {
-        "name": "el",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "event",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "params",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": {
-      "types": [
-        "*"
-      ]
-    },
-    "generator": false
-  },
-  {
-    "__docId__": 108,
+    "__docId__": 107,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3182,7 +3132,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 109,
+    "__docId__": 108,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3195,7 +3145,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 110,
+    "__docId__": 109,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3208,7 +3158,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 111,
+    "__docId__": 110,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3221,7 +3171,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 112,
+    "__docId__": 111,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3234,7 +3184,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 113,
+    "__docId__": 112,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3247,7 +3197,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 114,
+    "__docId__": 113,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3260,7 +3210,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 115,
+    "__docId__": 114,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3273,7 +3223,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 116,
+    "__docId__": 115,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3286,7 +3236,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 117,
+    "__docId__": 116,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3299,7 +3249,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 118,
+    "__docId__": 117,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3312,7 +3262,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 119,
+    "__docId__": 118,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3325,7 +3275,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 120,
+    "__docId__": 119,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3338,7 +3288,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 121,
+    "__docId__": 120,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3351,7 +3301,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 122,
+    "__docId__": 121,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3364,7 +3314,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 123,
+    "__docId__": 122,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3377,7 +3327,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 124,
+    "__docId__": 123,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3390,7 +3340,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 125,
+    "__docId__": 124,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3403,7 +3353,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 126,
+    "__docId__": 125,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3416,7 +3366,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 127,
+    "__docId__": 126,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3429,7 +3379,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 128,
+    "__docId__": 127,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3442,7 +3392,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 129,
+    "__docId__": 128,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3455,7 +3405,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 130,
+    "__docId__": 129,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3468,7 +3418,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 131,
+    "__docId__": 130,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3481,7 +3431,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 132,
+    "__docId__": 131,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3494,7 +3444,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 133,
+    "__docId__": 132,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3507,7 +3457,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 134,
+    "__docId__": 133,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3520,7 +3470,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 135,
+    "__docId__": 134,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3533,7 +3483,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 136,
+    "__docId__": 135,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3546,7 +3496,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 137,
+    "__docId__": 136,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3559,7 +3509,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 138,
+    "__docId__": 137,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3572,7 +3522,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 139,
+    "__docId__": 138,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3585,7 +3535,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 140,
+    "__docId__": 139,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3598,7 +3548,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 141,
+    "__docId__": 140,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3611,7 +3561,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 142,
+    "__docId__": 141,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3624,7 +3574,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 143,
+    "__docId__": 142,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3637,7 +3587,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 144,
+    "__docId__": 143,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3650,7 +3600,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 145,
+    "__docId__": 144,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3663,7 +3613,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 146,
+    "__docId__": 145,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3676,7 +3626,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 147,
+    "__docId__": 146,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3689,7 +3639,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 148,
+    "__docId__": 147,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3702,7 +3652,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 149,
+    "__docId__": 148,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3715,7 +3665,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 150,
+    "__docId__": 149,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3728,7 +3678,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 151,
+    "__docId__": 150,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3741,7 +3691,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 152,
+    "__docId__": 151,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3754,7 +3704,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 153,
+    "__docId__": 152,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3767,7 +3717,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 154,
+    "__docId__": 153,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3780,7 +3730,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 156,
+    "__docId__": 155,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3793,7 +3743,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 157,
+    "__docId__": 156,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3806,7 +3756,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 158,
+    "__docId__": 157,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3819,7 +3769,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 159,
+    "__docId__": 158,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3832,7 +3782,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 160,
+    "__docId__": 159,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3845,7 +3795,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 161,
+    "__docId__": 160,
     "kind": "external",
     "static": true,
     "variation": null,
@@ -3858,7 +3808,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 162,
+    "__docId__": 161,
     "kind": "external",
     "static": true,
     "variation": null,
