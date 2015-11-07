@@ -4,20 +4,20 @@
 var MyCustomElement = ceb().register(&#39;my-custom-element&#39;);
 </code></pre><p>Now the custom element can be used like another regular <code>HTMLElement</code>.</p><pre><code class=lang-javascript>document.createElement(&#39;my-custom-element&#39;);
 </code></pre><pre><code class=lang-html>&lt;button is=&quot;my-custom-element&quot;&gt;&lt;/my-custom-element&gt;
-</code></pre><h2 id=extending-native-elements>Extending (native) elements</h2><p>By default the prototype of the future custom element is <code>Object.create(HTMLElement.prototype)</code>. The method <code>prototype()</code> can be used to override the default value.</p><p>To extend a native HTML element, the method <code>extends()</code> must be set with the name of the native element.</p><p>See the <a href=http://w3c.github.io/webcomponents/spec/custom/#api-element-registration-options>specification</a> to get more information.</p><pre><code class=lang-javascript>import ceb from &#39;custom-element-builder&#39;;
+</code></pre><h2 id=extending-native-elements>Extending (native) elements</h2><p>By default the prototype of the future custom element is <code>Object.create(HTMLElement.prototype)</code>. The method <code>prototype()</code> can be used to override the default value.</p><p>To extend a native HTML element, the method <code>extend()</code> must be set with the name of the native element.</p><p>See the <a href=http://w3c.github.io/webcomponents/spec/custom/#api-element-registration-options>specification</a> to get more information.</p><pre><code class=lang-javascript>import ceb from &#39;custom-element-builder&#39;;
 var MyCustomButton = ceb()
-    .prototype(Object.create(HTMLButtonElement.prototype))
-    .extends(&#39;button&#39;)
+    .proto(Object.create(HTMLButtonElement.prototype))
+    .extend(&#39;button&#39;)
     .register(&#39;my-custom-button&#39;);
 </code></pre><p>Now the custom element can be used like another regular <code>HTMLButtonElement</code>.</p><p>However to create a custom element extending a native one, the syntax is different.</p><pre><code class=lang-javascript>document.createElement(&#39;button&#39;, &#39;my-custom-button&#39;);
 </code></pre><pre><code class=lang-html>&lt;button is=&quot;my-custom-button&quot;&gt;&lt;/button&gt;
-</code></pre><h2 id=consume-dedicated-builders>Consume dedicated builders</h2><p>The user friendly way to use dedicated builders is provided by the method <code>augment()</code>.</p><pre><code class=lang-javascript>import {ceb, attribute, property} from &#39;custom-element-builder&#39;;
+</code></pre><h2 id=consume-dedicated-builders>Consume dedicated builders</h2><p>The user friendly way to use dedicated builders is provided by the method <code>builders()</code>.</p><pre><code class=lang-javascript>import {ceb, attribute, property} from &#39;custom-element-builder&#39;;
 var MyCustomElement = ceb()
-    .augment(
+    .builders(
         attribute(&#39;att1&#39;),
         property(&#39;prop1&#39;).immutable().value(&#39;I am a constant&#39;)
     )
-    .augment(attribute(&#39;att2&#39;))
+    .builders(attribute(&#39;att2&#39;))
     .register(&#39;my-custom-element&#39;);
 </code></pre><p>Builders are executed sequentially when <code>register()</code> is called. That means, <code>attribute(&#39;att1&#39;)</code> will be executed first and <code>attribute(&#39;att2&#39;)</code> as last.</p><h2 id=life-cycle>Life cycle</h2><p>The build process of <code>register()</code> is composed of two steps:</p><ul><li>the dedicated builders executions</li><li>the registration of the Custom Element</li></ul><p>These steps raise the following events:</p><ul><li>before:builders</li><li>after:builders</li><li>before:registerElement</li><li>after:registerElement</li></ul><p>The life cycle of the future Custom Element also raise events:</p><ul><li>before:createdCallback</li><li>after:createdCallback</li><li>before:attachedCallback</li><li>after:attachedCallback</li><li>before:detachedCallback</li><li>after:detachedCallback</li><li>before:attributeChangedCallback</li><li>after:attributeChangedCallback</li></ul><p>The method <code>on()</code> registers a callback about the events listed above.</p><pre><code class=lang-javascript>import {ceb} from &#39;custom-element-builder&#39;;
 var MyDummyButtonElement = ceb()
@@ -25,7 +25,7 @@ var MyDummyButtonElement = ceb()
     .register(&#39;my-dummy-button-element&#39;);
 </code></pre><p>The events <code>before:builders</code>, <code>after:builders</code> and <code>before:registerElement</code> are called with the context of the builder a argument.</p><p>The event <code>after:registerElement</code> is called with the type of the custom element.</p><p>The events linked to the life cycle of the Custom Element are called with the custom element as argument.</p><p>The events <code>before:attributeChangedCallback</code> and <code>after:attributeChangedCallback</code> are called with the custom element, the attribute name, the old value and the new one.</p><h2 id=provide-dedicated-builders>Provide dedicated builders</h2><p>In <code>register()</code>, a dedicated builder is an object having a method <code>build()</code>, otherwise the builder will be ignored.</p><p>The methods <code>build()</code> are called with the following arguments:</p><ul><li>the prototype of the future Custom Element</li><li>the instance of the method <code>on()</code></li></ul><p>Basically, the logic of the builder is implemented into the method <code>build()</code>. All stuff which can not be done during the execution of the method <code>build()</code>, can be executed later using the function <code>on()</code>.</p><pre><code class=lang-javascript>import {ceb} from &#39;custom-element-builder&#39;;
 var MyDummyButtonElement = ceb()
-    .augment({
+    .builders({
         build(proto, on) {
             // this will be executed once by register call
             Object.defineProperty(proto, &#39;prop1&#39;, {

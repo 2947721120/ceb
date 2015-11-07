@@ -396,6 +396,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "builtinexternal/webapiexternal.js~audiocontext",
+    "external/index.html",
+    "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "external"
+  ],
+  [
     "builtinexternal/webapiexternal.js~canvasrenderingcontext2d",
     "external/index.html",
     "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
@@ -462,6 +468,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "lib/builder/attributebuilder.js~attributebuilder#hidden",
+    "class/lib/builder/AttributeBuilder.js~AttributeBuilder.html#instance-method-hidden",
+    "lib/builder/AttributeBuilder.js~AttributeBuilder#hidden",
+    "method"
+  ],
+  [
     "lib/builder/attributebuilder.js~attributebuilder#listen",
     "class/lib/builder/AttributeBuilder.js~AttributeBuilder.html#instance-method-listen",
     "lib/builder/AttributeBuilder.js~AttributeBuilder#listen",
@@ -477,6 +489,12 @@ window.esdocSearchIndex = [
     "lib/builder/attributebuilder.js~attributebuilder#unbound",
     "class/lib/builder/AttributeBuilder.js~AttributeBuilder.html#instance-method-unbound",
     "lib/builder/AttributeBuilder.js~AttributeBuilder#unbound",
+    "method"
+  ],
+  [
+    "lib/builder/attributebuilder.js~attributebuilder#value",
+    "class/lib/builder/AttributeBuilder.js~AttributeBuilder.html#instance-method-value",
+    "lib/builder/AttributeBuilder.js~AttributeBuilder#value",
     "method"
   ],
   [
@@ -498,9 +516,9 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "lib/builder/customelementbuilder.js~customelementbuilder#augment",
-    "class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html#instance-method-augment",
-    "lib/builder/CustomElementBuilder.js~CustomElementBuilder#augment",
+    "lib/builder/customelementbuilder.js~customelementbuilder#builders",
+    "class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html#instance-method-builders",
+    "lib/builder/CustomElementBuilder.js~CustomElementBuilder#builders",
     "method"
   ],
   [
@@ -516,9 +534,9 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "lib/builder/customelementbuilder.js~customelementbuilder#extends",
-    "class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html#instance-method-extends",
-    "lib/builder/CustomElementBuilder.js~CustomElementBuilder#extends",
+    "lib/builder/customelementbuilder.js~customelementbuilder#extend",
+    "class/lib/builder/CustomElementBuilder.js~CustomElementBuilder.html#instance-method-extend",
+    "lib/builder/CustomElementBuilder.js~CustomElementBuilder#extend",
     "method"
   ],
   [
