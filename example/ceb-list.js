@@ -26,7 +26,7 @@ webpackJsonp([6],{
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _jquery2.default)(function () {
-	  return (0, _jquery2.default)(_cebList2.default).appendTo((0, _jquery2.default)('body'));
+	  return (0, _jquery2.default)(_cebList2.default).appendTo((0, _jquery2.default)('#content'));
 	});
 
 /***/ },
@@ -6678,7 +6678,7 @@ webpackJsonp([6],{
 /***/ 312:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\n    <p>\n        The <code>ceb-list</code> content will be refreshed when an item is added or removed.\n        The templating system is provided by <code>example/builders/handlebarify.js</code>.\n    </p>\n\n    <hr>\n\n    <ceb-list></ceb-list>\n\n</div>\n"
+	module.exports = "<p>\n    The <code>ceb-list</code> content will be refreshed when an item is added or removed.\n    The templating system is provided by <code>example/builders/handlebarify.js</code>.\n</p>\n\n<hr>\n\n<ceb-list></ceb-list>\n"
 
 /***/ }
 

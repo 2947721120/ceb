@@ -1,83 +1,439 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <base data-ice="baseUrl">
-  <title data-ice="title">ceb - custom-element-builder API Document</title>
-  <link type="text/css" rel="stylesheet" href="css/style.css">
-  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
-  <script src="script/prettify/prettify.js"></script>
-  
-  
-  <script src="script/manual.js"></script>
-</head>
-<body class="layout-container" data-ice="rootContainer">
-
-<header>
-  <a href="./">Home</a>
-  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
-  <a href="identifiers.html">Reference</a>
-  <a href="source.html">Source</a>
-  
-  <a data-ice="repoURL" href="https://github.com/tmorin/ceb.git" class="repo-url-github">Repository</a>
-  <div class="search-box">
-  <span>
-    <img src="./image/search.png">
-    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
-  </span>
-    <ul class="search-result"></ul>
-  </div>
-</header>
-
-<nav class="navigation" data-ice="nav"><div>
-  <ul>
+<!DOCTYPE HTML>
+<html lang="en" >
     
-  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">builder</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/builder/attribute.js~AttributeBuilder.html">AttributeBuilder</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/builder/delegate.js~DelegateBuilder.html">DelegateBuilder</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/builder/element.js~ElementBuilder.html">ElementBuilder</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/builder/method.js~MethodBuilder.html">MethodBuilder</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/builder/on.js~OnBuilder.html">OnBuilder</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/builder/property.js~PropertyBuilder.html">PropertyBuilder</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/builder/template.js~TemplateBuilder.html">TemplateBuilder</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-attribute">attribute</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-getAttValue">getAttValue</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-setAttValue">setAttValue</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-delegate">delegate</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-element">element</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-method">method</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-on">on</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-property">property</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-applyTemplate">applyTemplate</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-template">template</a></span></span></li>
-<li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">helper</div><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-flatten">flatten</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-invoke">invoke</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toArray">toArray</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toCamelCase">toCamelCase</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dispatchCustomEvent">dispatchCustomEvent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dispatchMouseEvent">dispatchMouseEvent</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bind">bind</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-noop">noop</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-partial">partial</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-assign">assign</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-result">result</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isArray">isArray</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isFunction">isFunction</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isNull">isNull</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isString">isString</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-isUndefined">isUndefined</a></span></span></li>
-</ul>
-</div>
-</nav>
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Readme | ceb - custom-element-builder</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="Circle CIDependency StatusdevDependency Status">
+        <meta name="generator" content="GitBook 2.5.2">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="gitbook/plugins/gitbook-plugin-prism/prism.css">
+        
+    
+        
+        <link rel="stylesheet" href="gitbook/plugins/gitbook-plugin-search/search.css">
+        
+    
+        
+        <link rel="stylesheet" href="gitbook/plugins/gitbook-plugin-fontsettings/website.css">
+        
+    
+    
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="-code-lt-ceb-gt-code-or-custom-element-builder"><code>&lt;ceb/&gt;</code> or custom-element-builder</h1>
-<p><a href="https://circleci.com/gh/tmorin/ceb"><img src="https://circleci.com/gh/tmorin/ceb.svg?style=svg" alt="Circle CI"></a>
-<a href="https://david-dm.org/tmorin/ceb"><img src="https://david-dm.org/tmorin/ceb.svg" alt="Dependency Status"></a>
-<a href="https://david-dm.org/tmorin/ceb#info=devDependencies"><img src="https://david-dm.org/tmorin/ceb/dev-status.svg" alt="devDependency Status"></a></p>
-<p><a href="https://saucelabs.com/u/customelementbuilder"><img src="https://saucelabs.com/browser-matrix/customelementbuilder.svg" alt="Sauce Test Status"></a></p>
-<p><code>&lt;ceb/&gt;</code> is a library helping to develop <a href="http://www.w3.org/TR/custom-elements/">Custom Elements</a>.</p>
+        
+    
+    
+    <link rel="next" href="./doc/installation/index.html" />
+    
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book" data-level="0" data-chapter-title="Readme" data-filepath="README.md" data-basepath="." data-revision="Sun Nov 29 2015 00:26:38 GMT+0100 (CET)">
+    
+
+<div class="book-summary">
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter active" data-level="0" data-path="index.html">
+            
+                
+                    <a href="./index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Readme
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="doc/installation/index.html">
+            
+                
+                    <a href="./doc/installation/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Installation
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.1" data-path="doc/installation/npm_and_bower.html">
+            
+                
+                    <a href="./doc/installation/npm_and_bower.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.1.</b>
+                        
+                        from npm and bower
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="doc/installation/source.html">
+            
+                
+                    <a href="./doc/installation/source.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.2.</b>
+                        
+                        from source
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="doc/integration/index.html">
+            
+                
+                    <a href="./doc/integration/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Integration
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.1" data-path="doc/integration/polyfills.html">
+            
+                
+                    <a href="./doc/integration/polyfills.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.1.</b>
+                        
+                        Polyfills
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="doc/integration/global.html">
+            
+                
+                    <a href="./doc/integration/global.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.2.</b>
+                        
+                        As a global variable
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="doc/integration/amd.html">
+            
+                
+                    <a href="./doc/integration/amd.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.3.</b>
+                        
+                        AMD
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.4" data-path="doc/integration/systemjs.html">
+            
+                
+                    <a href="./doc/integration/systemjs.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.4.</b>
+                        
+                        SystemJS
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.5" data-path="doc/integration/commonjs.html">
+            
+                
+                    <a href="./doc/integration/commonjs.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.5.</b>
+                        
+                        CommonJS
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2.6" data-path="doc/integration/es2015.html">
+            
+                
+                    <a href="./doc/integration/es2015.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.6.</b>
+                        
+                        ES2015
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="doc/usage/index.html">
+            
+                
+                    <a href="./doc/usage/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Usage
+                    </a>
+            
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="3.1" data-path="doc/usage/element.html">
+            
+                
+                    <a href="./doc/usage/element.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.1.</b>
+                        
+                        element()
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="doc/usage/property.html">
+            
+                
+                    <a href="./doc/usage/property.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.2.</b>
+                        
+                        property()
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="doc/usage/attribute.html">
+            
+                
+                    <a href="./doc/usage/attribute.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.3.</b>
+                        
+                        attribute()
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="doc/usage/method.html">
+            
+                
+                    <a href="./doc/usage/method.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.4.</b>
+                        
+                        method()
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="doc/usage/delegate.html">
+            
+                
+                    <a href="./doc/usage/delegate.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.5.</b>
+                        
+                        delegate()
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="doc/usage/on.html">
+            
+                
+                    <a href="./doc/usage/on.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.6.</b>
+                        
+                        on()
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3.7" data-path="doc/usage/template.html">
+            
+                
+                    <a href="./doc/usage/template.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.7.</b>
+                        
+                        template()
+                    </a>
+            
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="doc/api/index.html">
+            
+                
+                    <a href="./doc/api/index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        API
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="CHANGELOG.html">
+            
+                
+                    <a href="./CHANGELOG.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Change Log
+                    </a>
+            
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="./" >ceb - custom-element-builder</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h1 id="ceb-customelementbuilder"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ceb</span><span class="token punctuation">/&gt;</span></span></code> <small>custom-element-builder</small></h1>
+<p><a href="https://circleci.com/gh/tmorin/ceb" target="_blank"><img src="https://circleci.com/gh/tmorin/ceb.svg?style=svg" alt="Circle CI"></a>
+<a href="https://david-dm.org/tmorin/ceb" target="_blank"><img src="https://david-dm.org/tmorin/ceb.svg" alt="Dependency Status"></a>
+<a href="https://david-dm.org/tmorin/ceb#info=devDependencies" target="_blank"><img src="https://david-dm.org/tmorin/ceb/dev-status.svg" alt="devDependency Status"></a></p>
+<p><a href="https://saucelabs.com/u/customelementbuilder" target="_blank"><img src="https://saucelabs.com/browser-matrix/customelementbuilder.svg" alt="Sauce Test Status"></a></p>
+<p><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ceb</span><span class="token punctuation">/&gt;</span></span></code> is a library helping to develop <a href="http://www.w3.org/TR/custom-elements/" target="_blank">Custom Elements</a>.</p>
 <p>It&apos;s core is a builder which executes others builders.
-By this way, <code>&lt;ceb/&gt;</code> is natively open to extensions and builders easily sharable. </p>
-<p>Obviously, <code>&lt;ceb/&gt;</code> exposes builders and helpers to handle the common needs:</p>
+By this way, <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ceb</span><span class="token punctuation">/&gt;</span></span></code> is natively open to extensions and builders easily sharable. </p>
+<p>Obviously, <code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ceb</span><span class="token punctuation">/&gt;</span></span></code> exposes builders and helpers to handle the common needs:</p>
 <ul>
 <li>property</li>
 <li>attribute</li>
@@ -89,57 +445,107 @@ By this way, <code>&lt;ceb/&gt;</code> is natively open to extensions and builde
 <li>etc.</li>
 </ul>
 <h2 id="quick-overview">Quick overview</h2>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">import {element, property, method, dispatchCustomEvent} from &apos;ceb&apos;;
+<pre><code class="lang-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span>element<span class="token punctuation">,</span> property<span class="token punctuation">,</span> method<span class="token punctuation">,</span> dispatchCustomEvent<span class="token punctuation">}</span> from <span class="token string">&apos;ceb&apos;</span><span class="token punctuation">;</span>
 
-// create a fresh element builder
-let builder = element();
+<span class="token comment" spellcheck="true">// create a fresh element builder</span>
+<span class="token keyword">let</span> builder <span class="token operator">=</span> <span class="token function">element</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-builder.builders(
-    // add a property named foo initialized to 0
-    property(&apos;foo&apos;).value(0),
+builder<span class="token punctuation">.</span><span class="token function">builders</span><span class="token punctuation">(</span>
+    <span class="token comment" spellcheck="true">// add a property named foo initialized to 0</span>
+    <span class="token function">property</span><span class="token punctuation">(</span><span class="token string">&apos;foo&apos;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 
-    // add a method named incFoo which increment the foo value
-    method(&apos;incFoo&apos;).invoke( (el, num=1) =&gt; el.foo = el.foo + num )
-);
+    <span class="token comment" spellcheck="true">// add a method named incFoo which increment the foo value</span>
+    <span class="token function">method</span><span class="token punctuation">(</span><span class="token string">&apos;incFoo&apos;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>el<span class="token punctuation">,</span> num<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> el<span class="token punctuation">.</span>foo <span class="token operator">=</span> el<span class="token punctuation">.</span>foo <span class="token operator">+</span> num <span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-builder.builders(
-    // add a method named bar, which will dispatch the custom event &apos;bar&apos; when invoked
-    method(&apos;bar&apos;).invoke( (el, detail) =&gt; dispatchCustomEvent(el, &apos;bar&apos;, {detail}) )
-);
+builder<span class="token punctuation">.</span><span class="token function">builders</span><span class="token punctuation">(</span>
+    <span class="token comment" spellcheck="true">// add a method named bar, which will dispatch the custom event &apos;bar&apos; when invoked</span>
+    <span class="token function">method</span><span class="token punctuation">(</span><span class="token string">&apos;bar&apos;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span> <span class="token punctuation">(</span>el<span class="token punctuation">,</span> detail<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token function">dispatchCustomEvent</span><span class="token punctuation">(</span>el<span class="token punctuation">,</span> <span class="token string">&apos;bar&apos;</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>detail<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// build and register the custom element 
-let CebExample = builder.register(&apos;ceb-example&apos;);
+<span class="token comment" spellcheck="true">// build and register the custom element </span>
+<span class="token keyword">let</span> CebExample <span class="token operator">=</span> builder<span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token string">&apos;ceb-example&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// export the class of the custom element
-export default CebExample;</code>
+<span class="token comment" spellcheck="true">// export the class of the custom element</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> CebExample<span class="token punctuation">;</span>
 </code></pre>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">// create an instance of ceb-example
-var cebExample = document.createElement(&apos;ceb-example&apos;);
+<pre><code class="lang-javascript"><span class="token comment" spellcheck="true">// create an instance of ceb-example</span>
+<span class="token keyword">var</span> cebExample <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">&apos;ceb-example&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-// by default foo is 0
-console.log(cebExample.foo) // =&gt; 0
+<span class="token comment" spellcheck="true">// by default foo is 0</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>cebExample<span class="token punctuation">.</span>foo<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// =&gt; 0</span>
 
-cebExample.incFoo();
-console.log(cebExample.foo) // =&gt; now it&apos;s: 1
+cebExample<span class="token punctuation">.</span><span class="token function">incFoo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>cebExample<span class="token punctuation">.</span>foo<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// =&gt; now it&apos;s: 1</span>
 
-cebExample.incFoo(2);
-console.log(cebExample.foo) // =&gt; and finally: 3
+cebExample<span class="token punctuation">.</span><span class="token function">incFoo</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>cebExample<span class="token punctuation">.</span>foo<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// =&gt; and finally: 3</span>
 
-cebExample.bar(&apos;foo&apos;); // -&gt; dispatch the custom event &apos;bar&apos; with the detail &apos;foo&apos;</code>
+cebExample<span class="token punctuation">.</span><span class="token function">bar</span><span class="token punctuation">(</span><span class="token string">&apos;foo&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// =&gt; dispatch the custom event &apos;bar&apos; with the detail &apos;foo&apos;</span>
 </code></pre>
-</div>
+<h2 id="download">Download</h2>
+<p><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ceb</span><span class="token punctuation">/&gt;</span></span></code> distributed files are available from 
+<a href="https://www.npmjs.com/package/ceb" target="_blank">npm</a>
+and bower.</p>
+<p>From npm:</p>
+<pre><code class="lang-shell">npm install ceb
+</code></pre>
+<p>From bower:</p>
+<pre><code class="lang-shell">bower install ceb
+</code></pre>
+<h2 id="license">License</h2>
+<p>Released under the <a href="http://opensource.org/licenses/MIT" target="_blank">MIT license</a>.</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        
+        <a href="./doc/installation/index.html" class="navigation navigation-next navigation-unique" aria-label="Next page: Installation"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
 </div>
 
-<footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.4.3)</span></a>
-</footer>
+        
+<script src="gitbook/app.js"></script>
 
-<script src="script/search_index.js"></script>
-<script src="script/search.js"></script>
-<script src="script/pretty-print.js"></script>
-<script src="script/inherited-summary.js"></script>
-<script src="script/test-summary.js"></script>
-<script src="script/inner-link.js"></script>
-<script src="script/patch-for-local.js"></script>
-</body>
+    
+    <script src="gitbook/plugins/gitbook-plugin-edit-link/plugin.js"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-github/plugin.js"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-search/lunr.min.js"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-search/search.js"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-sharing/buttons.js"></script>
+    
+
+    
+    <script src="gitbook/plugins/gitbook-plugin-fontsettings/buttons.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"edit-link":{"base":"https://github.com/tmorin/ceb/edit/master","label":"Edit This Page"},"github":{"url":"https://github.com/tmorin/ceb/"},"prism":{},"search":{},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
 </html>

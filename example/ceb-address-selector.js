@@ -28,7 +28,7 @@ webpackJsonp([4],{
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _jquery2.default)(function () {
-	  return (0, _jquery2.default)(_cebAddressSelector2.default).appendTo((0, _jquery2.default)('body'));
+	  return (0, _jquery2.default)(_cebAddressSelector2.default).appendTo((0, _jquery2.default)('#content'));
 	});
 
 /***/ },
@@ -5762,7 +5762,7 @@ webpackJsonp([4],{
 /***/ 308:
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"container\">\n\n    <p>\n        <code>ceb-address-selector</code> consume the <a href=\"http://nominatim.openstreetmap.org\">nominatim.openstreetmap.org</a> API to help the selection of a place.\n    </p>\n\n    <p>\n        The implementation is based on <a href=\"https://baconjs.github.io\" target=\"_blank\">bacon.js</a> streams to simplify the asynchronous business of this kind of widgets.\n        The bacon.js magic is provided by <code>example/builders/baconify.js</code>.\n    </p>\n\n    <hr>\n\n    <ceb-address-selector></ceb-address-selector>\n\n</div>\n"
+	module.exports = "<p>\n    <code>ceb-address-selector</code> consume the <a href=\"http://nominatim.openstreetmap.org\">nominatim.openstreetmap.org</a> API to help the selection of a place.\n</p>\n\n<p>\n    The implementation is based on <a href=\"https://baconjs.github.io\" target=\"_blank\">bacon.js</a> streams to simplify the asynchronous business of this kind of widgets.\n    The bacon.js magic is provided by <code>example/builders/baconify.js</code>.\n</p>\n\n<hr>\n\n<ceb-address-selector></ceb-address-selector>\n"
 
 /***/ },
 
