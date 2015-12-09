@@ -54,6 +54,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toArray">toArray</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toCamelCase">toCamelCase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dispatchCustomEvent">dispatchCustomEvent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dispatchHtmlEvent">dispatchHtmlEvent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dispatchMouseEvent">dispatchMouseEvent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bind">bind</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-noop">noop</a></span></span></li>
@@ -150,6 +151,24 @@ export function dispatchMouseEvent(el, eventType, options) {
     } else {
         event = document.createEvent(&apos;MouseEvents&apos;);
         event.initMouseEvent.apply(event, [eventType].concat(MOUSE_EVENT_ARG_NAMES.map(name =&gt; args[name])));
+    }
+    return el.dispatchEvent(event);
+}
+
+/**
+ * Create and dispatch an HTML event (change, etc.).
+ * @param {!HTMLElement} el the element where the event will be dispatched
+ * @param {!string} eventType the event type
+ * @param {Object} [options] the options
+ * @returns {boolean} false if at least one of the event handlers which handled this event called Event.preventDefault(). Otherwise it returns true.
+ */
+export function dispatchHtmlEvent(el, eventType, options) {
+    let event, args = assign({}, DEFAULT_MOUSE_EVENT_OPTIONS, options);
+    if (typeof HTMLEvents === &apos;function&apos;) {
+        event = new Events(eventType, args);
+    } else {
+        event = document.createEvent(&apos;HTMLEvents&apos;);
+        event.initEvent.apply(event, [eventType].concat(MOUSE_EVENT_ARG_NAMES.map(name =&gt; args[name])));
     }
     return el.dispatchEvent(event);
 }

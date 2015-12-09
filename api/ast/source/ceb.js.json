@@ -1546,6 +1546,59 @@
               "column": 47
             }
           }
+        },
+        {
+          "type": "ExportSpecifier",
+          "exported": {
+            "type": "Identifier",
+            "name": "dispatchHtmlEvent",
+            "range": [
+              636,
+              653
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 49
+              },
+              "end": {
+                "line": 14,
+                "column": 66
+              }
+            }
+          },
+          "local": {
+            "type": "Identifier",
+            "name": "dispatchHtmlEvent",
+            "range": [
+              636,
+              653
+            ],
+            "loc": {
+              "start": {
+                "line": 14,
+                "column": 49
+              },
+              "end": {
+                "line": 14,
+                "column": 66
+              }
+            }
+          },
+          "range": [
+            636,
+            653
+          ],
+          "loc": {
+            "start": {
+              "line": 14,
+              "column": 49
+            },
+            "end": {
+              "line": 14,
+              "column": 66
+            }
+          }
         }
       ],
       "source": {
@@ -1553,23 +1606,23 @@
         "value": "./helper/events.js",
         "raw": "'./helper/events.js'",
         "range": [
-          641,
-          661
+          660,
+          680
         ],
         "loc": {
           "start": {
             "line": 14,
-            "column": 54
+            "column": 73
           },
           "end": {
             "line": 14,
-            "column": 74
+            "column": 93
           }
         }
       },
       "range": [
         587,
-        662
+        681
       ],
       "loc": {
         "start": {
@@ -1578,7 +1631,7 @@
         },
         "end": {
           "line": 14,
-          "column": 75
+          "column": 94
         }
       }
     },
@@ -1592,8 +1645,8 @@
             "type": "Identifier",
             "name": "isArray",
             "range": [
-              671,
-              678
+              690,
+              697
             ],
             "loc": {
               "start": {
@@ -1610,8 +1663,8 @@
             "type": "Identifier",
             "name": "isArray",
             "range": [
-              671,
-              678
+              690,
+              697
             ],
             "loc": {
               "start": {
@@ -1625,8 +1678,8 @@
             }
           },
           "range": [
-            671,
-            678
+            690,
+            697
           ],
           "loc": {
             "start": {
@@ -1645,8 +1698,8 @@
             "type": "Identifier",
             "name": "isFunction",
             "range": [
-              680,
-              690
+              699,
+              709
             ],
             "loc": {
               "start": {
@@ -1663,8 +1716,8 @@
             "type": "Identifier",
             "name": "isFunction",
             "range": [
-              680,
-              690
+              699,
+              709
             ],
             "loc": {
               "start": {
@@ -1678,8 +1731,8 @@
             }
           },
           "range": [
-            680,
-            690
+            699,
+            709
           ],
           "loc": {
             "start": {
@@ -1698,8 +1751,8 @@
             "type": "Identifier",
             "name": "isNull",
             "range": [
-              692,
-              698
+              711,
+              717
             ],
             "loc": {
               "start": {
@@ -1716,8 +1769,8 @@
             "type": "Identifier",
             "name": "isNull",
             "range": [
-              692,
-              698
+              711,
+              717
             ],
             "loc": {
               "start": {
@@ -1731,8 +1784,8 @@
             }
           },
           "range": [
-            692,
-            698
+            711,
+            717
           ],
           "loc": {
             "start": {
@@ -1751,8 +1804,8 @@
             "type": "Identifier",
             "name": "isString",
             "range": [
-              700,
-              708
+              719,
+              727
             ],
             "loc": {
               "start": {
@@ -1769,8 +1822,8 @@
             "type": "Identifier",
             "name": "isString",
             "range": [
-              700,
-              708
+              719,
+              727
             ],
             "loc": {
               "start": {
@@ -1784,8 +1837,8 @@
             }
           },
           "range": [
-            700,
-            708
+            719,
+            727
           ],
           "loc": {
             "start": {
@@ -1804,8 +1857,8 @@
             "type": "Identifier",
             "name": "isUndefined",
             "range": [
-              710,
-              721
+              729,
+              740
             ],
             "loc": {
               "start": {
@@ -1822,8 +1875,8 @@
             "type": "Identifier",
             "name": "isUndefined",
             "range": [
-              710,
-              721
+              729,
+              740
             ],
             "loc": {
               "start": {
@@ -1837,8 +1890,8 @@
             }
           },
           "range": [
-            710,
-            721
+            729,
+            740
           ],
           "loc": {
             "start": {
@@ -1857,8 +1910,8 @@
         "value": "./helper/types.js",
         "raw": "'./helper/types.js'",
         "range": [
-          728,
-          747
+          747,
+          766
         ],
         "loc": {
           "start": {
@@ -1872,8 +1925,8 @@
         }
       },
       "range": [
-        663,
-        748
+        682,
+        767
       ],
       "loc": {
         "start": {
@@ -1890,7 +1943,7 @@
   "sourceType": "module",
   "range": [
     0,
-    748
+    767
   ],
   "loc": {
     "start": {

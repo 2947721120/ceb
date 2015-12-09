@@ -78,6 +78,12 @@ window.esdocSearchIndex = [
     "function"
   ],
   [
+    "ceb/lib/helper/events.js~dispatchhtmlevent",
+    "function/index.html#static-function-dispatchHtmlEvent",
+    "<span>dispatchHtmlEvent</span> <span class=\"search-result-import-path\">ceb/lib/helper/events.js</span>",
+    "function"
+  ],
+  [
     "ceb/lib/helper/events.js~dispatchmouseevent",
     "function/index.html#static-function-dispatchMouseEvent",
     "<span>dispatchMouseEvent</span> <span class=\"search-result-import-path\">ceb/lib/helper/events.js</span>",

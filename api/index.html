@@ -54,6 +54,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toArray">toArray</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-toCamelCase">toCamelCase</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dispatchCustomEvent">dispatchCustomEvent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dispatchHtmlEvent">dispatchHtmlEvent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-dispatchMouseEvent">dispatchMouseEvent</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-bind">bind</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-noop">noop</a></span></span></li>
@@ -69,14 +70,14 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="-code-lt-ceb-gt-code-small-custom-element-builder-small-"><code>&lt;ceb/&gt;</code> &lt;small&gt;custom-element-builder&lt;/small&gt;</h1>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="-ceb-small-custom-element-builder-small-"><code>&lt;ceb/&gt;</code> &lt;small&gt;custom-element-builder&lt;/small&gt;</h1>
 <p><a href="https://circleci.com/gh/tmorin/ceb"><img src="https://circleci.com/gh/tmorin/ceb.svg?style=svg" alt="Circle CI"></a>
 <a href="https://david-dm.org/tmorin/ceb"><img src="https://david-dm.org/tmorin/ceb.svg" alt="Dependency Status"></a>
 <a href="https://david-dm.org/tmorin/ceb#info=devDependencies"><img src="https://david-dm.org/tmorin/ceb/dev-status.svg" alt="devDependency Status"></a></p>
 <p><a href="https://saucelabs.com/u/customelementbuilder"><img src="https://saucelabs.com/browser-matrix/customelementbuilder.svg" alt="Sauce Test Status"></a></p>
-<p><code>&lt;ceb/&gt;</code> is a library helping to develop <a href="http://www.w3.org/TR/custom-elements/">Custom Elements</a>.</p>
+<p><code>&lt;ceb/&gt;</code> is a library helping to develop <a href="http://w3c.github.io/webcomponents/spec/custom">Custom Elements</a>.</p>
 <p>It&apos;s core is a builder which executes others builders.
-By this way, <code>&lt;ceb/&gt;</code> is natively open to extensions and builders easily sharable. </p>
+By this way, <code>&lt;ceb/&gt;</code> is natively opened to extensions and builders easily sharable. </p>
 <p>Obviously, <code>&lt;ceb/&gt;</code> exposes builders and helpers to handle the common needs:</p>
 <ul>
 <li>property</li>
@@ -98,7 +99,7 @@ builder.builders(
     // add a property named foo initialized to 0
     property(&apos;foo&apos;).value(0),
 
-    // add a method named incFoo which increment the foo value
+    // add a method named incFoo, which will increment the foo value
     method(&apos;incFoo&apos;).invoke( (el, num=1) =&gt; el.foo = el.foo + num )
 );
 
@@ -128,9 +129,7 @@ console.log(cebExample.foo) // =&gt; and finally: 3
 cebExample.bar(&apos;foo&apos;); // =&gt; dispatch the custom event &apos;bar&apos; with the detail &apos;foo&apos;</code>
 </code></pre>
 <h2 id="download">Download</h2>
-<p><code>&lt;ceb/&gt;</code> distributed files are available from 
-<a href="https://www.npmjs.com/package/ceb">npm</a>
-and bower.</p>
+<p><code>&lt;ceb/&gt;</code> is available from <a href="https://www.npmjs.com/package/ceb">npm</a> and <a href="http://bower.io/search/?q=ceb">bower</a>.</p>
 <p>From npm:</p>
 <pre><code class="lang-shell"><code class="source-code prettyprint">npm install ceb</code>
 </code></pre>

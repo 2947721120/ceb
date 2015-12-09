@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 74,
-  "actualCount": 74,
+  "expectCount": 75,
+  "actualCount": 75,
   "files": {
     "src/builder/attribute.js": {
       "expectCount": 12,
@@ -49,8 +49,8 @@
       "undocumentLines": []
     },
     "src/helper/events.js": {
-      "expectCount": 2,
-      "actualCount": 2,
+      "expectCount": 3,
+      "actualCount": 3,
       "undocumentLines": []
     },
     "src/helper/arrays.js": {
