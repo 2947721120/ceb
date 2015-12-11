@@ -5469,7 +5469,7 @@ webpackJsonp([4],{
 	 * @returns {Bacon.EventStream} the stream of places
 	 */
 	function getPlaces(query) {
-	    return !query ? (0, _baconjs.once)(null) : (0, _baconjs.fromPromise)(_jquery2.default.ajax('http://nominatim.openstreetmap.org/search', {
+	    return !query ? (0, _baconjs.once)(null) : (0, _baconjs.fromPromise)(_jquery2.default.ajax('//nominatim.openstreetmap.org/search', {
 	        crossDomain: true,
 	        dataType: 'json',
 	        method: 'GET',
