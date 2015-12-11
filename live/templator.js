@@ -658,9 +658,8 @@ webpackJsonp([7],{
 	    }, {
 	        key: 'build',
 	        value: function build(proto, on) {
-	            var _this = this;
-
-	            var defaultValue = (0, _objects.result)(this.data, 'value'),
+	            var data = this.data,
+	                defaultValue = (0, _objects.result)(this.data, 'value'),
 	                descriptor = {
 	                enumerable: this.data.enumerable,
 	                configurable: false,
@@ -668,27 +667,27 @@ webpackJsonp([7],{
 	                set: this.data.setterFactory(this.data.attrName, this.data.boolean)
 	            };
 
-	            if (this.data.bound) {
-	                Object.defineProperty(proto, this.data.propName, descriptor);
+	            if (data.bound) {
+	                Object.defineProperty(proto, data.propName, descriptor);
 	            }
 
 	            on('after:createdCallback').invoke(function (el) {
-	                if (_this.data.bound) {
-	                    var attrValue = getAttValue(el, _this.data.attrName, _this.data.boolean);
-	                    if (_this.data.boolean) {
-	                        el[_this.data.propName] = !!defaultValue ? defaultValue : attrValue;
+	                if (data.bound) {
+	                    var attrValue = getAttValue(el, data.attrName, data.boolean);
+	                    if (data.boolean) {
+	                        el[data.propName] = !!defaultValue ? defaultValue : attrValue;
 	                    } else if (!(0, _types.isNull)(attrValue) && !(0, _types.isUndefined)(attrValue)) {
-	                        el[_this.data.propName] = attrValue;
+	                        el[data.propName] = attrValue;
 	                    } else if (!(0, _types.isUndefined)(defaultValue)) {
-	                        el[_this.data.propName] = defaultValue;
+	                        el[data.propName] = defaultValue;
 	                    }
 	                }
-	                if (_this.data.listeners.length > 0) {
+	                if (data.listeners.length > 0) {
 	                    (function () {
-	                        var oldValue = _this.data.boolean ? false : null;
-	                        var setValue = el[_this.data.propName];
+	                        var oldValue = data.boolean ? false : null;
+	                        var setValue = el[data.propName];
 	                        if (oldValue !== setValue) {
-	                            _this.data.listeners.forEach(function (listener) {
+	                            data.listeners.forEach(function (listener) {
 	                                return listener.call(el, el, oldValue, setValue);
 	                            });
 	                        }
@@ -698,19 +697,19 @@ webpackJsonp([7],{
 
 	            on('before:attributeChangedCallback').invoke(function (el, attName, oldVal, newVal) {
 	                // Synchronize the attribute value with its properties
-	                if (attName === _this.data.attrName) {
-	                    if (_this.data.bound) {
-	                        var newValue = _this.data.boolean ? newVal === '' : newVal;
-	                        if (el[_this.data.propName] !== newValue) {
-	                            el[_this.data.propName] = newValue;
+	                if (attName === data.attrName) {
+	                    if (data.bound) {
+	                        var newValue = data.boolean ? newVal === '' : newVal;
+	                        if (el[data.propName] !== newValue) {
+	                            el[data.propName] = newValue;
 	                        }
 	                    }
-	                    if (_this.data.listeners.length > 0) {
+	                    if (data.listeners.length > 0) {
 	                        (function () {
-	                            var oldValue = _this.data.boolean ? oldVal === '' : oldVal;
-	                            var setValue = _this.data.boolean ? newVal === '' : newVal;
+	                            var oldValue = data.boolean ? oldVal === '' : oldVal;
+	                            var setValue = data.boolean ? newVal === '' : newVal;
 	                            if (oldValue !== setValue) {
-	                                _this.data.listeners.forEach(function (listener) {
+	                                data.listeners.forEach(function (listener) {
 	                                    return listener.call(el, el, oldValue, setValue);
 	                                });
 	                            }
@@ -1149,7 +1148,9 @@ webpackJsonp([7],{
 	                    var target = el.querySelector(data.selector);
 	                    if ((0, _types.isFunction)(target[targetedMethName])) {
 	                        var args = (0, _converters.toArray)(arguments);
-	                        args.shift();
+	                        if (!fieldBuilderData.native) {
+	                            args.shift();
+	                        }
 	                        return target[targetedMethName].apply(target, args);
 	                    }
 	                };
@@ -1463,6 +1464,19 @@ webpackJsonp([7],{
 	        }
 
 	        /**
+	         * Skip the custom element instance as first argument.
+	         * It's required when playing with native method with delegration or wrapping.
+	         * @returns {MethodBuilder} the builder
+	         */
+
+	    }, {
+	        key: 'native',
+	        value: function native() {
+	            this.data.native = true;
+	            return this;
+	        }
+
+	        /**
 	         * Logic of the builder.
 	         * @param {!ElementBuilder.context.proto} proto the prototype
 	         * @param {!ElementBuilder.on} on the method on
@@ -1475,7 +1489,11 @@ webpackJsonp([7],{
 
 	            if (data.invoke) {
 	                proto[data.methName] = function () {
-	                    return data.invoke.apply(this, [this].concat((0, _converters.toArray)(arguments)));
+	                    var args = (0, _converters.toArray)(arguments);
+	                    if (!data.native) {
+	                        args = [this].concat(args);
+	                    }
+	                    return data.invoke.apply(this, args);
 	                };
 	            }
 
@@ -1487,12 +1505,14 @@ webpackJsonp([7],{
 	                                original = el[data.methName],
 	                                target = function target() {
 	                                var args = (0, _converters.toArray)(arguments);
-	                                args.shift();
+	                                if (!data.native) {
+	                                    args.shift();
+	                                }
 	                                original.apply(el, args);
 	                            };
 	                            el[data.methName] = data.wrappers.reduce(function (next, current, index) {
 	                                if (index === lastIndex) {
-	                                    return (0, _functions.bind)((0, _functions.partial)(current, next, el), el);
+	                                    return (0, _functions.bind)(data.native ? (0, _functions.partial)(current, next) : (0, _functions.partial)(current, next, el), el);
 	                                }
 	                                return (0, _functions.bind)((0, _functions.partial)(current, next), el);
 	                            }, target);

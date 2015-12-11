@@ -696,6 +696,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/builder/method.js~methodbuilder#native",
+    "class/src/builder/method.js~MethodBuilder.html#instance-method-native",
+    "src/builder/method.js~MethodBuilder#native",
+    "method"
+  ],
+  [
     "src/builder/method.js~methodbuilder#wrap",
     "class/src/builder/method.js~MethodBuilder.html#instance-method-wrap",
     "src/builder/method.js~MethodBuilder#wrap",
