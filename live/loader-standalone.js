@@ -17,7 +17,7 @@ webpackJsonp([10],{
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _loaderStandalone = __webpack_require__(315);
+	var _loaderStandalone = __webpack_require__(310);
 
 	var _loaderStandalone2 = _interopRequireDefault(_loaderStandalone);
 
@@ -29,7 +29,7 @@ webpackJsonp([10],{
 
 /***/ },
 
-/***/ 315:
+/***/ 310:
 /***/ function(module, exports) {
 
 	module.exports = "<script src=\"dist/standalone/ceb.js\"></script>\n\n<script id=\"ceb-button-template\" type=\"text/html\">\n    <button class=\"btn btn-default\">\n        <div>\n            <span x-ref=\"icon\"></span>\n            <span x-ref=\"label\"></span>\n        </div>\n    </button>\n</script>\n\n<ceb-button></ceb-button>\n\n<script>\n    document.body.onload = function () {\n        var tpl = document.getElementById('ceb-button-template').textContent;\n        ceb.element().builders(\n            ceb.template(tpl),\n            ceb.delegate(ceb.attribute('name')).to('button'),\n            ceb.delegate(ceb.attribute('disabled').boolean()).to('button').property(),\n            ceb.delegate(ceb.attribute('label').value('click me')).to('button [x-ref=label]').property('textContent'),\n            ceb.delegate(ceb.attribute('icon').value('X')).to('button [x-ref=icon]').property('textContent'),\n            ceb.on('click button').invoke(function (el) {\n                el.label = (el.label === 'click me' ? 'clicked' : 'click me');\n            })\n        ).register('ceb-button');\n    }\n</script>\n"

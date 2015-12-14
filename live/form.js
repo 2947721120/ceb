@@ -13,17 +13,17 @@ webpackJsonp([5],{
 
 	__webpack_require__(33);
 
-	__webpack_require__(170);
+	__webpack_require__(165);
 
-	__webpack_require__(171);
+	__webpack_require__(166);
 
-	__webpack_require__(172);
+	__webpack_require__(167);
 
 	var _jquery = __webpack_require__(21);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _indexTpl = __webpack_require__(309);
+	var _indexTpl = __webpack_require__(304);
 
 	var _indexTpl2 = _interopRequireDefault(_indexTpl);
 
@@ -2039,7 +2039,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 170:
+/***/ 165:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2074,7 +2074,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 171:
+/***/ 166:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2162,7 +2162,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 172:
+/***/ 167:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2173,7 +2173,7 @@ webpackJsonp([5],{
 
 	var _ceb = __webpack_require__(7);
 
-	var _rules = __webpack_require__(173);
+	var _rules = __webpack_require__(168);
 
 	var cebFormBuilder = (0, _ceb.element)().base(Object.create(HTMLFormElement.prototype), 'form');
 
@@ -2355,11 +2355,32 @@ webpackJsonp([5],{
 	    });
 	}));
 
+	function getPathValue(object, path) {}
+	cebFormBuilder.builders((0, _ceb.property)('valueAsObject').setter(function (el, object) {
+	    el.elementsAsArray.map(function (formControl) {
+	        return formControl.name;
+	    }).filter(function (name) {
+	        return name;
+	    }).forEach(function (path) {
+	        var pathValue = getPathValue(object, path);
+	        updateFormControlValue(el.querySelector('[name="' + path + '"]'), pathValue);
+	    });
+	}).getter(function (el) {
+	    return el.elementsAsArray.map(function (formControl) {
+	        return formControl.name;
+	    }).filter(function (name) {
+	        return name;
+	    }).reduce(function (object, path) {
+	        var formControlValue = getFormControlValue(el.querySelector('[name="' + path + '"]'));
+	        setPathValue(object, path, formControlValue);
+	    }, {});
+	}));
+
 	exports.default = cebFormBuilder.register('ceb-form');
 
 /***/ },
 
-/***/ 173:
+/***/ 168:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2416,7 +2437,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 309:
+/***/ 304:
 /***/ function(module, exports) {
 
 	module.exports = "<p>\n    The goal of it's example is to create a set of custom elements close to the HTML5 form element.\n</p>\n\n<hr>\n\n<form name=\"order\"\n      is=\"ceb-form\"\n      prevent-submit\n      validate-on=\"submit\"\n      validate-control-on=\"change,input\">\n\n    <fieldset>\n        <legend>input[type=text]</legend>\n        <div class=\"row\">\n            <ceb-field class=\"col-sm-4\">\n                <label for=\"inputTextRequired\" class=\"control-label\">\n                    required\n                </label>\n                <input id=\"inputTextRequired\"\n                       type=\"text\"\n                       name=\"input[text]\"\n                       class=\"form-control\"\n                       required\n                       title=\"The field is required.\">\n            </ceb-field>\n            <ceb-field class=\"col-sm-4\">\n                <label for=\"inputTextMinLength\" class=\"control-label\">\n                    minlength\n                    <small>is 5</small>\n                </label>\n                <input id=\"inputTextMinLength\"\n                       type=\"text\"\n                       name=\"input[text]\"\n                       class=\"form-control\"\n                       minlength=\"5\">\n            </ceb-field>\n            <ceb-field class=\"col-sm-4\">\n                <label for=\"inputTextMaxLength\" class=\"control-label\">\n                    maxlength\n                    <small>is 5</small>\n                </label>\n                <input id=\"inputTextMaxLength\"\n                       type=\"text\"\n                       name=\"input[text]\"\n                       class=\"form-control\"\n                       value=\"more than five characters\"\n                       maxlength=\"5\">\n            </ceb-field>\n        </div>\n    </fieldset>\n\n    <p>\n        <button type=\"submit\" is=\"ceb-button\" alt-style=\"primary\">\n            <i class=\"glyphicon glyphicon-check\"></i>\n            Save\n        </button>\n        <button type=\"reset\" is=\"ceb-button\" alt-style=\"warning\">\n            <i class=\"glyphicon glyphicon-erase\"></i>\n            Reset\n        </button>\n    </p>\n</form>\n"

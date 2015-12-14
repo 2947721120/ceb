@@ -13,13 +13,13 @@ webpackJsonp([4],{
 
 	__webpack_require__(33);
 
-	__webpack_require__(166);
+	__webpack_require__(161);
 
 	var _jquery = __webpack_require__(21);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _index = __webpack_require__(308);
+	var _index = __webpack_require__(303);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -2035,21 +2035,18 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 135:
+/***/ 130:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {(function() {
 	var _slice = Array.prototype.slice;
-
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
-
 	var Bacon = {
 	  toString: function () {
 	    return "Bacon";
 	  }
 	};
 
-	Bacon.version = '0.7.82';
+	Bacon.version = '0.7.83';
 
 	var Exception = (typeof global !== "undefined" && global !== null ? global : this).Error;
 	var nop = function () {};
@@ -2625,13 +2622,13 @@ webpackJsonp([4],{
 	      };
 	      args = args.slice(1);
 	    }
-	    return wrapped.apply(undefined, [f].concat(_toConsumableArray(args)));
+	    return wrapped.apply(undefined, [f].concat(args));
 	  };
 	};
 
 	var makeFunctionArgs = function (args) {
 	  args = Array.prototype.slice.call(args);
-	  return makeFunction_.apply(undefined, _toConsumableArray(args));
+	  return makeFunction_.apply(undefined, args);
 	};
 
 	var partiallyApplied = function (f, applied) {
@@ -2640,7 +2637,7 @@ webpackJsonp([4],{
 	      args[_key3] = arguments[_key3];
 	    }
 
-	    return f.apply(undefined, _toConsumableArray(applied.concat(args)));
+	    return f.apply(undefined, applied.concat(args));
 	  };
 	};
 
@@ -2696,7 +2693,7 @@ webpackJsonp([4],{
 	});
 
 	var makeFunction = function (f, args) {
-	  return makeFunction_.apply(undefined, [f].concat(_toConsumableArray(args)));
+	  return makeFunction_.apply(undefined, [f].concat(args));
 	};
 
 	var convertArgsToFunction = function (obs, f, args, method) {
@@ -3027,7 +3024,7 @@ webpackJsonp([4],{
 
 	  onValues: function (f) {
 	    return this.onValue(function (args) {
-	      return f.apply(undefined, _toConsumableArray(args));
+	      return f.apply(undefined, args);
 	    });
 	  },
 
@@ -3482,7 +3479,7 @@ webpackJsonp([4],{
 	                    return result;
 	                  })();
 
-	                  return (_p = p).f.apply(_p, _toConsumableArray(values));
+	                  return (_p = p).f.apply(_p, values);
 	                }));
 	                if (triggers.length) {
 	                  triggers = _.filter(nonFlattened, triggers);
@@ -3841,9 +3838,9 @@ webpackJsonp([4],{
 	  var streams = _argumentsToObservablesAndFunction[0];
 	  var f = _argumentsToObservablesAndFunction[1];
 
-	  var desc = new Bacon.Desc(Bacon, "combineWith", [f].concat(_toConsumableArray(streams)));
+	  var desc = new Bacon.Desc(Bacon, "combineWith", [f].concat(streams));
 	  return withDesc(desc, Bacon.combineAsArray(streams).map(function (values) {
-	    return f.apply(undefined, _toConsumableArray(values));
+	    return f.apply(undefined, values);
 	  }));
 	};
 
@@ -4324,7 +4321,7 @@ webpackJsonp([4],{
 	var liftCallback = function (desc, wrapped) {
 	  return withMethodCallSupport(function (f) {
 	    var stream = partiallyApplied(wrapped, [function (values, callback) {
-	      return f.apply(undefined, _toConsumableArray(values).concat([callback]));
+	      return f.apply(undefined, values.concat([callback]));
 	    }]);
 
 	    for (var _len13 = arguments.length, args = Array(_len13 > 1 ? _len13 - 1 : 0), _key13 = 1; _key13 < _len13; _key13++) {
@@ -5362,7 +5359,7 @@ webpackJsonp([4],{
 	      }
 
 	      return function (i) {
-	        return f.apply(undefined, _toConsumableArray([i].concat(args)));
+	        return f.apply(undefined, [i].concat(args));
 	      };
 	    };
 	  }
@@ -5418,7 +5415,7 @@ webpackJsonp([4],{
 	  return withDesc(new Bacon.Desc(this, "zip", [other]), Bacon.zipWith([this, other], f || Array));
 	};
 
-	if ("function" !== "undefined" && __webpack_require__(331) !== null && __webpack_require__(332) != null) {
+	if ("function" !== "undefined" && __webpack_require__(326) !== null && __webpack_require__(327) != null) {
 	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	    return Bacon;
 	  }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -5433,11 +5430,11 @@ webpackJsonp([4],{
 	  }
 	}).call(this);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(333)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(328)(module)))
 
 /***/ },
 
-/***/ 166:
+/***/ 161:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5452,11 +5449,11 @@ webpackJsonp([4],{
 
 	var _ceb = __webpack_require__(7);
 
-	var _baconify = __webpack_require__(167);
+	var _baconify = __webpack_require__(162);
 
-	var _baconjs = __webpack_require__(135);
+	var _baconjs = __webpack_require__(130);
 
-	__webpack_require__(325);
+	__webpack_require__(320);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5645,7 +5642,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 167:
+/***/ 162:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -5661,7 +5658,7 @@ webpackJsonp([4],{
 
 	var _ceb = __webpack_require__(7);
 
-	var _baconjs = __webpack_require__(135);
+	var _baconjs = __webpack_require__(130);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5792,10 +5789,10 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 303:
+/***/ 298:
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(121)();
+	exports = module.exports = __webpack_require__(116)();
 	// imports
 
 
@@ -5807,23 +5804,23 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 308:
+/***/ 303:
 /***/ function(module, exports) {
 
 	module.exports = "<p>\n    <code>ceb-address-selector</code> consume the <a href=\"http://nominatim.openstreetmap.org\">nominatim.openstreetmap.org</a> API to help the selection of a place.\n</p>\n\n<p>\n    The implementation is based on <a href=\"https://baconjs.github.io\" target=\"_blank\">bacon.js</a> streams to simplify the asynchronous business of this kind of widgets.\n    The bacon.js magic is provided by <code>example/builders/baconify.js</code>.\n</p>\n\n<hr>\n\n<ceb-address-selector></ceb-address-selector>\n"
 
 /***/ },
 
-/***/ 325:
+/***/ 320:
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(303);
+	var content = __webpack_require__(298);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(122)(content, {});
+	var update = __webpack_require__(117)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -5841,7 +5838,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 331:
+/***/ 326:
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
@@ -5849,7 +5846,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 332:
+/***/ 327:
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -5858,7 +5855,7 @@ webpackJsonp([4],{
 
 /***/ },
 
-/***/ 333:
+/***/ 328:
 /***/ function(module, exports) {
 
 	module.exports = function(module) {

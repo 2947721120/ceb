@@ -13,13 +13,13 @@ webpackJsonp([6],{
 
 	__webpack_require__(33);
 
-	__webpack_require__(176);
+	__webpack_require__(171);
 
 	var _jquery = __webpack_require__(21);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _index = __webpack_require__(313);
+	var _index = __webpack_require__(308);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -2035,7 +2035,7 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 133:
+/***/ 128:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -6649,7 +6649,7 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 168:
+/***/ 163:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -6664,7 +6664,7 @@ webpackJsonp([6],{
 
 	var _ceb = __webpack_require__(7);
 
-	var _handlebars = __webpack_require__(133);
+	var _handlebars = __webpack_require__(128);
 
 	var _handlebars2 = _interopRequireDefault(_handlebars);
 
@@ -6699,14 +6699,14 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 176:
+/***/ 171:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	var _ceb = __webpack_require__(7);
 
-	var _handlebarify = __webpack_require__(168);
+	var _handlebarify = __webpack_require__(163);
 
 	(0, _ceb.element)().builders((0, _handlebarify.handlebarify)('\n        <form class="add">\n            <div class="input-group">\n                <input required placeholder="an item" name="content" class="form-control">\n                <span class="input-group-btn">\n                    <button type="submit" class="btn btn-default">\n                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>\n                   </button>\n                </span>\n            </div>\n        </form>\n        <br>\n        {{#each items}}\n            <p>\n                <button class="remove btn btn-default btn-xs" data-index="{{@index}}">\n                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>\n                </button>\n                {{this}}\n            </p>\n        {{/each}}\n    '), (0, _ceb.property)('items').immutable().value([]), (0, _ceb.method)('addItem').invoke(function (el, item) {
 	    el.items.push(item);
@@ -6723,7 +6723,7 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 313:
+/***/ 308:
 /***/ function(module, exports) {
 
 	module.exports = "<p>\n    The <code>ceb-list</code> content will be refreshed when an item is added or removed.\n    The templating system is provided by <code>example/builders/handlebarify.js</code>.\n</p>\n\n<hr>\n\n<ceb-list></ceb-list>\n"
