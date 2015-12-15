@@ -12731,6 +12731,174 @@ webpackJsonp([3],{
 	 * limitations under the License.
 	 */
 
+	/**
+	  * Keeps track whether or not we are in an attributes declaration (after
+	  * elementOpenStart, but before elementOpenEnd).
+	  * @type {boolean}
+	  */
+	var inAttributes = false;
+
+	/**
+	  * Keeps track whether or not we are in an element that should not have its
+	  * children cleared.
+	  * @type {boolean}
+	  */
+	var inSkip = false;
+
+	/**
+	 * Makes sure that there is a current patch context.
+	 * @param {*} context
+	 */
+	var assertInPatch = function (context) {
+	  if (!context) {
+	    throw new Error('Cannot call currentElement() unless in patch');
+	  }
+	};
+
+	/**
+	* Makes sure that keyed Element matches the tag name provided.
+	* @param {!string} nodeName The nodeName of the node that is being matched.
+	* @param {string=} tag The tag name of the Element.
+	* @param {?string=} key The key of the Element.
+	*/
+	var assertKeyedTagMatches = function (nodeName, tag, key) {
+	  if (nodeName !== tag) {
+	    throw new Error('Was expecting node with key "' + key + '" to be a ' + tag + ', not a ' + nodeName + '.');
+	  }
+	};
+
+	/**
+	 * Makes sure that a patch closes every node that it opened.
+	 * @param {?Node} openElement
+	 * @param {!Node|!DocumentFragment} root
+	 */
+	var assertNoUnclosedTags = function (openElement, root) {
+	  if (openElement === root) {
+	    return;
+	  }
+
+	  var currentElement = openElement;
+	  var openTags = [];
+	  while (currentElement && currentElement !== root) {
+	    openTags.push(currentElement.nodeName.toLowerCase());
+	    currentElement = currentElement.parentNode;
+	  }
+
+	  throw new Error('One or more tags were not closed:\n' + openTags.join('\n'));
+	};
+
+	/**
+	 * Makes sure that the caller is not where attributes are expected.
+	 * @param {string} functionName
+	 */
+	var assertNotInAttributes = function (functionName) {
+	  if (inAttributes) {
+	    throw new Error(functionName + '() may not be called between ' + 'elementOpenStart() and elementOpenEnd().');
+	  }
+	};
+
+	/**
+	 * Makes sure that the caller is not inside an element that has declared skip.
+	 * @param {string} functionName
+	 */
+	var assertNotInSkip = function (functionName) {
+	  if (inSkip) {
+	    throw new Error(functionName + '() may not be called inside an element ' + 'that has called skip().');
+	  }
+	};
+
+	/**
+	 * Makes sure that the caller is where attributes are expected.
+	 * @param {string} functionName
+	 */
+	var assertInAttributes = function (functionName) {
+	  if (!inAttributes) {
+	    throw new Error(functionName + '() must be called after ' + 'elementOpenStart().');
+	  }
+	};
+
+	/**
+	 * Makes sure the patch closes virtual attributes call
+	 */
+	var assertVirtualAttributesClosed = function () {
+	  if (inAttributes) {
+	    throw new Error('elementOpenEnd() must be called after calling ' + 'elementOpenStart().');
+	  }
+	};
+
+	/**
+	  * Makes sure that placeholders have a key specified. Otherwise, conditional
+	  * placeholders and conditional elements next to placeholders will cause
+	  * placeholder elements to be re-used as non-placeholders and vice versa.
+	  * @param {string} key
+	  */
+	var assertPlaceholderKeySpecified = function (key) {
+	  if (!key) {
+	    throw new Error('Placeholder elements must have a key specified.');
+	  }
+	};
+
+	/**
+	  * Makes sure that tags are correctly nested.
+	  * @param {string} nodeName
+	  * @param {string} tag
+	  */
+	var assertCloseMatchesOpenTag = function (nodeName, tag) {
+	  if (nodeName !== tag) {
+	    throw new Error('Received a call to close ' + tag + ' but ' + nodeName + ' was open.');
+	  }
+	};
+
+	/**
+	 * Makes sure that no children elements have been declared yet in the current
+	 * element.
+	 * @param {string} functionName
+	 * @param {?Node} previousNode
+	 */
+	var assertNoChildrenDeclaredYet = function (functionName, previousNode) {
+	  if (previousNode !== null) {
+	    throw new Error(functionName + '() must come before any child ' + 'declarations inside the current element.');
+	  }
+	};
+
+	/**
+	 * Updates the state of being in an attribute declaration.
+	 * @param {boolean} value
+	 * @return {boolean} the previous value.
+	 */
+	var setInAttributes = function (value) {
+	  var previous = inAttributes;
+	  inAttributes = value;
+	  return previous;
+	};
+
+	/**
+	 * Updates the state of being in a skip element.
+	 * @param {boolean} value
+	 * @return {boolean} the previous value.
+	 */
+	var setInSkip = function (value) {
+	  var previous = inSkip;
+	  inSkip = value;
+	  return previous;
+	};
+
+	/**
+	 * Copyright 2015 The Incremental DOM Authors. All Rights Reserved.
+	 *
+	 * Licensed under the Apache License, Version 2.0 (the "License");
+	 * you may not use this file except in compliance with the License.
+	 * You may obtain a copy of the License at
+	 *
+	 *      http://www.apache.org/licenses/LICENSE-2.0
+	 *
+	 * Unless required by applicable law or agreed to in writing, software
+	 * distributed under the License is distributed on an "AS-IS" BASIS,
+	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+	 * See the License for the specific language governing permissions and
+	 * limitations under the License.
+	 */
+
 	/** */
 	exports.notifications = {
 	  /**
@@ -12750,107 +12918,10 @@ webpackJsonp([3],{
 	};
 
 	/**
-	 * Copyright 2015 The Incremental DOM Authors. All Rights Reserved.
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License");
-	 * you may not use this file except in compliance with the License.
-	 * You may obtain a copy of the License at
-	 *
-	 *      http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software
-	 * distributed under the License is distributed on an "AS-IS" BASIS,
-	 * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-	 * See the License for the specific language governing permissions and
-	 * limitations under the License.
-	 */
-
-	/**
-	 * Similar to the built-in Treewalker class, but simplified and allows direct
-	 * access to modify the currentNode property.
-	 * @param {!Element|!DocumentFragment} node The root Node of the subtree the
-	 *     walker should start traversing.
-	 * @constructor
-	 */
-	function TreeWalker(node) {
-	  /**
-	   * Keeps track of the current parent node. This is necessary as the traversal
-	   * methods may traverse past the last child and we still need a way to get
-	   * back to the parent.
-	   * @const @private {!Array<!Node>}
-	   */
-	  this.stack_ = [];
-
-	  /**
-	   * @const {!Element|!DocumentFragment}
-	   */
-	  this.root = node;
-
-	  /**
-	   * @type {?Node}
-	   */
-	  this.currentNode = node;
-	}
-
-	/**
-	 * @return {!Node} The current parent of the current location in the subtree.
-	 */
-	TreeWalker.prototype.getCurrentParent = function () {
-	  return this.stack_[this.stack_.length - 1];
-	};
-
-	/**
-	 * Changes the current location the firstChild of the current location.
-	 */
-	TreeWalker.prototype.firstChild = function () {
-	  this.stack_.push(this.currentNode);
-	  this.currentNode = this.currentNode.firstChild;
-	};
-
-	/**
-	 * Changes the current location the nextSibling of the current location.
-	 */
-	TreeWalker.prototype.nextSibling = function () {
-	  this.currentNode = this.currentNode.nextSibling;
-	};
-
-	/**
-	 * Changes the current location the parentNode of the current location.
-	 */
-	TreeWalker.prototype.parentNode = function () {
-	  this.currentNode = this.stack_.pop();
-	};
-
-	/**
 	 * Keeps track of the state of a patch.
-	 * @param {!Element|!DocumentFragment} node The root Node of the subtree the
-	 *     is for.
-	 * @param {?Context} prevContext The previous context.
 	 * @constructor
 	 */
-	function Context(node, prevContext) {
-	  /**
-	   * @const {TreeWalker}
-	   */
-	  this.walker = new TreeWalker(node);
-
-	  /**
-	   * @const {Document}
-	   */
-	  this.doc = node.ownerDocument;
-
-	  /**
-	   * Keeps track of what namespace to create new Elements in.
-	   * @private
-	   * @const {!Array<(string|undefined)>}
-	   */
-	  this.nsStack_ = [undefined];
-
-	  /**
-	   * @const {?Context}
-	   */
-	  this.prevContext = prevContext;
-
+	function Context() {
 	  /**
 	   * @type {(Array<!Node>|undefined)}
 	   */
@@ -12861,27 +12932,6 @@ webpackJsonp([3],{
 	   */
 	  this.deleted = exports.notifications.nodesDeleted && [];
 	}
-
-	/**
-	 * @return {(string|undefined)} The current namespace to create Elements in.
-	 */
-	Context.prototype.getCurrentNamespace = function () {
-	  return this.nsStack_[this.nsStack_.length - 1];
-	};
-
-	/**
-	 * @param {string=} namespace The namespace to enter.
-	 */
-	Context.prototype.enterNamespace = function (namespace) {
-	  this.nsStack_.push(namespace);
-	};
-
-	/**
-	 * Exits the current namespace
-	 */
-	Context.prototype.exitNamespace = function () {
-	  this.nsStack_.pop();
-	};
 
 	/**
 	 * @param {!Node} node
@@ -12912,35 +12962,6 @@ webpackJsonp([3],{
 	  if (this.deleted && this.deleted.length > 0) {
 	    exports.notifications.nodesDeleted(this.deleted);
 	  }
-	};
-
-	/**
-	 * The current context.
-	 * @type {?Context}
-	 */
-	var context;
-
-	/**
-	 * Enters a new patch context.
-	 * @param {!Element|!DocumentFragment} node
-	 */
-	var enterContext = function (node) {
-	  context = new Context(node, context);
-	};
-
-	/**
-	 * Restores the previous patch context.
-	 */
-	var restoreContext = function () {
-	  context = context.prevContext;
-	};
-
-	/**
-	 * Gets the current patch context.
-	 * @return {?Context}
-	 */
-	var getContext = function () {
-	  return context;
 	};
 
 	/**
@@ -12996,7 +13017,7 @@ webpackJsonp([3],{
 	function NodeData(nodeName, key) {
 	  /**
 	   * The attributes and their values.
-	   * @const
+	   * @const {!Object<string, *>}
 	   */
 	  this.attrs = createMap();
 
@@ -13032,12 +13053,6 @@ webpackJsonp([3],{
 	   * {boolean}
 	   */
 	  this.keyMapValid = true;
-
-	  /**
-	   * The last child to have been visited within the current pass.
-	   * @type {?Node}
-	   */
-	  this.lastVisitedChild = null;
 
 	  /**
 	   * The node name for this node.
@@ -13141,8 +13156,8 @@ webpackJsonp([3],{
 	 * property names/values.
 	 * @param {!Element} el
 	 * @param {string} name The attribute's name.
-	 * @param {string|Object<string,string>} style The style to set. Either a
-	 *     string of css or an object containing property-value pairs.
+	 * @param {*} style The style to set. Either a string of css or an object
+	 *     containing property-value pairs.
 	 */
 	var applyStyle = function (el, name, style) {
 	  if (typeof style === 'string') {
@@ -13150,10 +13165,11 @@ webpackJsonp([3],{
 	  } else {
 	    el.style.cssText = '';
 	    var elStyle = el.style;
+	    var obj = /** @type {!Object<string,string>} */style;
 
-	    for (var prop in style) {
-	      if (has(style, prop)) {
-	        elStyle[prop] = style[prop];
+	    for (var prop in obj) {
+	      if (has(obj, prop)) {
+	        elStyle[prop] = obj[prop];
 	      }
 	    }
 	  }
@@ -13211,56 +13227,36 @@ webpackJsonp([3],{
 
 	exports.attributes['style'] = applyStyle;
 
-	var SVG_NS = 'http://www.w3.org/2000/svg';
-
-	/**
-	 * Enters a tag, checking to see if it is a namespace boundary, and if so,
-	 * updates the current namespace.
-	 * @param {string} tag The tag to enter.
-	 */
-	var enterTag = function (tag) {
-	  if (tag === 'svg') {
-	    getContext().enterNamespace(SVG_NS);
-	  } else if (tag === 'foreignObject') {
-	    getContext().enterNamespace(undefined);
-	  }
-	};
-
-	/**
-	 * Exits a tag, checking to see if it is a namespace boundary, and if so,
-	 * updates the current namespace.
-	 * @param {string} tag The tag to enter.
-	 */
-	var exitTag = function (tag) {
-	  if (tag === 'svg' || tag === 'foreignObject') {
-	    getContext().exitNamespace();
-	  }
-	};
-
 	/**
 	 * Gets the namespace to create an element (of a given tag) in.
 	 * @param {string} tag The tag to get the namespace for.
-	 * @return {(string|undefined)} The namespace to create the tag in.
+	 * @param {?Node} parent
+	 * @return {?string} The namespace to create the tag in.
 	 */
-	var getNamespaceForTag = function (tag) {
+	var getNamespaceForTag = function (tag, parent) {
 	  if (tag === 'svg') {
-	    return SVG_NS;
+	    return 'http://www.w3.org/2000/svg';
 	  }
 
-	  return getContext().getCurrentNamespace();
+	  if (getData(parent).nodeName === 'foreignObject') {
+	    return null;
+	  }
+
+	  return parent.namespaceURI;
 	};
 
 	/**
 	 * Creates an Element.
 	 * @param {Document} doc The document with which to create the Element.
+	 * @param {?Node} parent
 	 * @param {string} tag The tag for the Element.
 	 * @param {?string=} key A key to identify the Element.
-	 * @param {?Array<*>=} statics An array of attribute name/value pairs of
-	 *     the static attributes for the Element.
+	 * @param {?Array<*>=} statics An array of attribute name/value pairs of the
+	 *     static attributes for the Element.
 	 * @return {!Element}
 	 */
-	var createElement = function (doc, tag, key, statics) {
-	  var namespace = getNamespaceForTag(tag);
+	var createElement = function (doc, parent, tag, key, statics) {
+	  var namespace = getNamespaceForTag(tag, parent);
 	  var el;
 
 	  if (namespace) {
@@ -13281,28 +13277,19 @@ webpackJsonp([3],{
 	};
 
 	/**
-	 * Creates a Node, either a Text or an Element depending on the node name
-	 * provided.
-	 * @param {Document} doc The document with which to create the Node.
-	 * @param {string} nodeName The tag if creating an element or #text to create
-	 *     a Text.
-	 * @param {?string=} key A key to identify the Element.
-	 * @param {?Array<*>=} statics The static data to initialize the Node
-	 *     with. For an Element, an array of attribute name/value pairs of
-	 *     the static attributes for the Element.
-	 * @return {!Node}
+	 * Creates a Text Node.
+	 * @param {Document} doc The document with which to create the Element.
+	 * @return {!Text}
 	 */
-	var createNode = function (doc, nodeName, key, statics) {
-	  if (nodeName === '#text') {
-	    return doc.createTextNode('');
-	  }
-
-	  return createElement(doc, nodeName, key, statics);
+	var createText = function (doc) {
+	  var node = doc.createTextNode('');
+	  initData(node, '#text', null);
+	  return node;
 	};
 
 	/**
 	 * Creates a mapping that can be used to look up children using a key.
-	 * @param {!Node} el
+	 * @param {?Node} el
 	 * @return {!Object<string, !Element>} A mapping of keys to the children of the
 	 *     Element.
 	 */
@@ -13326,7 +13313,7 @@ webpackJsonp([3],{
 	/**
 	 * Retrieves the mapping of key to child node for a given Element, creating it
 	 * if necessary.
-	 * @param {!Node} el
+	 * @param {?Node} el
 	 * @return {!Object<string, !Node>} A mapping of keys to child Elements
 	 */
 	var getKeyMap = function (el) {
@@ -13341,20 +13328,19 @@ webpackJsonp([3],{
 
 	/**
 	 * Retrieves a child from the parent with the given key.
-	 * @param {!Node} parent
+	 * @param {?Node} parent
 	 * @param {?string=} key
-	 * @return {?Element} The child corresponding to the key.
+	 * @return {?Node} The child corresponding to the key.
 	 */
 	var getChild = function (parent, key) {
-	  return (/** @type {?Element} */key && getKeyMap(parent)[key]
-	  );
+	  return key ? getKeyMap(parent)[key] : null;
 	};
 
 	/**
 	 * Registers an element as being a child. The parent will keep track of the
 	 * child using the key. The child can be retrieved using the same key using
 	 * getKeyMap. The provided key should be unique within the parent Element.
-	 * @param {!Node} parent The parent of child.
+	 * @param {?Node} parent The parent of child.
 	 * @param {string} key A key to identify the child with.
 	 * @param {!Node} child The child to register.
 	 */
@@ -13362,220 +13348,23 @@ webpackJsonp([3],{
 	  getKeyMap(parent)[key] = child;
 	};
 
-	if (true) {
-	  /**
-	  * Makes sure that keyed Element matches the tag name provided.
-	  * @param {!Element} node The node that is being matched.
-	  * @param {string=} tag The tag name of the Element.
-	  * @param {?string=} key The key of the Element.
-	  */
-	  var assertKeyedTagMatches = function (node, tag, key) {
-	    var nodeName = getData(node).nodeName;
-	    if (nodeName !== tag) {
-	      throw new Error('Was expecting node with key "' + key + '" to be a ' + tag + ', not a ' + nodeName + '.');
-	    }
-	  };
-	}
+	/** @type {?Context} */
+	var context = null;
 
-	/**
-	 * Checks whether or not a given node matches the specified nodeName and key.
-	 *
-	 * @param {!Node} node An HTML node, typically an HTMLElement or Text.
-	 * @param {?string} nodeName The nodeName for this node.
-	 * @param {?string=} key An optional key that identifies a node.
-	 * @return {boolean} True if the node matches, false otherwise.
-	 */
-	var matches = function (node, nodeName, key) {
-	  var data = getData(node);
+	/** @type {?Node} */
+	var currentNode;
 
-	  // Key check is done using double equals as we want to treat a null key the
-	  // same as undefined. This should be okay as the only values allowed are
-	  // strings, null and undefined so the == semantics are not too weird.
-	  return key == data.key && nodeName === data.nodeName;
-	};
+	/** @type {?Node} */
+	var currentParent;
 
-	/**
-	 * Aligns the virtual Element definition with the actual DOM, moving the
-	 * corresponding DOM node to the correct location or creating it if necessary.
-	 * @param {string} nodeName For an Element, this should be a valid tag string.
-	 *     For a Text, this should be #text.
-	 * @param {?string=} key The key used to identify this element.
-	 * @param {?Array<*>=} statics For an Element, this should be an array of
-	 *     name-value pairs.
-	 * @return {!Node} The matching node.
-	 */
-	var alignWithDOM = function (nodeName, key, statics) {
-	  var context = getContext();
-	  var walker = context.walker;
-	  var currentNode = walker.currentNode;
-	  var parent = walker.getCurrentParent();
-	  var matchingNode;
+	/** @type {?Node} */
+	var previousNode;
 
-	  // Check to see if we have a node to reuse
-	  if (currentNode && matches(currentNode, nodeName, key)) {
-	    matchingNode = currentNode;
-	  } else {
-	    var existingNode = getChild(parent, key);
+	/** @type {?Element|?DocumentFragment} */
+	var root;
 
-	    // Check to see if the node has moved within the parent or if a new one
-	    // should be created
-	    if (existingNode) {
-	      if (true) {
-	        assertKeyedTagMatches(existingNode, nodeName, key);
-	      }
-
-	      matchingNode = existingNode;
-	    } else {
-	      matchingNode = createNode(context.doc, nodeName, key, statics);
-
-	      if (key) {
-	        registerChild(parent, key, matchingNode);
-	      }
-
-	      context.markCreated(matchingNode);
-	    }
-
-	    // If the node has a key, remove it from the DOM to prevent a large number
-	    // of re-orders in the case that it moved far or was completely removed.
-	    // Since we hold on to a reference through the keyMap, we can always add it
-	    // back.
-	    if (currentNode && getData(currentNode).key) {
-	      parent.replaceChild(matchingNode, currentNode);
-	      getData(parent).keyMapValid = false;
-	    } else {
-	      parent.insertBefore(matchingNode, currentNode);
-	    }
-
-	    walker.currentNode = matchingNode;
-	  }
-
-	  return matchingNode;
-	};
-
-	/**
-	 * Clears out any unvisited Nodes, as the corresponding virtual element
-	 * functions were never called for them.
-	 * @param {Node} node
-	 */
-	var clearUnvisitedDOM = function (node) {
-	  var context = getContext();
-	  var walker = context.walker;
-	  var data = getData(node);
-	  var keyMap = data.keyMap;
-	  var keyMapValid = data.keyMapValid;
-	  var lastVisitedChild = data.lastVisitedChild;
-	  var child = node.lastChild;
-	  var key;
-
-	  data.lastVisitedChild = null;
-
-	  if (child === lastVisitedChild && keyMapValid) {
-	    return;
-	  }
-
-	  if (data.attrs[exports.symbols.placeholder] && walker.currentNode !== walker.root) {
-	    return;
-	  }
-
-	  while (child !== lastVisitedChild) {
-	    node.removeChild(child);
-	    context.markDeleted( /** @type {!Node}*/child);
-
-	    key = getData(child).key;
-	    if (key) {
-	      delete keyMap[key];
-	    }
-	    child = node.lastChild;
-	  }
-
-	  // Clean the keyMap, removing any unusued keys.
-	  for (key in keyMap) {
-	    child = keyMap[key];
-	    if (!child.parentNode) {
-	      context.markDeleted(child);
-	      delete keyMap[key];
-	    }
-	  }
-
-	  data.keyMapValid = true;
-	};
-
-	/**
-	 * Enters an Element, setting the current namespace for nested elements.
-	 * @param {Node} node
-	 */
-	var enterNode = function (node) {
-	  var data = getData(node);
-	  enterTag(data.nodeName);
-	};
-
-	/**
-	 * Exits an Element, unwinding the current namespace to the previous value.
-	 * @param {Node} node
-	 */
-	var exitNode = function (node) {
-	  var data = getData(node);
-	  exitTag(data.nodeName);
-	};
-
-	/**
-	 * Marks node's parent as having visited node.
-	 * @param {Node} node
-	 */
-	var markVisited = function (node) {
-	  var context = getContext();
-	  var walker = context.walker;
-	  var parent = walker.getCurrentParent();
-	  var data = getData(parent);
-	  data.lastVisitedChild = node;
-	};
-
-	/**
-	 * Changes to the first child of the current node.
-	 */
-	var firstChild = function () {
-	  var context = getContext();
-	  var walker = context.walker;
-	  enterNode(walker.currentNode);
-	  walker.firstChild();
-	};
-
-	/**
-	 * Changes to the next sibling of the current node.
-	 */
-	var nextSibling = function () {
-	  var context = getContext();
-	  var walker = context.walker;
-	  markVisited(walker.currentNode);
-	  walker.nextSibling();
-	};
-
-	/**
-	 * Changes to the parent of the current node, removing any unvisited children.
-	 */
-	var parentNode = function () {
-	  var context = getContext();
-	  var walker = context.walker;
-	  walker.parentNode();
-	  exitNode(walker.currentNode);
-	};
-
-	if (true) {
-	  var assertNoUnclosedTags = function (root) {
-	    var openElement = getContext().walker.getCurrentParent();
-	    if (!openElement) {
-	      return;
-	    }
-
-	    var openTags = [];
-	    while (openElement && openElement !== root) {
-	      openTags.push(openElement.nodeName.toLowerCase());
-	      openElement = openElement.parentNode;
-	    }
-
-	    throw new Error('One or more tags were not closed:\n' + openTags.join('\n'));
-	  };
-	}
+	/** @type {?Document} */
+	var doc;
 
 	/**
 	 * Patches the document starting at el with the provided function. This function
@@ -13588,19 +13377,263 @@ webpackJsonp([3],{
 	 * @template T
 	 */
 	exports.patch = function (node, fn, data) {
-	  enterContext(node);
+	  var prevContext = context;
+	  var prevRoot = root;
+	  var prevDoc = doc;
+	  var prevCurrentNode = currentNode;
+	  var prevCurrentParent = currentParent;
+	  var prevPreviousNode = previousNode;
+	  var previousInAttributes = false;
+	  var previousInSkip = false;
 
-	  firstChild();
-	  fn(data);
-	  parentNode();
-	  clearUnvisitedDOM(node);
+	  context = new Context();
+	  root = node;
+	  doc = node.ownerDocument;
+	  currentNode = node;
+	  currentParent = null;
+	  previousNode = null;
 
 	  if (true) {
-	    assertNoUnclosedTags(node);
+	    previousInAttributes = setInAttributes(false);
+	    previousInSkip = setInSkip(false);
 	  }
 
-	  getContext().notifyChanges();
-	  restoreContext();
+	  enterNode();
+	  fn(data);
+	  exitNode();
+
+	  if (true) {
+	    assertVirtualAttributesClosed();
+	    assertNoUnclosedTags(previousNode, node);
+	    setInAttributes(previousInAttributes);
+	    setInSkip(previousInSkip);
+	  }
+
+	  context.notifyChanges();
+
+	  context = prevContext;
+	  root = prevRoot;
+	  doc = prevDoc;
+	  currentNode = prevCurrentNode;
+	  currentParent = prevCurrentParent;
+	  previousNode = prevPreviousNode;
+	};
+
+	/**
+	 * Checks whether or not the current node matches the specified nodeName and
+	 * key.
+	 *
+	 * @param {?string} nodeName The nodeName for this node.
+	 * @param {?string=} key An optional key that identifies a node.
+	 * @return {boolean} True if the node matches, false otherwise.
+	 */
+	var matches = function (nodeName, key) {
+	  var data = getData(currentNode);
+
+	  // Key check is done using double equals as we want to treat a null key the
+	  // same as undefined. This should be okay as the only values allowed are
+	  // strings, null and undefined so the == semantics are not too weird.
+	  return nodeName === data.nodeName && key == data.key;
+	};
+
+	/**
+	 * Aligns the virtual Element definition with the actual DOM, moving the
+	 * corresponding DOM node to the correct location or creating it if necessary.
+	 * @param {string} nodeName For an Element, this should be a valid tag string.
+	 *     For a Text, this should be #text.
+	 * @param {?string=} key The key used to identify this element.
+	 * @param {?Array<*>=} statics For an Element, this should be an array of
+	 *     name-value pairs.
+	 */
+	var alignWithDOM = function (nodeName, key, statics) {
+	  if (currentNode && matches(nodeName, key)) {
+	    return;
+	  }
+
+	  var node;
+
+	  // Check to see if the node has moved within the parent.
+	  if (key) {
+	    node = getChild(currentParent, key);
+	    if (node && ("development") !== 'production') {
+	      assertKeyedTagMatches(getData(node).nodeName, nodeName, key);
+	    }
+	  }
+
+	  // Create the node if it doesn't exist.
+	  if (!node) {
+	    if (nodeName === '#text') {
+	      node = createText(doc);
+	    } else {
+	      node = createElement(doc, currentParent, nodeName, key, statics);
+	    }
+
+	    if (key) {
+	      registerChild(currentParent, key, node);
+	    }
+
+	    context.markCreated(node);
+	  }
+
+	  // If the node has a key, remove it from the DOM to prevent a large number
+	  // of re-orders in the case that it moved far or was completely removed.
+	  // Since we hold on to a reference through the keyMap, we can always add it
+	  // back.
+	  if (currentNode && getData(currentNode).key) {
+	    currentParent.replaceChild(node, currentNode);
+	    getData(currentParent).keyMapValid = false;
+	  } else {
+	    currentParent.insertBefore(node, currentNode);
+	  }
+
+	  currentNode = node;
+	};
+
+	/**
+	 * Clears out any unvisited Nodes, as the corresponding virtual element
+	 * functions were never called for them.
+	 */
+	var clearUnvisitedDOM = function () {
+	  var node = currentParent;
+	  var data = getData(node);
+	  var keyMap = data.keyMap;
+	  var keyMapValid = data.keyMapValid;
+	  var child = node.lastChild;
+	  var key;
+
+	  if (child === previousNode && keyMapValid) {
+	    return;
+	  }
+
+	  if (data.attrs[exports.symbols.placeholder] && node !== root) {
+	    return;
+	  }
+
+	  while (child !== previousNode) {
+	    node.removeChild(child);
+	    context.markDeleted( /** @type {!Node}*/child);
+
+	    key = getData(child).key;
+	    if (key) {
+	      delete keyMap[key];
+	    }
+	    child = node.lastChild;
+	  }
+
+	  // Clean the keyMap, removing any unusued keys.
+	  if (!keyMapValid) {
+	    for (key in keyMap) {
+	      child = keyMap[key];
+	      if (child.parentNode !== node) {
+	        context.markDeleted(child);
+	        delete keyMap[key];
+	      }
+	    }
+
+	    data.keyMapValid = true;
+	  }
+	};
+
+	/**
+	 * Changes to the first child of the current node.
+	 */
+	var enterNode = function () {
+	  currentParent = currentNode;
+	  currentNode = currentNode.firstChild;
+	  previousNode = null;
+	};
+
+	/**
+	 * Changes to the next sibling of the current node.
+	 */
+	var nextNode = function () {
+	  previousNode = currentNode;
+	  currentNode = currentNode.nextSibling;
+	};
+
+	/**
+	 * Changes to the parent of the current node, removing any unvisited children.
+	 */
+	var exitNode = function () {
+	  clearUnvisitedDOM();
+
+	  previousNode = currentParent;
+	  currentNode = currentParent.nextSibling;
+	  currentParent = currentParent.parentNode;
+	};
+
+	/**
+	 * Makes sure that the current node is an Element with a matching tagName and
+	 * key.
+	 *
+	 * @param {string} tag The element's tag.
+	 * @param {?string=} key The key used to identify this element. This can be an
+	 *     empty string, but performance may be better if a unique value is used
+	 *     when iterating over an array of items.
+	 * @param {?Array<*>=} statics An array of attribute name/value pairs of the
+	 *     static attributes for the Element. These will only be set once when the
+	 *     Element is created.
+	 * @return {!Element} The corresponding Element.
+	 */
+	var _elementOpen = function (tag, key, statics) {
+	  alignWithDOM(tag, key, statics);
+	  enterNode();
+	  return (/** @type {!Element} */currentParent
+	  );
+	};
+
+	/**
+	 * Closes the currently open Element, removing any unvisited children if
+	 * necessary.
+	 *
+	 * @return {!Element} The corresponding Element.
+	 */
+	var _elementClose = function () {
+	  if (true) {
+	    setInSkip(false);
+	  }
+
+	  exitNode();
+	  return (/** @type {!Element} */previousNode
+	  );
+	};
+
+	/**
+	 * Makes sure the current node is a Text node and creates a Text node if it is
+	 * not.
+	 *
+	 * @return {!Text} The corresponding Text Node.
+	 */
+	var _text = function () {
+	  alignWithDOM('#text', null, null);
+	  nextNode();
+	  return (/** @type {!Text} */previousNode
+	  );
+	};
+
+	/**
+	 * Gets the current Element being patched.
+	 * @return {!Element}
+	 */
+	exports.currentElement = function () {
+	  if (true) {
+	    assertInPatch(context);
+	    assertNotInAttributes('currentElement');
+	  }
+	  return (/** @type {!Element} */currentParent
+	  );
+	};
+
+	/**
+	 * Skips the children in a subtree, allowing an Element to be closed without
+	 * clearing out the children.
+	 */
+	exports.skip = function () {
+	  if (true) {
+	    assertNoChildrenDeclaredYet('skip', previousNode);
+	    setInSkip(true);
+	  }
+	  previousNode = currentParent.lastChild;
 	};
 
 	/**
@@ -13617,66 +13650,6 @@ webpackJsonp([3],{
 	 */
 	var argsBuilder = [];
 
-	if (true) {
-	  /**
-	   * Keeps track whether or not we are in an attributes declaration (after
-	   * elementOpenStart, but before elementOpenEnd).
-	   * @type {boolean}
-	   */
-	  var inAttributes = false;
-
-	  /** Makes sure that the caller is not where attributes are expected. */
-	  var assertNotInAttributes = function () {
-	    if (inAttributes) {
-	      throw new Error('Was not expecting a call to attr or elementOpenEnd, ' + 'they must follow a call to elementOpenStart.');
-	    }
-	  };
-
-	  /** Makes sure that the caller is where attributes are expected. */
-	  var assertInAttributes = function () {
-	    if (!inAttributes) {
-	      throw new Error('Was expecting a call to attr or elementOpenEnd. ' + 'elementOpenStart must be followed by zero or more calls to attr, ' + 'then one call to elementOpenEnd.');
-	    }
-	  };
-
-	  /**
-	   * Makes sure that placeholders have a key specified. Otherwise, conditional
-	   * placeholders and conditional elements next to placeholders will cause
-	   * placeholder elements to be re-used as non-placeholders and vice versa.
-	   * @param {string} key
-	   */
-	  var assertPlaceholderKeySpecified = function (key) {
-	    if (!key) {
-	      throw new Error('Placeholder elements must have a key specified.');
-	    }
-	  };
-
-	  /**
-	   * Makes sure that tags are correctly nested.
-	   * @param {string} tag
-	   */
-	  var assertCloseMatchesOpenTag = function (tag) {
-	    var context = getContext();
-	    var walker = context.walker;
-	    var closingNode = walker.getCurrentParent();
-	    var data = getData(closingNode);
-
-	    if (tag !== data.nodeName) {
-	      throw new Error('Received a call to close ' + tag + ' but ' + data.nodeName + ' was open.');
-	    }
-	  };
-
-	  /** Updates the state to being in an attribute declaration. */
-	  var setInAttributes = function () {
-	    inAttributes = true;
-	  };
-
-	  /** Updates the state to not being in an attribute declaration. */
-	  var setNotInAttributes = function () {
-	    inAttributes = false;
-	  };
-	}
-
 	/**
 	 * @param {string} tag The element's tag.
 	 * @param {?string=} key The key used to identify this element. This can be an
@@ -13691,10 +13664,11 @@ webpackJsonp([3],{
 	 */
 	exports.elementOpen = function (tag, key, statics, var_args) {
 	  if (true) {
-	    assertNotInAttributes();
+	    assertNotInAttributes('elementOpen');
+	    assertNotInSkip('elementOpen');
 	  }
 
-	  var node = /** @type {!Element}*/alignWithDOM(tag, key, statics);
+	  var node = _elementOpen(tag, key, statics);
 	  var data = getData(node);
 
 	  /*
@@ -13704,6 +13678,7 @@ webpackJsonp([3],{
 	   * minimal.
 	   */
 	  var attrsArr = data.attrsArr;
+	  var newAttrs = data.newAttrs;
 	  var attrsChanged = false;
 	  var i = ATTRIBUTES_OFFSET;
 	  var j = 0;
@@ -13728,23 +13703,16 @@ webpackJsonp([3],{
 	   * Actually perform the attribute update.
 	   */
 	  if (attrsChanged) {
-	    var attr,
-	        newAttrs = data.newAttrs;
-
-	    for (attr in newAttrs) {
-	      newAttrs[attr] = undefined;
-	    }
-
 	    for (i = ATTRIBUTES_OFFSET; i < arguments.length; i += 2) {
 	      newAttrs[arguments[i]] = arguments[i + 1];
 	    }
 
-	    for (attr in newAttrs) {
+	    for (var attr in newAttrs) {
 	      updateAttribute(node, attr, newAttrs[attr]);
+	      newAttrs[attr] = undefined;
 	    }
 	  }
 
-	  firstChild();
 	  return node;
 	};
 
@@ -13764,8 +13732,8 @@ webpackJsonp([3],{
 	 */
 	exports.elementOpenStart = function (tag, key, statics) {
 	  if (true) {
-	    assertNotInAttributes();
-	    setInAttributes();
+	    assertNotInAttributes('elementOpenStart');
+	    setInAttributes(true);
 	  }
 
 	  argsBuilder[0] = tag;
@@ -13782,7 +13750,7 @@ webpackJsonp([3],{
 	 */
 	exports.attr = function (name, value) {
 	  if (true) {
-	    assertInAttributes();
+	    assertInAttributes('attr');
 	  }
 
 	  argsBuilder.push(name, value);
@@ -13794,8 +13762,8 @@ webpackJsonp([3],{
 	 */
 	exports.elementOpenEnd = function () {
 	  if (true) {
-	    assertInAttributes();
-	    setNotInAttributes();
+	    assertInAttributes('elementOpenEnd');
+	    setInAttributes(false);
 	  }
 
 	  var node = exports.elementOpen.apply(null, argsBuilder);
@@ -13811,17 +13779,15 @@ webpackJsonp([3],{
 	 */
 	exports.elementClose = function (tag) {
 	  if (true) {
-	    assertNotInAttributes();
-	    assertCloseMatchesOpenTag(tag);
+	    assertNotInAttributes('elementClose');
 	  }
 
-	  parentNode();
+	  var node = _elementClose();
 
-	  var node = /** @type {!Element} */getContext().walker.currentNode;
+	  if (true) {
+	    assertCloseMatchesOpenTag(getData(node).nodeName, tag);
+	  }
 
-	  clearUnvisitedDOM(node);
-
-	  nextSibling();
 	  return node;
 	};
 
@@ -13867,10 +13833,9 @@ webpackJsonp([3],{
 	    assertPlaceholderKeySpecified(key);
 	  }
 
-	  var node = exports.elementOpen.apply(null, arguments);
-	  updateAttribute(node, exports.symbols.placeholder, true);
-	  exports.elementClose.apply(null, arguments);
-	  return node;
+	  exports.elementOpen.apply(null, arguments);
+	  exports.skip();
+	  return exports.elementClose.apply(null, arguments);
 	};
 
 	/**
@@ -13884,10 +13849,11 @@ webpackJsonp([3],{
 	 */
 	exports.text = function (value, var_args) {
 	  if (true) {
-	    assertNotInAttributes();
+	    assertNotInAttributes('text');
+	    assertNotInSkip('text');
 	  }
 
-	  var node = /** @type {!Text}*/alignWithDOM('#text', null);
+	  var node = _text();
 	  var data = getData(node);
 
 	  if (data.text !== value) {
@@ -13901,7 +13867,6 @@ webpackJsonp([3],{
 	    node.data = formatted;
 	  }
 
-	  nextSibling();
 	  return node;
 	};
 	//# sourceMappingURL=incremental-dom-cjs.js.map
