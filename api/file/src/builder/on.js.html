@@ -164,7 +164,7 @@ export class OnBuilder {
             preventDefault = this.data.preventDefault;
 
         on(&apos;before:createdCallback&apos;).invoke((el) =&gt; {
-            el._cebOnHandlers = [];
+            el.__cebOnHandlers = [];
         });
 
         on(&apos;before:attachedCallback&apos;).invoke((el) =&gt; {
@@ -191,7 +191,7 @@ export class OnBuilder {
                 }
             };
 
-            el._cebOnHandlers = events
+            el.__cebOnHandlers = events
                 .map(([name, target]) =&gt; [name, target ? el.querySelector(target) : el])
                 .filter(([name, target]) =&gt; !!target)
                 .map(([name, target]) =&gt; {
@@ -199,12 +199,12 @@ export class OnBuilder {
                     return [target, name, listener, capture];
                 });
 
-            el._cebOnHandlers.forEach(([target, name, listener, capture]) =&gt; target.addEventListener(name, listener, capture));
+            el.__cebOnHandlers.forEach(([target, name, listener, capture]) =&gt; target.addEventListener(name, listener, capture));
 
         });
 
         on(&apos;before:detachedCallback&apos;).invoke((el) =&gt; {
-            el._cebOnHandlers.forEach(([target, name, listener, capture]) =&gt; target.removeEventListener(name, listener, capture));
+            el.__cebOnHandlers.forEach(([target, name, listener, capture]) =&gt; target.removeEventListener(name, listener, capture));
         });
     }
 

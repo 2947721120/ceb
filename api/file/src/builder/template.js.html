@@ -72,7 +72,7 @@
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/builder/template.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">import {isFunction} from &apos;../helper/types.js&apos;;
-import {PropertyBuilder} from &apos;./property.js&apos;;
+import {property} from &apos;./property.js&apos;;
 
 /**
  * The counter is used to generate unique DOM&apos;s id.
@@ -149,22 +149,12 @@ function cleanOldContentNode(el) {
 }
 
 /**
- * Add the given DOM nodes list to the given element.
- * @param {!HTMLElement} el the custom element
- * @param {DocumentFragment} lightFrag the light DOM fragment
- */
-function fillNewContentNode(el, lightFrag) {
-    el.lightDOM.appendChild(lightFrag);
-}
-
-/**
  * Apply the template to the element.
  * @param {!HTMLElement} el the custom element
  * @param {!string} tpl the template
  */
 export function applyTemplate(el, tpl) {
-    let lightFrag = [],
-        handleContentNode = hasContent(tpl);
+    let lightFrag, handleContentNode = hasContent(tpl);
 
     if (handleContentNode) {
         let newCebContentId = &apos;ceb-content-&apos; + counter++;
@@ -177,8 +167,8 @@ export function applyTemplate(el, tpl) {
 
     el.innerHTML = tpl;
 
-    if (handleContentNode) {
-        fillNewContentNode(el, lightFrag);
+    if (handleContentNode &amp;&amp; lightFrag) {
+        el.lightDOM.appendChild(lightFrag);
     }
 }
 
@@ -206,7 +196,7 @@ export class TemplateBuilder {
     build(proto, on) {
         let data = this.data;
 
-        (new PropertyBuilder(&apos;lightDOM&apos;)).getter(el =&gt; findContentNode(el)).build(proto, on);
+        property(&apos;lightDOM&apos;).getter(el =&gt; findContentNode(el)).build(proto, on);
 
         on(&apos;before:createdCallback&apos;).invoke(el =&gt; {
             applyTemplate(el, isFunction(data.tpl) ? data.tpl(el) : data.tpl);

@@ -9,13 +9,16 @@
 [mocha]: http://mochajs.org
 [karma]: http://karma-runner.github.io
 [webpack]: https://webpack.github.io
+[browserify]: http://browserify.org
 [PhantomJS]: http://phantomjs.org
 [baconjs]: https://baconjs.github.io
 [handlebarsjs]: http://handlebarsjs.com
 [incremental-dom]: https://github.com/google/incremental-dom
 [redux]: http://rackt.org/redux
+[redux's TodoList example]: http://rackt.github.io/redux/docs/basics/ExampleTodoList.html
 [bootstrap]: http://getbootstrap.com
 [idomizer]: https://github.com/tmorin/idomizer
+[weather-icons]: https://erikflowers.github.io/weather-icons
 
 [BDD]: https://fr.wikipedia.org/wiki/Behavior_driven_development
 
@@ -23,6 +26,9 @@
 
 [webcomponents.js]: https://github.com/webcomponents/webcomponentsjs
 [document-register-element]: https://github.com/WebReflection/document-register-element
+
+[openweathermap]: http://openweathermap.org/
+[nominatim]: http://nominatim.openstreetmap.org
 
 [HTML5 button]: https://html.spec.whatwg.org/multipage/forms.html#the-button-element
 [HTML5 form]: https://html.spec.whatwg.org/multipage/forms.html
@@ -41,6 +47,11 @@
 [live-list-plusplus]: https://tmorin.github.io/ceb/live/list-plusplus.html
 [live-templator]: https://tmorin.github.io/ceb/live/templator.html
 [live-todo-app]: https://tmorin.github.io/ceb/live/todo-app.html
+[live-weather-app]: https://tmorin.github.io/ceb/live/weather-app.html
+[live-loader-amd]: https://tmorin.github.io/ceb/live/loader-amd.html
+[live-loader-standalone]: https://tmorin.github.io/ceb/live/loader-standalone.html
+[live-loader-systemjs]: https://tmorin.github.io/ceb/live/loader-systemjs.html
+[live-loader-umd]: https://tmorin.github.io/ceb/live/loader-umd.html
 
 [npm]: https://www.npmjs.com/package/ceb
 [bower]: http://bower.io/search/?q=ceb

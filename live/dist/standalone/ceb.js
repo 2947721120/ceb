@@ -771,7 +771,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        /**
 	         * @ignore
 	         */
-	        this.data = (0, _objects.assign)({ propName: propName }, DEFAULT_DATA);
+	        this.data = (0, _objects.assign)({ propName: propName, listeners: [] }, DEFAULT_DATA);
 	    }
 
 	    /**
@@ -840,6 +840,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /**
+	         * To be notified when the property is updated.
+	         * @param {function(el: HTMLElement, oldVal: *, newVal: *)} listener the listener function
+	         * @returns {PropertyBuilder} the builder
+	         */
+
+	    }, {
+	        key: 'listen',
+	        value: function listen(listener) {
+	            this.data.listeners.push(listener);
+	            return this;
+	        }
+
+	        /**
 	         * Logic of the builder.
 	         * @param {!ElementBuilder.context.proto} proto the prototype
 	         * @param {!ElementBuilder.on} on the method on
@@ -848,8 +861,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }, {
 	        key: 'build',
 	        value: function build(proto, on) {
-	            var _this = this;
-
 	            var data = this.data,
 	                defaultValue = (0, _objects.result)(this.data, 'value'),
 	                descriptor = {
@@ -862,24 +873,54 @@ return /******/ (function(modules) { // webpackBootstrap
 	            } else if ((0, _types.isFunction)(this.data.getter) || (0, _types.isFunction)(this.data.setter)) {
 	                descriptor.configurable = false;
 	                descriptor.get = function () {
-	                    return data.getter.call(this, this);
+	                    if (data.getter) {
+	                        return data.getter.call(this, this);
+	                    }
 	                };
 	                descriptor.set = function (value) {
-	                    return data.setter.call(this, this, value);
+	                    if (data.setter) {
+	                        return data.setter.call(this, this, value);
+	                    }
 	                };
 	            } else {
 	                descriptor.configurable = true;
 	                descriptor.writable = true;
 	            }
 
-	            if (this.data.descriptorValue) {
+	            if (data.listeners.length > 0) {
+	                (function () {
+	                    descriptor.configurable = false;
+	                    delete descriptor.writable;
+	                    data.descriptorValue = false;
+	                    var _propName = '__' + data.propName + 'LastSetValue';
+	                    if (!descriptor.get) {
+	                        descriptor.get = function () {
+	                            return this[_propName];
+	                        };
+	                    }
+	                    descriptor.set = function (newVal) {
+	                        var _this = this;
+
+	                        var oldVal = this[_propName];
+	                        this[_propName] = newVal;
+	                        if (data.setter) {
+	                            data.setter.call(this, this, newVal);
+	                        }
+	                        data.listeners.forEach(function (listener) {
+	                            listener.call(_this, _this, oldVal, newVal);
+	                        });
+	                    };
+	                })();
+	            }
+
+	            if (data.descriptorValue) {
 	                descriptor.value = defaultValue;
 	            }
 
 	            Object.defineProperty(proto, this.data.propName, descriptor);
 
 	            on('after:createdCallback').invoke(function (el) {
-	                if (!_this.data.descriptorValue && !(0, _types.isUndefined)(defaultValue)) {
+	                if (!data.descriptorValue && !(0, _types.isUndefined)(defaultValue)) {
 	                    el[data.propName] = defaultValue;
 	                }
 	            });
@@ -1665,7 +1706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                preventDefault = this.data.preventDefault;
 
 	            on('before:createdCallback').invoke(function (el) {
-	                el._cebOnHandlers = [];
+	                el.__cebOnHandlers = [];
 	            });
 
 	            on('before:attachedCallback').invoke(function (el) {
@@ -1694,7 +1735,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 	                };
 
-	                el._cebOnHandlers = events.map(function (_ref) {
+	                el.__cebOnHandlers = events.map(function (_ref) {
 	                    var _ref2 = _slicedToArray(_ref, 2);
 
 	                    var name = _ref2[0];
@@ -1716,7 +1757,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    return [target, name, listener, capture];
 	                });
 
-	                el._cebOnHandlers.forEach(function (_ref7) {
+	                el.__cebOnHandlers.forEach(function (_ref7) {
 	                    var _ref8 = _slicedToArray(_ref7, 4);
 
 	                    var target = _ref8[0];
@@ -1728,7 +1769,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            });
 
 	            on('before:detachedCallback').invoke(function (el) {
-	                el._cebOnHandlers.forEach(function (_ref9) {
+	                el.__cebOnHandlers.forEach(function (_ref9) {
 	                    var _ref10 = _slicedToArray(_ref9, 4);
 
 	                    var target = _ref10[0];
@@ -1848,21 +1889,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	}
 
 	/**
-	 * Add the given DOM nodes list to the given element.
-	 * @param {!HTMLElement} el the custom element
-	 * @param {DocumentFragment} lightFrag the light DOM fragment
-	 */
-	function fillNewContentNode(el, lightFrag) {
-	    el.lightDOM.appendChild(lightFrag);
-	}
-
-	/**
 	 * Apply the template to the element.
 	 * @param {!HTMLElement} el the custom element
 	 * @param {!string} tpl the template
 	 */
 	function applyTemplate(el, tpl) {
-	    var lightFrag = [],
+	    var lightFrag = undefined,
 	        handleContentNode = hasContent(tpl);
 
 	    if (handleContentNode) {
@@ -1876,8 +1908,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    el.innerHTML = tpl;
 
-	    if (handleContentNode) {
-	        fillNewContentNode(el, lightFrag);
+	    if (handleContentNode && lightFrag) {
+	        el.lightDOM.appendChild(lightFrag);
 	    }
 	}
 
@@ -1912,7 +1944,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        value: function build(proto, on) {
 	            var data = this.data;
 
-	            new _property.PropertyBuilder('lightDOM').getter(function (el) {
+	            (0, _property.property)('lightDOM').getter(function (el) {
 	                return findContentNode(el);
 	            }).build(proto, on);
 

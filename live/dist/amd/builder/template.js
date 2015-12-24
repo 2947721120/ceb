@@ -70,12 +70,8 @@ define(['exports', '../helper/types.js', './property.js'], function (exports, _t
         return lightFrag;
     }
 
-    function fillNewContentNode(el, lightFrag) {
-        el.lightDOM.appendChild(lightFrag);
-    }
-
     function applyTemplate(el, tpl) {
-        var lightFrag = [],
+        var lightFrag = undefined,
             handleContentNode = hasContent(tpl);
 
         if (handleContentNode) {
@@ -87,41 +83,27 @@ define(['exports', '../helper/types.js', './property.js'], function (exports, _t
 
         el.innerHTML = tpl;
 
-        if (handleContentNode) {
-            fillNewContentNode(el, lightFrag);
+        if (handleContentNode && lightFrag) {
+            el.lightDOM.appendChild(lightFrag);
         }
     }
 
     var TemplateBuilder = exports.TemplateBuilder = (function () {
-
-        /**
-         * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function
-         */
-
         function TemplateBuilder(tpl) {
             _classCallCheck(this, TemplateBuilder);
 
-            /**
-             * @ignore
-             */
-            this.data = { tpl: tpl };
+            this.data = {
+                tpl: tpl
+            };
         }
-
-        /**
-         * Logic of the builder.
-         * @param {!ElementBuilder.context.proto} proto the prototype
-         * @param {!ElementBuilder.on} on the method on
-         */
 
         _createClass(TemplateBuilder, [{
             key: 'build',
             value: function build(proto, on) {
                 var data = this.data;
-
-                new _property.PropertyBuilder('lightDOM').getter(function (el) {
+                (0, _property.property)('lightDOM').getter(function (el) {
                     return findContentNode(el);
                 }).build(proto, on);
-
                 on('before:createdCallback').invoke(function (el) {
                     applyTemplate(el, (0, _types.isFunction)(data.tpl) ? data.tpl(el) : data.tpl);
                 });

@@ -798,6 +798,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/builder/property.js~propertybuilder#listen",
+    "class/src/builder/property.js~PropertyBuilder.html#instance-method-listen",
+    "src/builder/property.js~PropertyBuilder#listen",
+    "method"
+  ],
+  [
     "src/builder/property.js~propertybuilder#setter",
     "class/src/builder/property.js~PropertyBuilder.html#instance-method-setter",
     "src/builder/property.js~PropertyBuilder#setter",

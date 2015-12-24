@@ -21,6 +21,7 @@
 <url> <loc>https://tmorin.github.io/nulldoc/usage/on.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nulldoc/usage/property.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nulldoc/usage/template.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>https://tmorin.github.io/nullexample/list/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nullexample/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nullexample/builders/baconify.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nullexample/builders/handlebarify.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
@@ -32,8 +33,8 @@
 <url> <loc>https://tmorin.github.io/nullexample/form/ceb-form.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nullexample/grid/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nullexample/address-selector/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
-<url> <loc>https://tmorin.github.io/nullexample/list/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nullexample/list-plusplus/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nullexample/templator/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 <url> <loc>https://tmorin.github.io/nullexample/todo-app/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
+<url> <loc>https://tmorin.github.io/nullexample/weather-app/index.html</loc> <changefreq>weekly</changefreq> <priority>0.5</priority> </url>
 </urlset>
