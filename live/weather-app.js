@@ -7484,7 +7484,7 @@ webpackJsonp([2],[
 
 	var _storage = __webpack_require__(82);
 
-	var API_BASE_URL = 'http://api.openweathermap.org/data/2.5';
+	var API_BASE_URL = '//api.openweathermap.org/data/2.5';
 	var API_FIND = API_BASE_URL + '/find';
 	var API_WEATHER = API_BASE_URL + '/weather';
 	var API_GROUP = API_BASE_URL + '/group';

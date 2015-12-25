@@ -3,7 +3,7 @@ import {
     method
 } from 'ceb';
 
-const API_BASE_URL = 'http://api.openweathermap.org/data/2.5';
+const API_BASE_URL = '//api.openweathermap.org/data/2.5';
 const API_FIND = `${API_BASE_URL}/find`;
 const API_WEATHER = `${API_BASE_URL}/weather`;
 const API_GROUP = `${API_BASE_URL}/group`;
