@@ -13,13 +13,13 @@ webpackJsonp([8],{
 
 	__webpack_require__(19);
 
-	__webpack_require__(293);
+	__webpack_require__(296);
 
 	var _jquery = __webpack_require__(13);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _index = __webpack_require__(339);
+	var _index = __webpack_require__(342);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -469,7 +469,7 @@ webpackJsonp([8],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -554,7 +554,7 @@ webpackJsonp([8],{
 	 * Its goal is to provide a way to define an attribute.
 	 */
 
-	var AttributeBuilder = (function () {
+	var AttributeBuilder = function () {
 
 	    /**
 	     * @param {!string} attrName the name of the attribute
@@ -721,7 +721,7 @@ webpackJsonp([8],{
 	    }]);
 
 	    return AttributeBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new attribute builder.
@@ -741,7 +741,7 @@ webpackJsonp([8],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -766,7 +766,7 @@ webpackJsonp([8],{
 	 * Its goal is to provide a way to define a property.
 	 */
 
-	var PropertyBuilder = (function () {
+	var PropertyBuilder = function () {
 
 	    /**
 	     * @param {!string} propName the name of the property
@@ -935,7 +935,7 @@ webpackJsonp([8],{
 	    }]);
 
 	    return PropertyBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new property builder.
@@ -3379,7 +3379,7 @@ webpackJsonp([8],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3400,7 +3400,7 @@ webpackJsonp([8],{
 	 * Its goal is to provide a way to delegate methods, properties and attributes.
 	 */
 
-	var DelegateBuilder = exports.DelegateBuilder = (function () {
+	var DelegateBuilder = exports.DelegateBuilder = function () {
 
 	    /**
 	     * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} fieldBuilder the field builder
@@ -3576,7 +3576,7 @@ webpackJsonp([8],{
 	    }]);
 
 	    return DelegateBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new delegate builder.
@@ -3595,7 +3595,9 @@ webpackJsonp([8],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3610,8 +3612,6 @@ webpackJsonp([8],{
 	var _converters = __webpack_require__(3);
 
 	var _arrays = __webpack_require__(16);
-
-	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3651,7 +3651,7 @@ webpackJsonp([8],{
 	 * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).
 	 */
 
-	var ElementBuilder = (function () {
+	var ElementBuilder = function () {
 
 	    /**
 	     */
@@ -3791,7 +3791,7 @@ webpackJsonp([8],{
 	    }]);
 
 	    return ElementBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new custom element builder.
@@ -3810,7 +3810,7 @@ webpackJsonp([8],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3831,7 +3831,7 @@ webpackJsonp([8],{
 	 * Its goal is to provide a way to define a method.
 	 */
 
-	var MethodBuilder = exports.MethodBuilder = (function () {
+	var MethodBuilder = exports.MethodBuilder = function () {
 
 	    /**
 	     * @param {!string} methName the name of the method
@@ -3939,7 +3939,7 @@ webpackJsonp([8],{
 	    }]);
 
 	    return MethodBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new method builder.
@@ -3958,9 +3958,9 @@ webpackJsonp([8],{
 
 	'use strict';
 
-	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3981,7 +3981,7 @@ webpackJsonp([8],{
 	 * Its goal is to provide a way to listen events coming from the custom element.
 	 */
 
-	var OnBuilder = exports.OnBuilder = (function () {
+	var OnBuilder = exports.OnBuilder = function () {
 
 	    /**
 	     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional
@@ -4138,10 +4138,8 @@ webpackJsonp([8],{
 
 	                    var name = _ref6[0];
 	                    var target = _ref6[1];
-
-	                    target.addEventListener(name, listener, capture);
 	                    return [target, name, listener, capture];
-	                });
+	                }).concat(el.__cebOnHandlers);
 
 	                el.__cebOnHandlers.forEach(function (_ref7) {
 	                    var _ref8 = _slicedToArray(_ref7, 4);
@@ -4164,12 +4162,13 @@ webpackJsonp([8],{
 	                    var capture = _ref10[3];
 	                    return target.removeEventListener(name, listener, capture);
 	                });
+	                el.__cebOnHandlers = [];
 	            });
 	        }
 	    }]);
 
 	    return OnBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new on builder.
@@ -4188,7 +4187,7 @@ webpackJsonp([8],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -4305,7 +4304,7 @@ webpackJsonp([8],{
 	 * Its goal is to provide a way to fill the content of a custom element.
 	 */
 
-	var TemplateBuilder = exports.TemplateBuilder = (function () {
+	var TemplateBuilder = exports.TemplateBuilder = function () {
 
 	    /**
 	     * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function
@@ -4342,7 +4341,7 @@ webpackJsonp([8],{
 	    }]);
 
 	    return TemplateBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new template builder.
@@ -4462,7 +4461,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 272:
+/***/ 275:
 /***/ function(module, exports, __webpack_require__) {
 
 	/*!
@@ -9076,7 +9075,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 293:
+/***/ 296:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -9087,7 +9086,7 @@ webpackJsonp([8],{
 
 	var _ceb = __webpack_require__(6);
 
-	var _handlebars = __webpack_require__(272);
+	var _handlebars = __webpack_require__(275);
 
 	var _handlebars2 = _interopRequireDefault(_handlebars);
 
@@ -9114,7 +9113,7 @@ webpackJsonp([8],{
 
 /***/ },
 
-/***/ 339:
+/***/ 342:
 /***/ function(module, exports) {
 
 	module.exports = "<script id=\"withHandlebars\" is=\"ceb-templator\" type=\"text/x-handlebars-template\">\n    <h3>generated by ceb-templator</h3>\n\n    <p>{{items.length}} items</p>\n\n    <ul>\n        {{#each items}}\n            <li>{{name}}</li>\n        {{/each}}\n    </ul>\n</script>\n\n<p>\n    <code>ceb-templator</code> will compile its content according its attribute type when its method <code>render</code> is called.\n</p>\n\n<hr>\n\n<div class=\"row\">\n    <div class=\"col-md-12\">\n        <h2>From</h2>\n        <pre id=\"withHandlebarsFrom\"></pre>\n    </div>\n</div>\n<div class=\"row\">\n    <div class=\"col-md-6\">\n        <h2>To</h2>\n        <pre id=\"withHandlebarsTo\"></pre>\n    </div>\n    <div class=\"col-md-6\">\n        <h2>Result</h2>\n\n        <div id=\"withHandlebarsLive\"></div>\n    </div>\n</div>\n"

@@ -13,17 +13,17 @@ webpackJsonp([6],{
 
 	__webpack_require__(19);
 
-	__webpack_require__(286);
+	__webpack_require__(289);
 
-	__webpack_require__(287);
+	__webpack_require__(290);
 
-	__webpack_require__(288);
+	__webpack_require__(291);
 
 	var _jquery = __webpack_require__(13);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _indexTpl = __webpack_require__(330);
+	var _indexTpl = __webpack_require__(333);
 
 	var _indexTpl2 = _interopRequireDefault(_indexTpl);
 
@@ -452,7 +452,7 @@ webpackJsonp([6],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -537,7 +537,7 @@ webpackJsonp([6],{
 	 * Its goal is to provide a way to define an attribute.
 	 */
 
-	var AttributeBuilder = (function () {
+	var AttributeBuilder = function () {
 
 	    /**
 	     * @param {!string} attrName the name of the attribute
@@ -704,7 +704,7 @@ webpackJsonp([6],{
 	    }]);
 
 	    return AttributeBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new attribute builder.
@@ -724,7 +724,7 @@ webpackJsonp([6],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -749,7 +749,7 @@ webpackJsonp([6],{
 	 * Its goal is to provide a way to define a property.
 	 */
 
-	var PropertyBuilder = (function () {
+	var PropertyBuilder = function () {
 
 	    /**
 	     * @param {!string} propName the name of the property
@@ -918,7 +918,7 @@ webpackJsonp([6],{
 	    }]);
 
 	    return PropertyBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new property builder.
@@ -3362,7 +3362,7 @@ webpackJsonp([6],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3383,7 +3383,7 @@ webpackJsonp([6],{
 	 * Its goal is to provide a way to delegate methods, properties and attributes.
 	 */
 
-	var DelegateBuilder = exports.DelegateBuilder = (function () {
+	var DelegateBuilder = exports.DelegateBuilder = function () {
 
 	    /**
 	     * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} fieldBuilder the field builder
@@ -3559,7 +3559,7 @@ webpackJsonp([6],{
 	    }]);
 
 	    return DelegateBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new delegate builder.
@@ -3578,7 +3578,9 @@ webpackJsonp([6],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3593,8 +3595,6 @@ webpackJsonp([6],{
 	var _converters = __webpack_require__(3);
 
 	var _arrays = __webpack_require__(16);
-
-	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3634,7 +3634,7 @@ webpackJsonp([6],{
 	 * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).
 	 */
 
-	var ElementBuilder = (function () {
+	var ElementBuilder = function () {
 
 	    /**
 	     */
@@ -3774,7 +3774,7 @@ webpackJsonp([6],{
 	    }]);
 
 	    return ElementBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new custom element builder.
@@ -3793,7 +3793,7 @@ webpackJsonp([6],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3814,7 +3814,7 @@ webpackJsonp([6],{
 	 * Its goal is to provide a way to define a method.
 	 */
 
-	var MethodBuilder = exports.MethodBuilder = (function () {
+	var MethodBuilder = exports.MethodBuilder = function () {
 
 	    /**
 	     * @param {!string} methName the name of the method
@@ -3922,7 +3922,7 @@ webpackJsonp([6],{
 	    }]);
 
 	    return MethodBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new method builder.
@@ -3941,9 +3941,9 @@ webpackJsonp([6],{
 
 	'use strict';
 
-	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3964,7 +3964,7 @@ webpackJsonp([6],{
 	 * Its goal is to provide a way to listen events coming from the custom element.
 	 */
 
-	var OnBuilder = exports.OnBuilder = (function () {
+	var OnBuilder = exports.OnBuilder = function () {
 
 	    /**
 	     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional
@@ -4121,10 +4121,8 @@ webpackJsonp([6],{
 
 	                    var name = _ref6[0];
 	                    var target = _ref6[1];
-
-	                    target.addEventListener(name, listener, capture);
 	                    return [target, name, listener, capture];
-	                });
+	                }).concat(el.__cebOnHandlers);
 
 	                el.__cebOnHandlers.forEach(function (_ref7) {
 	                    var _ref8 = _slicedToArray(_ref7, 4);
@@ -4147,12 +4145,13 @@ webpackJsonp([6],{
 	                    var capture = _ref10[3];
 	                    return target.removeEventListener(name, listener, capture);
 	                });
+	                el.__cebOnHandlers = [];
 	            });
 	        }
 	    }]);
 
 	    return OnBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new on builder.
@@ -4171,7 +4170,7 @@ webpackJsonp([6],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -4288,7 +4287,7 @@ webpackJsonp([6],{
 	 * Its goal is to provide a way to fill the content of a custom element.
 	 */
 
-	var TemplateBuilder = exports.TemplateBuilder = (function () {
+	var TemplateBuilder = exports.TemplateBuilder = function () {
 
 	    /**
 	     * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function
@@ -4325,7 +4324,7 @@ webpackJsonp([6],{
 	    }]);
 
 	    return TemplateBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new template builder.
@@ -4445,7 +4444,7 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 286:
+/***/ 289:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4480,7 +4479,7 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 287:
+/***/ 290:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4568,7 +4567,7 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 288:
+/***/ 291:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -4579,7 +4578,7 @@ webpackJsonp([6],{
 
 	var _ceb = __webpack_require__(6);
 
-	var _rules = __webpack_require__(289);
+	var _rules = __webpack_require__(292);
 
 	var cebFormBuilder = (0, _ceb.element)().base(Object.create(HTMLFormElement.prototype), 'form');
 
@@ -4786,7 +4785,7 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 289:
+/***/ 292:
 /***/ function(module, exports) {
 
 	'use strict';
@@ -4843,7 +4842,7 @@ webpackJsonp([6],{
 
 /***/ },
 
-/***/ 330:
+/***/ 333:
 /***/ function(module, exports) {
 
 	module.exports = "<p>\n    The goal of it's example is to create a set of custom elements close to the HTML5 form element.\n</p>\n\n<hr>\n\n<form name=\"order\"\n      is=\"ceb-form\"\n      prevent-submit\n      validate-on=\"submit\"\n      validate-control-on=\"change,input\">\n\n    <fieldset>\n        <legend>input[type=text]</legend>\n        <div class=\"row\">\n            <ceb-field class=\"col-sm-4\">\n                <label for=\"inputTextRequired\" class=\"control-label\">\n                    required\n                </label>\n                <input id=\"inputTextRequired\"\n                       type=\"text\"\n                       name=\"input[text]\"\n                       class=\"form-control\"\n                       required\n                       title=\"The field is required.\">\n            </ceb-field>\n            <ceb-field class=\"col-sm-4\">\n                <label for=\"inputTextMinLength\" class=\"control-label\">\n                    minlength\n                    <small>is 5</small>\n                </label>\n                <input id=\"inputTextMinLength\"\n                       type=\"text\"\n                       name=\"input[text]\"\n                       class=\"form-control\"\n                       minlength=\"5\">\n            </ceb-field>\n            <ceb-field class=\"col-sm-4\">\n                <label for=\"inputTextMaxLength\" class=\"control-label\">\n                    maxlength\n                    <small>is 5</small>\n                </label>\n                <input id=\"inputTextMaxLength\"\n                       type=\"text\"\n                       name=\"input[text]\"\n                       class=\"form-control\"\n                       value=\"more than five characters\"\n                       maxlength=\"5\">\n            </ceb-field>\n        </div>\n    </fieldset>\n\n    <p>\n        <button type=\"submit\" is=\"ceb-button\" alt-style=\"primary\">\n            <i class=\"glyphicon glyphicon-check\"></i>\n            Save\n        </button>\n        <button type=\"reset\" is=\"ceb-button\" alt-style=\"warning\">\n            <i class=\"glyphicon glyphicon-erase\"></i>\n            Reset\n        </button>\n    </p>\n</form>\n"

@@ -194,17 +194,17 @@ export class OnBuilder {
             el.__cebOnHandlers = events
                 .map(([name, target]) =&gt; [name, target ? el.querySelector(target) : el])
                 .filter(([name, target]) =&gt; !!target)
-                .map(([name, target]) =&gt; {
-                    target.addEventListener(name, listener, capture);
-                    return [target, name, listener, capture];
-                });
+                .map(([name, target]) =&gt; [target, name, listener, capture])
+                .concat(el.__cebOnHandlers);
 
-            el.__cebOnHandlers.forEach(([target, name, listener, capture]) =&gt; target.addEventListener(name, listener, capture));
-
+            el.__cebOnHandlers.forEach(([target, name, listener, capture]) =&gt;
+                target.addEventListener(name, listener, capture));
         });
 
         on(&apos;before:detachedCallback&apos;).invoke((el) =&gt; {
-            el.__cebOnHandlers.forEach(([target, name, listener, capture]) =&gt; target.removeEventListener(name, listener, capture));
+            el.__cebOnHandlers.forEach(([target, name, listener, capture]) =&gt;
+                target.removeEventListener(name, listener, capture));
+            el.__cebOnHandlers = [];
         });
     }
 

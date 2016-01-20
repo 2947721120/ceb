@@ -1,6 +1,6 @@
 'use strict';
 
-System.register(['../helper/types.js', '../helper/functions.js', '../helper/converters.js'], function (_export) {
+System.register(['../helper/types.js', '../helper/functions.js', '../helper/converters.js'], function (_export, _context) {
     var isFunction, noop, toArray, _slicedToArray, _createClass, OnBuilder;
 
     function _classCallCheck(instance, Constructor) {
@@ -18,7 +18,7 @@ System.register(['../helper/types.js', '../helper/functions.js', '../helper/conv
             toArray = _helperConvertersJs.toArray;
         }],
         execute: function () {
-            _slicedToArray = (function () {
+            _slicedToArray = function () {
                 function sliceIterator(arr, i) {
                     var _arr = [];
                     var _n = true;
@@ -54,9 +54,9 @@ System.register(['../helper/types.js', '../helper/functions.js', '../helper/conv
                         throw new TypeError("Invalid attempt to destructure non-iterable instance");
                     }
                 };
-            })();
+            }();
 
-            _createClass = (function () {
+            _createClass = function () {
                 function defineProperties(target, props) {
                     for (var i = 0; i < props.length; i++) {
                         var descriptor = props[i];
@@ -72,9 +72,9 @@ System.register(['../helper/types.js', '../helper/functions.js', '../helper/conv
                     if (staticProps) defineProperties(Constructor, staticProps);
                     return Constructor;
                 };
-            })();
+            }();
 
-            _export('OnBuilder', OnBuilder = (function () {
+            _export('OnBuilder', OnBuilder = function () {
                 function OnBuilder(events) {
                     _classCallCheck(this, OnBuilder);
 
@@ -184,9 +184,8 @@ System.register(['../helper/types.js', '../helper/functions.js', '../helper/conv
 
                                 var name = _ref6[0];
                                 var target = _ref6[1];
-                                target.addEventListener(name, listener, capture);
                                 return [target, name, listener, capture];
-                            });
+                            }).concat(el.__cebOnHandlers);
 
                             el.__cebOnHandlers.forEach(function (_ref7) {
                                 var _ref8 = _slicedToArray(_ref7, 4);
@@ -208,12 +207,14 @@ System.register(['../helper/types.js', '../helper/functions.js', '../helper/conv
                                 var capture = _ref10[3];
                                 return target.removeEventListener(name, listener, capture);
                             });
+
+                            el.__cebOnHandlers = [];
                         });
                     }
                 }]);
 
                 return OnBuilder;
-            })());
+            }());
 
             _export('OnBuilder', OnBuilder);
 

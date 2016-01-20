@@ -13,13 +13,13 @@ webpackJsonp([5],{
 
 	__webpack_require__(19);
 
-	__webpack_require__(282);
+	__webpack_require__(285);
 
 	var _jquery = __webpack_require__(13);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _index = __webpack_require__(329);
+	var _index = __webpack_require__(332);
 
 	var _index2 = _interopRequireDefault(_index);
 
@@ -448,7 +448,7 @@ webpackJsonp([5],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -533,7 +533,7 @@ webpackJsonp([5],{
 	 * Its goal is to provide a way to define an attribute.
 	 */
 
-	var AttributeBuilder = (function () {
+	var AttributeBuilder = function () {
 
 	    /**
 	     * @param {!string} attrName the name of the attribute
@@ -700,7 +700,7 @@ webpackJsonp([5],{
 	    }]);
 
 	    return AttributeBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new attribute builder.
@@ -720,7 +720,7 @@ webpackJsonp([5],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -745,7 +745,7 @@ webpackJsonp([5],{
 	 * Its goal is to provide a way to define a property.
 	 */
 
-	var PropertyBuilder = (function () {
+	var PropertyBuilder = function () {
 
 	    /**
 	     * @param {!string} propName the name of the property
@@ -914,7 +914,7 @@ webpackJsonp([5],{
 	    }]);
 
 	    return PropertyBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new property builder.
@@ -3358,7 +3358,7 @@ webpackJsonp([5],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3379,7 +3379,7 @@ webpackJsonp([5],{
 	 * Its goal is to provide a way to delegate methods, properties and attributes.
 	 */
 
-	var DelegateBuilder = exports.DelegateBuilder = (function () {
+	var DelegateBuilder = exports.DelegateBuilder = function () {
 
 	    /**
 	     * @param {!PropertyBuilder|AttributeBuilder|MethodBuilder} fieldBuilder the field builder
@@ -3555,7 +3555,7 @@ webpackJsonp([5],{
 	    }]);
 
 	    return DelegateBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new delegate builder.
@@ -3574,7 +3574,9 @@ webpackJsonp([5],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3589,8 +3591,6 @@ webpackJsonp([5],{
 	var _converters = __webpack_require__(3);
 
 	var _arrays = __webpack_require__(16);
-
-	function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.constructor === Symbol ? "symbol" : typeof obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -3630,7 +3630,7 @@ webpackJsonp([5],{
 	 * Its goal is to provide a user friendly way to do it by some else (i.e. dedicated builders).
 	 */
 
-	var ElementBuilder = (function () {
+	var ElementBuilder = function () {
 
 	    /**
 	     */
@@ -3770,7 +3770,7 @@ webpackJsonp([5],{
 	    }]);
 
 	    return ElementBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new custom element builder.
@@ -3789,7 +3789,7 @@ webpackJsonp([5],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3810,7 +3810,7 @@ webpackJsonp([5],{
 	 * Its goal is to provide a way to define a method.
 	 */
 
-	var MethodBuilder = exports.MethodBuilder = (function () {
+	var MethodBuilder = exports.MethodBuilder = function () {
 
 	    /**
 	     * @param {!string} methName the name of the method
@@ -3918,7 +3918,7 @@ webpackJsonp([5],{
 	    }]);
 
 	    return MethodBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new method builder.
@@ -3937,9 +3937,9 @@ webpackJsonp([5],{
 
 	'use strict';
 
-	var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; })();
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -3960,7 +3960,7 @@ webpackJsonp([5],{
 	 * Its goal is to provide a way to listen events coming from the custom element.
 	 */
 
-	var OnBuilder = exports.OnBuilder = (function () {
+	var OnBuilder = exports.OnBuilder = function () {
 
 	    /**
 	     * @param {!string} events a list of tuple 'event target' separated by comas, the target is optional
@@ -4117,10 +4117,8 @@ webpackJsonp([5],{
 
 	                    var name = _ref6[0];
 	                    var target = _ref6[1];
-
-	                    target.addEventListener(name, listener, capture);
 	                    return [target, name, listener, capture];
-	                });
+	                }).concat(el.__cebOnHandlers);
 
 	                el.__cebOnHandlers.forEach(function (_ref7) {
 	                    var _ref8 = _slicedToArray(_ref7, 4);
@@ -4143,12 +4141,13 @@ webpackJsonp([5],{
 	                    var capture = _ref10[3];
 	                    return target.removeEventListener(name, listener, capture);
 	                });
+	                el.__cebOnHandlers = [];
 	            });
 	        }
 	    }]);
 
 	    return OnBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new on builder.
@@ -4167,7 +4166,7 @@ webpackJsonp([5],{
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -4284,7 +4283,7 @@ webpackJsonp([5],{
 	 * Its goal is to provide a way to fill the content of a custom element.
 	 */
 
-	var TemplateBuilder = exports.TemplateBuilder = (function () {
+	var TemplateBuilder = exports.TemplateBuilder = function () {
 
 	    /**
 	     * @param {!string|function(el: HTMLElement)} tpl the template as a string or a function
@@ -4321,7 +4320,7 @@ webpackJsonp([5],{
 	    }]);
 
 	    return TemplateBuilder;
-	})();
+	}();
 
 	/**
 	 * Get a new template builder.
@@ -4441,7 +4440,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 273:
+/***/ 276:
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {module.exports = __webpack_amd_options__;
@@ -4450,7 +4449,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 275:
+/***/ 278:
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global, module) {(function() {
@@ -7830,7 +7829,7 @@ webpackJsonp([5],{
 	  return withDesc(new Bacon.Desc(this, "zip", [other]), Bacon.zipWith([this, other], f || Array));
 	};
 
-	if ("function" !== "undefined" && __webpack_require__(357) !== null && __webpack_require__(273) != null) {
+	if ("function" !== "undefined" && __webpack_require__(360) !== null && __webpack_require__(276) != null) {
 	  !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
 	    return Bacon;
 	  }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -7845,11 +7844,11 @@ webpackJsonp([5],{
 	  }
 	}).call(this);
 
-	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(358)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }()), __webpack_require__(361)(module)))
 
 /***/ },
 
-/***/ 282:
+/***/ 285:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -7864,11 +7863,11 @@ webpackJsonp([5],{
 
 	var _ceb = __webpack_require__(6);
 
-	var _baconify = __webpack_require__(283);
+	var _baconify = __webpack_require__(286);
 
-	var _baconjs = __webpack_require__(275);
+	var _baconjs = __webpack_require__(278);
 
-	__webpack_require__(347);
+	__webpack_require__(350);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8057,12 +8056,12 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 283:
+/***/ 286:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -8073,7 +8072,7 @@ webpackJsonp([5],{
 
 	var _ceb = __webpack_require__(6);
 
-	var _baconjs = __webpack_require__(275);
+	var _baconjs = __webpack_require__(278);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -8109,7 +8108,7 @@ webpackJsonp([5],{
 	    }
 	}
 
-	var BaconBuilder = exports.BaconBuilder = (function () {
+	var BaconBuilder = exports.BaconBuilder = function () {
 	    function BaconBuilder(builder) {
 	        _classCallCheck(this, BaconBuilder);
 
@@ -8196,7 +8195,7 @@ webpackJsonp([5],{
 	    }]);
 
 	    return BaconBuilder;
-	})();
+	}();
 
 	function baconify(builder) {
 	    return new BaconBuilder(builder);
@@ -8204,10 +8203,10 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 321:
+/***/ 324:
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(94)();
+	exports = module.exports = __webpack_require__(92)();
 	// imports
 
 
@@ -8219,23 +8218,23 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 329:
+/***/ 332:
 /***/ function(module, exports) {
 
 	module.exports = "<p>\n    <code>ceb-address-selector</code> consume the <a href=\"http://nominatim.openstreetmap.org\">nominatim.openstreetmap.org</a> API to help the selection of a place.\n</p>\n\n<p>\n    The implementation is based on <a href=\"https://baconjs.github.io\" target=\"_blank\">bacon.js</a> streams to simplify the asynchronous business of this kind of widgets.\n    The bacon.js magic is provided by <code>example/builders/baconify.js</code>.\n</p>\n\n<hr>\n\n<ceb-address-selector></ceb-address-selector>\n"
 
 /***/ },
 
-/***/ 347:
+/***/ 350:
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(321);
+	var content = __webpack_require__(324);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(95)(content, {});
+	var update = __webpack_require__(93)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -8253,7 +8252,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 357:
+/***/ 360:
 /***/ function(module, exports) {
 
 	module.exports = function() { throw new Error("define cannot be used indirect"); };
@@ -8261,7 +8260,7 @@ webpackJsonp([5],{
 
 /***/ },
 
-/***/ 358:
+/***/ 361:
 /***/ function(module, exports) {
 
 	module.exports = function(module) {

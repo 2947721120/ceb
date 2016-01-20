@@ -48,7 +48,7 @@
     <body>
         
         
-    <div class="book" data-level="3.8" data-chapter-title="Internal stuff" data-filepath="doc/usage/internal-stuff.md" data-basepath="../.." data-revision="Fri Dec 25 2015 18:56:35 GMT+0100 (CET)">
+    <div class="book" data-level="3.8" data-chapter-title="Internal stuff" data-filepath="doc/usage/internal-stuff.md" data-basepath="../.." data-revision="Wed Jan 20 2016 22:03:00 GMT+0100 (CET)">
     
 
 <div class="book-summary">
@@ -756,7 +756,7 @@ This extensibility is done defining dedicated builders.</p>
 </ul>
 <p>The method <code>on()</code> registers a callback about the events listed above.</p>
 <pre><code class="lang-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span>element<span class="token punctuation">}</span> from <span class="token string">&apos;ceb&apos;</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> MyDummyButtonElement <span class="token operator">=</span> <span class="token function">element</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> MyDummyButtonElement <span class="token operator">=</span> <span class="token function">element</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">&apos;before:createdCallback&apos;</span><span class="token punctuation">,</span> el <span class="token operator">=</span><span class="token operator">&gt;</span> el<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token string">&apos;&lt;button&gt;&lt;/button&gt;&apos;</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token string">&apos;my-dummy-button-element&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
@@ -774,7 +774,7 @@ This extensibility is done defining dedicated builders.</p>
 <p>Basically, the logic of the builder is implemented into the method <code>build()</code>.
 All stuff which can not be done during the execution of the method <code>build()</code>, can be executed later using the function <code>on()</code>. </p>
 <pre><code class="lang-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span>element<span class="token punctuation">}</span> from <span class="token string">&apos;ceb&apos;</span><span class="token punctuation">;</span>
-<span class="token keyword">var</span> MyDummyButtonElement <span class="token operator">=</span> <span class="token function">element</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">const</span> MyDummyButtonElement <span class="token operator">=</span> <span class="token function">element</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">builders</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
         <span class="token function">build</span><span class="token punctuation">(</span>proto<span class="token punctuation">,</span> on<span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token comment" spellcheck="true">// this will be executed once by register call</span>
