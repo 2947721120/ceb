@@ -48,7 +48,7 @@
     <body>
         
         
-    <div class="book" data-level="2.3" data-chapter-title="AMD" data-filepath="doc/integration/amd.md" data-basepath="../.." data-revision="Wed Jan 20 2016 22:03:00 GMT+0100 (CET)">
+    <div class="book" data-level="2.3" data-chapter-title="AMD" data-filepath="doc/integration/amd.md" data-basepath="../.." data-revision="Fri Feb 05 2016 11:57:28 GMT+0100 (CET)">
     
 
 <div class="book-summary">
@@ -728,18 +728,9 @@
                     <section class="normal" id="section-">
                     
                         <h1 id="amd">AMD</h1>
-<p>Using the dedicated <a href="https://github.com/amdjs/amdjs-api" target="_blank">AMD</a> files from <code>dist/amd/</code>:</p>
+<p>Using the <a href="https://github.com/umdjs/umd" target="_blank">UMD</a> file from <code>dist/umd/</code>:</p>
 <pre><code class="lang-javascript"><span class="token comment" spellcheck="true">// load all ceb</span>
-<span class="token function">require</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">&apos;dist/amd/ceb&apos;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>ceb<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    ceb<span class="token punctuation">.</span><span class="token function">element</span><span class="token punctuation">(</span>
-        ceb<span class="token punctuation">.</span><span class="token function">property</span><span class="token punctuation">(</span><span class="token string">&apos;foo&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        ceb<span class="token punctuation">.</span><span class="token function">attribute</span><span class="token punctuation">(</span><span class="token string">&apos;bar&apos;</span><span class="token punctuation">)</span>
-    <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">register</span><span class="token punctuation">(</span><span class="token string">&apos;ceb-example&apos;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-</code></pre>
-<p>The <a href="https://github.com/umdjs/umd" target="_blank">UMD</a> files from <code>dist/umd/</code> works well too.</p>
-<p>Using the standalone <a href="https://github.com/umdjs/umd" target="_blank">UMD</a> file from <code>dist/standalone/</code>:</p>
-<pre><code class="lang-javascript"><span class="token function">require</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">&apos;dist/standalone/ceb&apos;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>ceb<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token function">require</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">&apos;dist/umd/ceb&apos;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>ceb<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     ceb<span class="token punctuation">.</span><span class="token function">element</span><span class="token punctuation">(</span>
         ceb<span class="token punctuation">.</span><span class="token function">property</span><span class="token punctuation">(</span><span class="token string">&apos;foo&apos;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
         ceb<span class="token punctuation">.</span><span class="token function">attribute</span><span class="token punctuation">(</span><span class="token string">&apos;bar&apos;</span><span class="token punctuation">)</span>
